@@ -11,11 +11,6 @@ namespace Workbit.App
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("WorkbitDbContextConnection") ?? throw new InvalidOperationException("Connection string 'WorkbitDbContextConnection' not found.");
-
-            builder.Services.AddDbContext<WorkbitDbContext>(options => options.UseSqlServer(connectionString));
-
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WorkbitDbContext>();
 
             builder.Services.AddApplicationDbContext(builder.Configuration);
 

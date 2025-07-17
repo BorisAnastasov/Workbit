@@ -1,0 +1,39 @@
+﻿@model LogInViewModel
+
+@{
+    ViewBag.Title = "Log in your profile";
+}
+
+<section style="color:black; ">
+    <div class="container mt-5 pt-5 ">
+        <div class="col-12 col-sm-7 col-md-6 m-auto">
+            <div class="card border-0 shadow style=" max-height: 80vh; overflow-y: auto;"">
+                <div class="card-body flex-basis-10%">
+                    <h1 class="text-center">@ViewBag.Title</h1>
+                    <form asp-controller="User" asp-action="Login" method="post">
+                        <hr />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Email" class="form-control " autocomplete="on" aria-required="true" placeholder="example"/>
+                            <label asp-for="Email" class="form-label align-bottom"></label>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Password" class="form-control" autocomplete="on" aria-required="true" placeholder="example" />
+                            <label asp-for="Password" class="form-label"></label>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="text-center mt-2">
+                            <button  type="submit" class="btn btn-lg btn-primary ">Log in</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
