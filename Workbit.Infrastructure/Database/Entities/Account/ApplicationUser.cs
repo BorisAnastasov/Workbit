@@ -20,7 +20,8 @@ namespace Workbit.Infrastructure.Database.Entities.Account
         public string LastName { get; set; } = null!;
 
         [Required]
-        public DateTime DateOfBirth { get; set; }
+		[DataType(DataType.Date)]
+		public DateTime DateOfBirth { get; set; }
 
 
     }

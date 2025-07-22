@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Workbit.Infrastructure.Extensions;
-using Workbit.Core.Enumerations;
-using static Workbit.Common.DataConstants.Job;
 using Workbit.Infrastructure.Database.Entities.Account;
+using static Workbit.Common.DataConstants.Job;
 
 namespace Workbit.Infrastructure.Database.Entities
 {
-    public class Job
+	public class Job
     {
         public Job()
         {
@@ -21,20 +20,16 @@ namespace Workbit.Infrastructure.Database.Entities
         public string Title { get; set; } = null!;
 
         [Required]
+        [StringLength(DescriptionMaxLen)]
         public string Description { get; set; } = null!;
 
         [ForeignKey(nameof(Department))]
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; } = null!;
 
-        [Required]  
-        public JobLevel Level { get; set; }
-
         [Required]
-        public decimal BaseSalary { get; set; }
-
-        [NotMapped]
-        public decimal EffectiveSalary => BaseSalary * Level.GetMultiplier();
+		[Precision(18, 2)]
+		public decimal BaseSalary { get; set; }
 
         public virtual List<Employee> Employees { get; set; }
     }

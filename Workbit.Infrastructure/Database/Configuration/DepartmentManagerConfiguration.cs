@@ -18,7 +18,11 @@ namespace Workbit.Infrastructure.Database.Configuration
 				   .WithMany(d => d.DepartmentManagers)
 				   .HasForeignKey(dm => dm.DepartmentId);
 
-			builder.HasData(SeedDepartmentManagers());
+			builder.HasData(
+				new DepartmentManager { ManagerId = Guid.Parse("a1111111-0000-0000-0000-000000000002"), DepartmentId = 1 }, // Lisa - HR
+				new DepartmentManager { ManagerId = Guid.Parse("a1111111-0000-0000-0000-000000000003"), DepartmentId = 2 }, // Carl - IT
+				new DepartmentManager { ManagerId = Guid.Parse("a1111111-0000-0000-0000-000000000004"), DepartmentId = 3 }  // Nina - Finance
+			);
 		}
 
 		private static List<DepartmentManager> SeedDepartmentManagers()

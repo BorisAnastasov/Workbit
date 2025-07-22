@@ -14,6 +14,7 @@ namespace Workbit.Infrastructure.Database.Entities
         public Guid EmployeeId { get; set; }
         public virtual Employee Employee { get; set; } = null!;
 
+        [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
         public TimeSpan? CheckIn { get; set; }
         public TimeSpan? CheckOut { get; set; }

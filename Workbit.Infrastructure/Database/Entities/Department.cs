@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static Workbit.Common.DataConstants.Department;
 
 namespace Workbit.Infrastructure.Database.Entities
 {
@@ -11,9 +12,13 @@ namespace Workbit.Infrastructure.Database.Entities
         }
         [Key]
         public int Id { get; set; }
+
         [Required]
+        [StringLength(NameMaxLen)]
         public string Name { get; set; } = null!;
+
         [Required]
+        [StringLength(DescriptionMaxLen)]
         public string Description { get; set; } = null!;
 
         public virtual List<DepartmentManager> DepartmentManagers { get; set; }

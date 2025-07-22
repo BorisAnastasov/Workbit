@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Workbit.App.Data;
 using Workbit.App.Extensions;
 using Workbit.Infrastructure.Database;
 

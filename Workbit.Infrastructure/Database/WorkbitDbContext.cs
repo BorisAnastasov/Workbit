@@ -15,10 +15,13 @@ namespace Workbit.Infrastructure.Database
             this.ChangeTracker.LazyLoadingEnabled = true;
         }
         public virtual DbSet<Department> Departments { get; set; } = null!;
+        public virtual DbSet<DepartmentManager> DepartmentsManagers { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
+        public virtual DbSet<Manager> Managers { get; set; } = null!;
         public virtual DbSet<Job> Jobs { get; set; } = null!;
         public virtual DbSet<SalaryPayment> SalaryPayments { get; set; } = null!;
         public virtual DbSet<Attendance> Attendances { get; set; } = null!;
+        public virtual DbSet<Company> Companies { get; set; } = null!;
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -27,6 +30,7 @@ namespace Workbit.Infrastructure.Database
 			builder.ApplyConfiguration(new ApplicationUserConfiguration());
 			builder.ApplyConfiguration(new DepartmentConfiguration());
 			builder.ApplyConfiguration(new ManagerConfiguration());
+			builder.ApplyConfiguration(new CompanyConfiguration());
 			builder.ApplyConfiguration(new DepartmentManagerConfiguration());
 			builder.ApplyConfiguration(new JobConfiguration());
 			builder.ApplyConfiguration(new EmployeeConfiguration());

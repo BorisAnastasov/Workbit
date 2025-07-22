@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Workbit.Core.Enumerations;
+using Workbit.Infrastructure.Extensions;
 
 namespace Workbit.Infrastructure.Database.Entities.Account
 {
@@ -19,7 +21,13 @@ namespace Workbit.Infrastructure.Database.Entities.Account
         public int JobId { get; set; }
         public virtual Job Job { get; set; } = null!;
 
-        public virtual List<SalaryPayment> SalaryPayments { get; set; }
+		[Required]
+		public JobLevel Level { get; set; } = JobLevel.Junior;
+
+		[NotMapped]
+		public decimal EffectiveSalary => this.Job.BaseSalary * Level.GetMultiplier();
+
+		public virtual List<SalaryPayment> SalaryPayments { get; set; }
         public virtual List<Attendance> Attendances { get; set; }
 	}
 }
