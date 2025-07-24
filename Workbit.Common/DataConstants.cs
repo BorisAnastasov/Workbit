@@ -2,6 +2,11 @@
 {
     public class DataConstants
     {
+        public static class Constants
+        {
+            public const string DateFormat = "dd/MM/yyyy HH:mm";
+        }
+
         public class Department 
         {
             public const int NameMaxLen = 50;
@@ -17,8 +22,6 @@
 			public const int OfficePhoneMinLen = 8;
 
 			public const string OfficePhoneRegex = @"^\+?[0-9\s\-]+$";
-
-
 		}
 
 		public class Job 
@@ -51,5 +54,10 @@
 
 			public const string ContactPhoneRegex = @"^\+?[0-9\s\-]+$";
 		}
+
+        public static class Payment 
+        {
+            public const int NotesMaxLen = 150;
+        }
 	}
 }
