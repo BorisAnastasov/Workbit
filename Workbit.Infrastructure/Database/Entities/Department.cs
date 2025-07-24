@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Workbit.Infrastructure.Database.Entities.Account;
 using static Workbit.Common.DataConstants.Department;
 
 namespace Workbit.Infrastructure.Database.Entities
@@ -8,7 +10,7 @@ namespace Workbit.Infrastructure.Database.Entities
         public Department()
         {
             this.Jobs = new List<Job>();
-            this.DepartmentManagers = new List<DepartmentManager>();
+            this.Managers = new List<Manager>();
         }
         [Key]
         public int Id { get; set; }
@@ -21,8 +23,12 @@ namespace Workbit.Infrastructure.Database.Entities
         [StringLength(DescriptionMaxLen)]
         public string Description { get; set; } = null!;
 
-        public virtual List<DepartmentManager> DepartmentManagers { get; set; }
+        [ForeignKey(nameof(Company))]
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; } = null!;
 
-        public virtual List<Job> Jobs { get; set; }
+        public virtual List<Manager> Managers { get; set; } = null!;
+
+        public virtual List<Job> Jobs { get; set; } = null!;
     }
 }

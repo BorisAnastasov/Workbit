@@ -3,44 +3,164 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Workbit.App</title>
+    <title>@ViewData["Title"] - Workbit HCM</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Workbit.App.styles.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary: #088395;
+            --secondary: #37B7C3;
+            --third: #071952;
+            --background: #EBF4F6;
+            --text-dark: #212121;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --error: #F44336;
+            --contrast: #FFC107;
+            
+        }
+
+        /* Make footer stick to bottom */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        main {
+            flex: 1; /* Pushes footer down when there's not enough content */
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: var(--third) !important;
+            font-size:20px;
+        }
+
+            .navbar.border-bottom {
+                border-bottom: none !important;
+            }
+
+        .navbar-logo {
+            height: 6vh; /* Adjust to fit your navbar */
+            width: auto; /* Keeps aspect ratio */
+            max-height: 100%;
+            margin: 0.25rem 1rem;
+        }
+
+        .navbar .btn.btn-light {
+            background-color: white;
+            color: var(--primary);
+            border: var(--primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size:20px;
+            font-weight:600;
+            border-radius: 10px;
+        }
+
+            .navbar .btn.btn-light:hover {
+                background-color: var(--secondary); /* Green on hover */
+                color: white; /* Text turns white */
+            }
+
+        .navbar .btn.btn-outline-light{
+            font-size: 20px;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+
+        .logo-with-outline {
+            color: white;
+            font-weight: bold;
+            -webkit-text-stroke: 1px black; /* Outline for text */
+            text-stroke: 1px black;
+
+            /* Outline for the icon using drop-shadow */
+            filter: drop-shadow(-1px -1px 0 black) drop-shadow(1px -1px 0 black) drop-shadow(-1px 1px 0 black) drop-shadow(1px 1px 0 black);
+        }
+
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+            .navbar-nav .nav-link:hover {
+                text-decoration: underline;
+            }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width:100%;
+        }
+
+            footer a {
+                color: var(--secondary);
+            }
+
+                footer a:hover {
+                    text-decoration: underline;
+                }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Workbit.App</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <a class="navbar-brand d-flex align-items-center logo-with-outline" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/Workbit-logo.png" alt="Workbit HCM" class="navbar-logo me-2">
+                </a>                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <div class="d-flex">
+                        <a class="btn btn-light me-2 d-flex align-items-center justify-content-center" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="btn btn-outline-light" asp-area="" asp-controller="Account" asp-action="Register">Sign Up</a>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <div class="container-fluid p-0">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer>
         <div class="container">
-            &copy; 2025 - Workbit.App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - Workbit - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

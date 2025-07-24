@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Workbit.Common\Workbit.Common.csproj" />
-    <ProjectReference Include="..\Workbit.Core\Workbit.Core.csproj" />
   </ItemGroup>
 
 </Project>

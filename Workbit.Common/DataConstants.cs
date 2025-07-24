@@ -49,7 +49,7 @@
 			public const int ContactPhoneMaxLen = 15;
 			public const int ContactPhoneMinLen = 8;
 
-			public const string ContactPhone = @"^\+?[0-9\s\-]+$";
+			public const string ContactPhoneRegex = @"^\+?[0-9\s\-]+$";
 		}
 	}
 }

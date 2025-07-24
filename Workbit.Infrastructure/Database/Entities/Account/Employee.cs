@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Workbit.Core.Enumerations;
+using Workbit.Infrastructure.Enumerations;
 using Workbit.Infrastructure.Extensions;
 
 namespace Workbit.Infrastructure.Database.Entities.Account
@@ -9,8 +9,7 @@ namespace Workbit.Infrastructure.Database.Entities.Account
     {
         public Employee()
         {
-            this.SalaryPayments = new List<SalaryPayment>();
-            this.Attendances = new List<Attendance>();
+            this.Payments = new List<Payment>();
         }
         [Key]
 		[ForeignKey(nameof(ApplicationUser))]
@@ -27,7 +26,6 @@ namespace Workbit.Infrastructure.Database.Entities.Account
 		[NotMapped]
 		public decimal EffectiveSalary => this.Job.BaseSalary * Level.GetMultiplier();
 
-		public virtual List<SalaryPayment> SalaryPayments { get; set; }
-        public virtual List<Attendance> Attendances { get; set; }
-	}
+		public virtual List<Payment> Payments { get; set; } = null!;
+    }
 }

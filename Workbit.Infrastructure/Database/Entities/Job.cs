@@ -31,6 +31,6 @@ namespace Workbit.Infrastructure.Database.Entities
 		[Precision(18, 2)]
 		public decimal BaseSalary { get; set; }
 
-        public virtual List<Employee> Employees { get; set; }
+        public virtual List<Employee> Employees { get; set; } = null!;
     }
 }

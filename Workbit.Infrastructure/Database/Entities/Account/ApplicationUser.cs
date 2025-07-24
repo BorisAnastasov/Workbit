@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static Workbit.Common.DataConstants.ApplicationUser;
 
 namespace Workbit.Infrastructure.Database.Entities.Account
@@ -9,6 +10,7 @@ namespace Workbit.Infrastructure.Database.Entities.Account
         public ApplicationUser()
         {
             Id = Guid.NewGuid();
+            this.AttendanceEntries = new List<AttendanceEntry>();
         }
 
         [Required]
@@ -20,8 +22,13 @@ namespace Workbit.Infrastructure.Database.Entities.Account
         public string LastName { get; set; } = null!;
 
         [Required]
-		[DataType(DataType.Date)]
-		public DateTime DateOfBirth { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime DateOfBirth { get; set; }
+
+        public virtual List<AttendanceEntry> AttendanceEntries { get; set; } = null!;
+
+        [NotMapped]
+        public string FullName => FirstName + " " + LastName;
 
 
     }

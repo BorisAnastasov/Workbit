@@ -7,7 +7,12 @@ namespace Workbit.Infrastructure.Database.Entities
 {
 	public class Company
 	{
-		[Key]
+        public Company()
+        {
+            this.Departments = new List<Department>();
+        }
+
+        [Key]
 		public int Id { get; set; }
 
 		[Required]
@@ -23,9 +28,10 @@ namespace Workbit.Infrastructure.Database.Entities
 		[StringLength(ContactPhoneMaxLen)]
 		public string ContactPhone { get; set; } = null!;
 
-		// CEO relationship (CEO is also a Manager)
 		[ForeignKey(nameof(Ceo))]
 		public Guid CeoId { get; set; }
-		public virtual Manager Ceo { get; set; } = null!;
+		public virtual ApplicationUser Ceo { get; set; } = null!;
+
+		public virtual List<Department> Departments { get; set; }
 	}
 }
