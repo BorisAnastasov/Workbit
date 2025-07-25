@@ -1,3 +1,4 @@
+using LearnSpace.Web.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Workbit.App.Extensions;
@@ -48,6 +49,8 @@ namespace Workbit.App
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+            app.SeedRoles();
 
             app.Run();
         }

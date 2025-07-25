@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static Workbit.Common.MessageConstants;
-using static Workbit.Common.DataConstants.Manager;
+using static Workbit.Common.DataConstants.ApplicationUser;
 
 namespace Workbit.Core.Models.Manager
 {
@@ -10,9 +10,7 @@ namespace Workbit.Core.Models.Manager
         public int DepartmentId { get; set; }
         [Required(ErrorMessage = RequiredMessage)]
         [Phone]
-        [StringLength(OfficePhoneMaxLen, MinimumLength = OfficePhoneMinLen, ErrorMessage = LengthMessage)]
-        [RegularExpression(OfficePhoneRegex)]
-        public string OfficePhone { get; set; } = null!;
-        public bool IsCeo { get; set; }
+        [StringLength(PhoneMaxLen, MinimumLength = PhoneMaxLen, ErrorMessage = LengthMessage)]
+        public string PhoneNumber { get; set; } = null!;
     }
 }

@@ -17,6 +17,7 @@ namespace Workbit.Infrastructure.Database
         public virtual DbSet<Department> Departments { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
         public virtual DbSet<Manager> Managers { get; set; } = null!;
+        public virtual DbSet<Ceo> Ceos { get; set; } = null!;
         public virtual DbSet<Job> Jobs { get; set; } = null!;
         public virtual DbSet<Payment> Payments { get; set; } = null!;
         public virtual DbSet<AttendanceEntry> AttendanceEntries { get; set; } = null!;
@@ -27,13 +28,14 @@ namespace Workbit.Infrastructure.Database
 			base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
-            builder.ApplyConfiguration(new CompanyConfiguration());       // Seed company first, CeoId NULL initially
-            builder.ApplyConfiguration(new DepartmentConfiguration());     // Departments linked to company
-            builder.ApplyConfiguration(new ManagerConfiguration());        // Managers linked to departments
-            builder.ApplyConfiguration(new JobConfiguration());            // Jobs linked to departments
-            builder.ApplyConfiguration(new EmployeeConfiguration());       // Employees linked to jobs
-            builder.ApplyConfiguration(new PaymentConfiguration());        // Payments linked to employees
-            builder.ApplyConfiguration(new AttendanceConfiguration());     // Attendance linked to users
+            builder.ApplyConfiguration(new CompanyConfiguration());       
+            builder.ApplyConfiguration(new CeoConfiguration());       
+            builder.ApplyConfiguration(new DepartmentConfiguration());     
+            builder.ApplyConfiguration(new ManagerConfiguration());        
+            builder.ApplyConfiguration(new JobConfiguration());            
+            builder.ApplyConfiguration(new EmployeeConfiguration());       
+            builder.ApplyConfiguration(new PaymentConfiguration());        
+            builder.ApplyConfiguration(new AttendanceConfiguration());     
 
         }
 

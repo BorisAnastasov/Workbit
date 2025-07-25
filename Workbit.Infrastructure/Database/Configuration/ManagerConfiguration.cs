@@ -8,7 +8,7 @@ namespace Workbit.Infrastructure.Database.Configuration
     {
         public void Configure(EntityTypeBuilder<Manager> builder)
         {
-            // Each manager belongs to a department now (no join table)
+            // Each manager belongs to a department (no join table)
             builder.HasOne(m => m.Department)
                    .WithMany(d => d.Managers)
                    .HasForeignKey(m => m.DepartmentId)
@@ -17,31 +17,18 @@ namespace Workbit.Infrastructure.Database.Configuration
             builder.HasData(
                 new Manager
                 {
-                    ApplicationUserId = Guid.Parse("a1111111-0000-0000-0000-000000000001"), // John Lewis (CEO)
-                    OfficePhone = "+1-555-1010",
-                    DepartmentId = 1, // Assume he oversees Human Resources as CEO
-                    IsCeo = true
+                    ApplicationUserId = Guid.Parse("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"), // Lisa Anderson (HR Manager)
+                    DepartmentId = 1
                 },
                 new Manager
                 {
-                    ApplicationUserId = Guid.Parse("a1111111-0000-0000-0000-000000000002"), // Lisa Anderson (HR Manager)
-                    OfficePhone = "+1-555-2020",
-                    DepartmentId = 1,
-                    IsCeo = false
+                    ApplicationUserId = Guid.Parse("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"), // Carl Morgan (IT Manager)
+                    DepartmentId = 2
                 },
                 new Manager
                 {
-                    ApplicationUserId = Guid.Parse("a1111111-0000-0000-0000-000000000003"), // Carl Morgan (IT Manager)
-                    OfficePhone = "+1-555-3030",
-                    DepartmentId = 2,
-                    IsCeo = false
-                },
-                new Manager
-                {
-                    ApplicationUserId = Guid.Parse("a1111111-0000-0000-0000-000000000004"), // Nina Hughes (Finance Manager)
-                    OfficePhone = "+1-555-4040",
-                    DepartmentId = 3,
-                    IsCeo = false
+                    ApplicationUserId = Guid.Parse("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"), // Nina Hughes (Finance Manager)
+                    DepartmentId = 3
                 }
             );
         }

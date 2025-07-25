@@ -17,15 +17,16 @@ namespace Workbit.Infrastructure.Database.Entities.Account
 		public virtual ApplicationUser ApplicationUser { get; set; } = null!;
 
 		[ForeignKey(nameof(Job))]
-        public int JobId { get; set; }
-        public virtual Job Job { get; set; } = null!;
+        public int? JobId { get; set; }
+        public virtual Job Job { get; set; }
 
 		[Required]
-		public JobLevel Level { get; set; } = JobLevel.Junior;
+		public JobLevel Level { get; set; } = JobLevel.Unemployed;
 
-		[NotMapped]
-		public decimal EffectiveSalary => this.Job.BaseSalary * Level.GetMultiplier();
+        [NotMapped]
+        public decimal EffectiveSalary =>
+                        this.Job == null ? 0 : this.Job.BaseSalary * Level.GetMultiplier();
 
-		public virtual List<Payment> Payments { get; set; } = null!;
+        public virtual List<Payment> Payments { get; set; } = null!;
     }
 }

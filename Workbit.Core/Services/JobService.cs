@@ -76,7 +76,7 @@ namespace Workbit.Core.Services
                 Title = job.Title,
                 Description = job.Description,
                 DepartmentId = job.DepartmentId,
-                BaseSalary = job.BaseSalary,
+                BaseSalary = (double)job.BaseSalary,
                 DepartmentName = job.Department.Name,
                 EmployeeNames = job.Employees.Select(e => e.ApplicationUser.FullName).ToList()
             };

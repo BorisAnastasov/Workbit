@@ -24,5 +24,16 @@ namespace Workbit.Core.Models.Account
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } = string.Empty;
-    }
+
+        [Required]
+        [DataType(DataType.Date)]
+		[Display(Name = "Date of Birth")]
+		public DateTime DateOfBirth { get; set; }
+
+		[Required]
+		[Phone]
+		[Display(Name = "PhoneNumber")]
+		[StringLength(PhoneMaxLen, MinimumLength = PhoneMinLen)]
+		public string PhoneNumber { get; set; } = null!;
+	}
 }

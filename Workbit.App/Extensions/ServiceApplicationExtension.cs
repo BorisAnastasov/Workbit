@@ -1,6 +1,8 @@
 ﻿using LearnSpace.Infrastructure.Database.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Workbit.Core.Interfaces;
+using Workbit.Core.Services;
 using Workbit.Infrastructure.Database;
 using Workbit.Infrastructure.Database.Entities.Account;
 
@@ -10,7 +12,14 @@ namespace Workbit.App.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            //services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IAttendanceService, AttendanceService>();
+            services.AddScoped<ICeoService, CeoService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IJobService, JobService>();
+            services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<IPaymentService, PaymentService>();
             
             services.ConfigureApplicationCookie(options =>
             {

@@ -26,9 +26,8 @@ namespace Workbit.Core.Services
                 CeoId = Guid.Parse(dto.CeoId)
             };
 
-            var ceo = await repository.GetByIdAsync<Manager>(Guid.Parse(dto.CeoId));
+            var ceo = await repository.GetByIdAsync<Ceo>(Guid.Parse(dto.CeoId));
 
-            ceo.IsCeo = true;
 
             await repository.AddAsync(company);
             await repository.SaveChangesAsync();
@@ -69,7 +68,7 @@ namespace Workbit.Core.Services
                 Address = company.Address,
                 ContactPhone = company.ContactPhone,
                 CeoId = company.CeoId.ToString(),
-                CeoName = company.Ceo.FullName,
+                CeoName = company.Ceo.ApplicationUser.FullName,
                 Departments = company.Departments.Select(d => d.Name).ToList()
             };
         }
@@ -78,24 +77,6 @@ namespace Workbit.Core.Services
         {
             var company = await repository.GetByIdAsync<Company>(companyId);
             return company?.CeoId.ToString();
-        }
-
-        public async Task MakeCeoAsync(int companyId, string newCeoUserId, string currentCeoId)
-        {
-            var company = await repository.GetByIdAsync<Company>(companyId);
-
-            var newCeoGuid = Guid.Parse(newCeoUserId);
-
-            var currentCeo = await repository.GetByIdAsync<Manager>(currentCeoId);
-
-            var newCeo = await repository.GetByIdAsync<Manager>(newCeoUserId);
-
-            newCeo.IsCeo = true;
-            currentCeo.IsCeo = false;
-
-            company.CeoId = newCeoGuid;
-
-            await repository.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(CompanyUpdateDto dto)

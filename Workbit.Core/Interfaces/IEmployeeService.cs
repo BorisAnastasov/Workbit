@@ -4,9 +4,6 @@ namespace Workbit.Core.Interfaces
 {
     public interface IEmployeeService
     {
-        //Create
-        Task CreateAsync(EmployeeCreateDto dto);
-
         // Read
         Task<IEnumerable<EmployeeSummaryDto>> GetAllAsync();
         Task<IEnumerable<EmployeeSummaryDto>> GetByDepartmentIdAsync(int departmentId);

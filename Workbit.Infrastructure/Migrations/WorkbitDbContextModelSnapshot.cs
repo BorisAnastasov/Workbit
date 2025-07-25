@@ -207,7 +207,9 @@ namespace Workbit.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -237,9 +239,9 @@ namespace Workbit.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a1111111-0000-0000-0000-000000000001"),
+                            Id = new Guid("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "59fe6724-f076-4b3a-b1c7-fc9a59b1d2fb",
+                            ConcurrencyStamp = "1511a0db-2354-4c78-911c-2a369fdccd2e",
                             DateOfBirth = new DateTime(1980, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "john.m.lewis@workbit.com",
                             EmailConfirmed = false,
@@ -248,17 +250,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JOHN.M.LEWIS@WORKBIT.COM",
                             NormalizedUserName = "JOHN.M.LEWIS",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDvN2GpdjMoESnhnXXulQ7phY40rnl+9xZPOBmwmt1TvyVbSOiRiu6RFGeHQH1SokQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELlX+Z8XR4CxnVP5UcdxE9/DizRmzuN/7tPm4RGHnmTwa9V/dK4vUXDn4sRX2WdvBQ==",
+                            PhoneNumber = "+1-555-207-9626",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3140876e-92e0-41b0-b7a1-843785db7448",
+                            SecurityStamp = "5a18e1c2-b4b2-40f6-88ae-3153fbe100f9",
                             TwoFactorEnabled = false,
                             UserName = "john.m.lewis"
                         },
                         new
                         {
-                            Id = new Guid("a1111111-0000-0000-0000-000000000002"),
+                            Id = new Guid("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "235647cc-a312-4c73-af9b-3fc342f01981",
+                            ConcurrencyStamp = "7aea0736-32a2-4bea-92b2-23253a711b28",
                             DateOfBirth = new DateTime(1982, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lisa.r.anderson@workbit.com",
                             EmailConfirmed = false,
@@ -267,17 +270,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "LISA.R.ANDERSON@WORKBIT.COM",
                             NormalizedUserName = "LISA.R.ANDERSON",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAFlRcIcDHI6Q9wo3OeRrjtu3sCGxuhL8SWdLilD6pgR20WPQP01Xj6s7MMBZh+BXg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEa0LC3AmmH/C+80K80euGWuIeE0vhMUkh1psyukoQcF1mfNmH7bMAc8LCuoBbe1rQ==",
+                            PhoneNumber = "+1-555-344-7064",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4b100e70-0c83-4b3b-ab6a-8850d2829d1f",
+                            SecurityStamp = "89728d99-2b88-4561-afc8-2b28e3096015",
                             TwoFactorEnabled = false,
                             UserName = "lisa.r.anderson"
                         },
                         new
                         {
-                            Id = new Guid("a1111111-0000-0000-0000-000000000003"),
+                            Id = new Guid("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9f0ea8a7-6706-4103-8af7-ea14c1ebd6ed",
+                            ConcurrencyStamp = "7d679701-3472-4527-969d-a9684fcca14c",
                             DateOfBirth = new DateTime(1978, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "carl.t.morgan@workbit.com",
                             EmailConfirmed = false,
@@ -286,17 +290,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CARL.T.MORGAN@WORKBIT.COM",
                             NormalizedUserName = "CARL.T.MORGAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA+xixyJXkjPLs6BBjyfhFTvf8H8+e6s6XtpJDARwOEqIudhAs3XnQfsfRmH8zaYGw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE9z7CAr+vRTZIhlUu0dgsnOkh0rskCpj8oMMQXZa+FSYgPNFvO8QJCDwmi4er4NCw==",
+                            PhoneNumber = "+1-555-287-9860",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "94afe5b2-d685-463d-ab40-145443581c5f",
+                            SecurityStamp = "654cbd59-a3d0-4c01-be8f-ed7ccdcca524",
                             TwoFactorEnabled = false,
                             UserName = "carl.t.morgan"
                         },
                         new
                         {
-                            Id = new Guid("a1111111-0000-0000-0000-000000000004"),
+                            Id = new Guid("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7e164757-f294-4873-b80b-e2415d9aa40d",
+                            ConcurrencyStamp = "74ad748a-9bbe-472c-8bea-fa0e6f1eaf39",
                             DateOfBirth = new DateTime(1985, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nina.v.hughes@workbit.com",
                             EmailConfirmed = false,
@@ -305,17 +310,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NINA.V.HUGHES@WORKBIT.COM",
                             NormalizedUserName = "NINA.V.HUGHES",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIR2Zz07d4xsGfuTOize1lYuLxiwHJRYF/04ovqvhSCKWHSk/GeDmIF6lqX+MPRvvA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ6hP42x/9dAYRCB2oBun8vCW2Goyfm3PgIJ3L1zlj41nyk3XmVaKELyZeIIpGmTdw==",
+                            PhoneNumber = "+1-555-802-5150",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "21a63f51-bfdd-425e-9373-01149599af5a",
+                            SecurityStamp = "8647de5b-2671-4f65-b6cb-a6d34f52d82c",
                             TwoFactorEnabled = false,
                             UserName = "nina.v.hughes"
                         },
                         new
                         {
-                            Id = new Guid("b2222222-0000-0000-0000-000000000001"),
+                            Id = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "68386363-a0fc-49d7-8a8f-44e458fd6de6",
+                            ConcurrencyStamp = "fae898dd-78ae-48af-8bac-596fe4aa6eef",
                             DateOfBirth = new DateTime(1995, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "alice.k.watson@workbit.com",
                             EmailConfirmed = false,
@@ -324,17 +330,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ALICE.K.WATSON@WORKBIT.COM",
                             NormalizedUserName = "ALICE.K.WATSON",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDVlCLNLaIvQAD727hnDpGm7uFlOcpqJ4hK4MCd9I4JiN3A7XheGTJ1HECYiyzoblQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJQmBodlaBTqLp/NAubN5mWUEP9XGP2rWQkR/IWZt7Z8DMytDgd8RvJ2BKEmLZW66w==",
+                            PhoneNumber = "+1-555-454-9052",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a526300a-f4aa-475a-a185-20355b84482b",
+                            SecurityStamp = "25b7f311-e83d-49a1-b70f-51ca153d6704",
                             TwoFactorEnabled = false,
                             UserName = "alice.k.watson"
                         },
                         new
                         {
-                            Id = new Guid("b2222222-0000-0000-0000-000000000002"),
+                            Id = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2f50d6fc-1866-47f3-ac87-d6f31a2f84b4",
+                            ConcurrencyStamp = "a5e9dbe5-0d0b-4632-822a-2d9c7568c82c",
                             DateOfBirth = new DateTime(1994, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "bob.c.thomas@workbit.com",
                             EmailConfirmed = false,
@@ -343,17 +350,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "BOB.C.THOMAS@WORKBIT.COM",
                             NormalizedUserName = "BOB.C.THOMAS",
-                            PasswordHash = "AQAAAAIAAYagAAAAELbJ2zU9ohzCNOEIn5XHiF6U8tVHPNRly2iiNNiMvexP3s3D9p4fCMrIU0lLxrC8rQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDPseTyxM/voE3NccltkG2zkcIImCxOaa5fz0vhtVpZ53rMlSuibX5UoufmUmOwRrg==",
+                            PhoneNumber = "+1-555-705-4484",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0588b0cc-d347-4872-8d95-869a0de6b66a",
+                            SecurityStamp = "f84e98a2-48f7-4a41-bb66-6f7eb3ebcad2",
                             TwoFactorEnabled = false,
                             UserName = "bob.c.thomas"
                         },
                         new
                         {
-                            Id = new Guid("b2222222-0000-0000-0000-000000000003"),
+                            Id = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e34bacb7-188f-4225-ab12-7adb156c56ac",
+                            ConcurrencyStamp = "5c84259f-2882-4a57-a378-aa35f2036b98",
                             DateOfBirth = new DateTime(1992, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "claire.b.james@workbit.com",
                             EmailConfirmed = false,
@@ -362,17 +370,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CLAIRE.B.JAMES@WORKBIT.COM",
                             NormalizedUserName = "CLAIRE.B.JAMES",
-                            PasswordHash = "AQAAAAIAAYagAAAAENMjG0e90IhJJaM/hBA46abq9zZbhR2mDcezMH1rzrLBbm9vMO4gtnIOTOrNj3IFkw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELNWNXkxsrcYOOGBUd35aKYfKJ00as7asF8h07vxfoQcq2GqV54ulAO4boqX41k8SQ==",
+                            PhoneNumber = "+1-555-273-6799",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "98de8148-4db1-4a0d-b984-964a6487e811",
+                            SecurityStamp = "f84ea8d6-6647-4c0f-be7b-502679eb1f67",
                             TwoFactorEnabled = false,
                             UserName = "claire.b.james"
                         },
                         new
                         {
-                            Id = new Guid("b2222222-0000-0000-0000-000000000004"),
+                            Id = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e5f6c6bb-151d-4b88-9d7e-7062cde33a10",
+                            ConcurrencyStamp = "a355b8c5-40b2-481d-b8cd-0bc0e42c6cd5",
                             DateOfBirth = new DateTime(1993, 4, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "dave.r.walker@workbit.com",
                             EmailConfirmed = false,
@@ -381,17 +390,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "DAVE.R.WALKER@WORKBIT.COM",
                             NormalizedUserName = "DAVE.R.WALKER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAp/rCSbg1tNVeDCv7nkRITt4qZ7n7077LdkkvVVWhrOXC9ihOJV1HyC68fYQpiLaA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHR7NZmcnZkvqzKtVnoZsuSL1fzuoPp9QGfcngw8ZAC+vuDsSGpBEYIpUSj3f3OXeg==",
+                            PhoneNumber = "+1-555-256-9354",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c0a90139-2d66-4741-9419-4095c7cf3a9f",
+                            SecurityStamp = "2541ae60-e73a-46ce-b05c-3e2463393c9c",
                             TwoFactorEnabled = false,
                             UserName = "dave.r.walker"
                         },
                         new
                         {
-                            Id = new Guid("b2222222-0000-0000-0000-000000000005"),
+                            Id = new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "761587de-47e4-4b5a-a73c-0744afde8568",
+                            ConcurrencyStamp = "904b0f31-6e41-44d7-a932-ae8b90762f48",
                             DateOfBirth = new DateTime(1991, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "emily.d.young@workbit.com",
                             EmailConfirmed = false,
@@ -400,17 +410,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "EMILY.D.YOUNG@WORKBIT.COM",
                             NormalizedUserName = "EMILY.D.YOUNG",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE1q703JLi0gY0cly6hrd/XZoM9bMW1dveOBAd2z7m+tkbk0YYZq7SoYmIxgyk2zWg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELX2QKT+Rb2KWrwSYvXL54PfARBtqZt9cyZUktbtoJqWfspzuoqHQcX2A9oytNafeQ==",
+                            PhoneNumber = "+1-555-757-8426",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "11afc79f-7bfe-4356-9444-103e7980ffc5",
+                            SecurityStamp = "c52fe920-1cd8-4d20-8c9c-0e8321ef37c0",
                             TwoFactorEnabled = false,
                             UserName = "emily.d.young"
                         },
                         new
                         {
-                            Id = new Guid("b2222222-0000-0000-0000-000000000006"),
+                            Id = new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9dca8e51-3841-4977-a1c2-ff11163c66f9",
+                            ConcurrencyStamp = "768def20-391a-470e-be46-0a3fe69491b1",
                             DateOfBirth = new DateTime(1990, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "frank.h.scott@workbit.com",
                             EmailConfirmed = false,
@@ -419,17 +430,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "FRANK.H.SCOTT@WORKBIT.COM",
                             NormalizedUserName = "FRANK.H.SCOTT",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDc5JGHAYN7MwmgOKrNS1+K8PY1Ixi4ouX5pSxXwOJfGic5VUVZx6QnkHhVRUHRDwA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOrgGjN5TZP/tmukRoe2sWnjngo9gPGufEwzskIwzlHJ9qHf6iJwm8k80Xjnopzxsg==",
+                            PhoneNumber = "+1-555-895-1451",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c1331569-810a-4915-850a-c4528c36a015",
+                            SecurityStamp = "da337793-0a5e-4289-b2d7-89596195d428",
                             TwoFactorEnabled = false,
                             UserName = "frank.h.scott"
                         },
                         new
                         {
-                            Id = new Guid("b2222222-0000-0000-0000-000000000007"),
+                            Id = new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7483fc9c-ce47-4793-9cce-86511cec7f60",
+                            ConcurrencyStamp = "cf662e10-9dd9-4ce1-8c51-cad515c73bca",
                             DateOfBirth = new DateTime(1996, 7, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "grace.l.adams@workbit.com",
                             EmailConfirmed = false,
@@ -438,17 +450,18 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "GRACE.L.ADAMS@WORKBIT.COM",
                             NormalizedUserName = "GRACE.L.ADAMS",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBwSmfqOMRXXF50rgJclOdN4n4ie1lKenfsum28puwaw9fOXfNiM6+/zqFWFJSrqJA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH6JV23XbaGXoVqV6fDKjmXouh2q7GuQ97+1hVB2GA1T4lrLbN8UrSoBVYAjPJvEpQ==",
+                            PhoneNumber = "+1-555-688-3055",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "036ac6ce-7acc-4cad-b083-7d1b66aa7966",
+                            SecurityStamp = "c1dd8dc4-d6a0-4a0c-816e-f730fb25740d",
                             TwoFactorEnabled = false,
                             UserName = "grace.l.adams"
                         },
                         new
                         {
-                            Id = new Guid("b2222222-0000-0000-0000-000000000008"),
+                            Id = new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "207d6214-9737-42e8-9b10-4bd6f482e5e2",
+                            ConcurrencyStamp = "801f883c-a866-4929-83f5-92f7b1cc2a47",
                             DateOfBirth = new DateTime(1997, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "harry.n.brooks@workbit.com",
                             EmailConfirmed = false,
@@ -457,11 +470,48 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "HARRY.N.BROOKS@WORKBIT.COM",
                             NormalizedUserName = "HARRY.N.BROOKS",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDqojGa8nn876QhCsU+sInQCXPModce1ZpZrDA0wTZrfYEXL72KFeWnmvus5qgIH9w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBs+26oe+APdizwLURhVtWhiHAy1pDoHm3ygfBcYJlyfyRvbFc83PV1/hWAGJ/L55Q==",
+                            PhoneNumber = "+1-555-855-3517",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "016e33f4-4016-4407-a79d-655e25213649",
+                            SecurityStamp = "be883009-cbbf-4f7c-b3ae-33ff9a4db053",
                             TwoFactorEnabled = false,
                             UserName = "harry.n.brooks"
+                        },
+                        new
+                        {
+                            Id = new Guid("d5e7f9a2-0ac3-4b6d-8c64-6fd8e4c0c013"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "94c3a977-a04e-40f4-a8b3-b2ebf31108f6",
+                            DateOfBirth = new DateTime(1994, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@gmail.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastName = "Adminov",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@GMAIL.COM",
+                            NormalizedUserName = "ADMINADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO8ZGnb+1pKQpplAHqITmp7hPo8EZmEjBCx0Fc55HI24W7YT5AH1sBIbAj0wEMUSaQ==",
+                            PhoneNumber = "+1-555-949-6831",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "568e4590-c9a9-4793-a837-b42d25eaa254",
+                            TwoFactorEnabled = false,
+                            UserName = "adminadmin"
+                        });
+                });
+
+            modelBuilder.Entity("Workbit.Infrastructure.Database.Entities.Account.Ceo", b =>
+                {
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ApplicationUserId");
+
+                    b.ToTable("Ceos");
+
+                    b.HasData(
+                        new
+                        {
+                            ApplicationUserId = new Guid("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801")
                         });
                 });
 
@@ -470,7 +520,7 @@ namespace Workbit.Infrastructure.Migrations
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("JobId")
+                    b.Property<int?>("JobId")
                         .HasColumnType("int");
 
                     b.Property<int>("Level")
@@ -485,51 +535,51 @@ namespace Workbit.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            ApplicationUserId = new Guid("b2222222-0000-0000-0000-000000000001"),
+                            ApplicationUserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"),
+                            JobId = 1,
+                            Level = 2
+                        },
+                        new
+                        {
+                            ApplicationUserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"),
                             JobId = 1,
                             Level = 1
                         },
                         new
                         {
-                            ApplicationUserId = new Guid("b2222222-0000-0000-0000-000000000002"),
-                            JobId = 1,
-                            Level = 0
+                            ApplicationUserId = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"),
+                            JobId = 2,
+                            Level = 4
                         },
                         new
                         {
-                            ApplicationUserId = new Guid("b2222222-0000-0000-0000-000000000003"),
+                            ApplicationUserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"),
                             JobId = 2,
                             Level = 3
                         },
                         new
                         {
-                            ApplicationUserId = new Guid("b2222222-0000-0000-0000-000000000004"),
-                            JobId = 2,
+                            ApplicationUserId = new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"),
+                            JobId = 3,
                             Level = 2
                         },
                         new
                         {
-                            ApplicationUserId = new Guid("b2222222-0000-0000-0000-000000000005"),
+                            ApplicationUserId = new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"),
                             JobId = 3,
                             Level = 1
                         },
                         new
                         {
-                            ApplicationUserId = new Guid("b2222222-0000-0000-0000-000000000006"),
-                            JobId = 3,
-                            Level = 0
-                        },
-                        new
-                        {
-                            ApplicationUserId = new Guid("b2222222-0000-0000-0000-000000000007"),
-                            JobId = 4,
-                            Level = 2
-                        },
-                        new
-                        {
-                            ApplicationUserId = new Guid("b2222222-0000-0000-0000-000000000008"),
+                            ApplicationUserId = new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"),
                             JobId = 4,
                             Level = 3
+                        },
+                        new
+                        {
+                            ApplicationUserId = new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"),
+                            JobId = 4,
+                            Level = 4
                         });
                 });
 
@@ -538,16 +588,8 @@ namespace Workbit.Infrastructure.Migrations
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsCeo")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("OfficePhone")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("ApplicationUserId");
 
@@ -558,31 +600,18 @@ namespace Workbit.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            ApplicationUserId = new Guid("a1111111-0000-0000-0000-000000000001"),
-                            DepartmentId = 1,
-                            IsCeo = true,
-                            OfficePhone = "+1-555-1010"
+                            ApplicationUserId = new Guid("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"),
+                            DepartmentId = 1
                         },
                         new
                         {
-                            ApplicationUserId = new Guid("a1111111-0000-0000-0000-000000000002"),
-                            DepartmentId = 1,
-                            IsCeo = false,
-                            OfficePhone = "+1-555-2020"
+                            ApplicationUserId = new Guid("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"),
+                            DepartmentId = 2
                         },
                         new
                         {
-                            ApplicationUserId = new Guid("a1111111-0000-0000-0000-000000000003"),
-                            DepartmentId = 2,
-                            IsCeo = false,
-                            OfficePhone = "+1-555-3030"
-                        },
-                        new
-                        {
-                            ApplicationUserId = new Guid("a1111111-0000-0000-0000-000000000004"),
-                            DepartmentId = 3,
-                            IsCeo = false,
-                            OfficePhone = "+1-555-4040"
+                            ApplicationUserId = new Guid("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"),
+                            DepartmentId = 3
                         });
                 });
 
@@ -615,266 +644,266 @@ namespace Workbit.Infrastructure.Migrations
                             Id = 1,
                             Timestamp = new DateTime(2025, 7, 14, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000001")
+                            UserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005")
                         },
                         new
                         {
                             Id = 2,
                             Timestamp = new DateTime(2025, 7, 14, 17, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000001")
+                            UserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005")
                         },
                         new
                         {
                             Id = 3,
                             Timestamp = new DateTime(2025, 7, 14, 9, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000002")
+                            UserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06")
                         },
                         new
                         {
                             Id = 4,
                             Timestamp = new DateTime(2025, 7, 14, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000002")
+                            UserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06")
                         },
                         new
                         {
                             Id = 5,
                             Timestamp = new DateTime(2025, 7, 14, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000003")
+                            UserId = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07")
                         },
                         new
                         {
                             Id = 6,
                             Timestamp = new DateTime(2025, 7, 14, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000003")
+                            UserId = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07")
                         },
                         new
                         {
                             Id = 7,
                             Timestamp = new DateTime(2025, 7, 14, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000004")
+                            UserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")
                         },
                         new
                         {
                             Id = 8,
                             Timestamp = new DateTime(2025, 7, 14, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000004")
+                            UserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")
                         },
                         new
                         {
                             Id = 9,
                             Timestamp = new DateTime(2025, 7, 15, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000001")
+                            UserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005")
                         },
                         new
                         {
                             Id = 10,
                             Timestamp = new DateTime(2025, 7, 15, 17, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000001")
+                            UserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005")
                         },
                         new
                         {
                             Id = 11,
                             Timestamp = new DateTime(2025, 7, 15, 9, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000002")
+                            UserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06")
                         },
                         new
                         {
                             Id = 12,
                             Timestamp = new DateTime(2025, 7, 15, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000002")
+                            UserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06")
                         },
                         new
                         {
                             Id = 13,
                             Timestamp = new DateTime(2025, 7, 15, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000003")
+                            UserId = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07")
                         },
                         new
                         {
                             Id = 14,
                             Timestamp = new DateTime(2025, 7, 15, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000003")
+                            UserId = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07")
                         },
                         new
                         {
                             Id = 15,
                             Timestamp = new DateTime(2025, 7, 15, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000004")
+                            UserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")
                         },
                         new
                         {
                             Id = 16,
                             Timestamp = new DateTime(2025, 7, 15, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000004")
+                            UserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")
                         },
                         new
                         {
                             Id = 17,
                             Timestamp = new DateTime(2025, 7, 16, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000001")
+                            UserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005")
                         },
                         new
                         {
                             Id = 18,
                             Timestamp = new DateTime(2025, 7, 16, 17, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000001")
+                            UserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005")
                         },
                         new
                         {
                             Id = 19,
                             Timestamp = new DateTime(2025, 7, 16, 9, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000002")
+                            UserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06")
                         },
                         new
                         {
                             Id = 20,
                             Timestamp = new DateTime(2025, 7, 16, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000002")
+                            UserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06")
                         },
                         new
                         {
                             Id = 21,
                             Timestamp = new DateTime(2025, 7, 16, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000004")
+                            UserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")
                         },
                         new
                         {
                             Id = 22,
                             Timestamp = new DateTime(2025, 7, 16, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000004")
+                            UserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")
                         },
                         new
                         {
                             Id = 23,
                             Timestamp = new DateTime(2025, 7, 17, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000001")
+                            UserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005")
                         },
                         new
                         {
                             Id = 24,
                             Timestamp = new DateTime(2025, 7, 17, 17, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000001")
+                            UserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005")
                         },
                         new
                         {
                             Id = 25,
                             Timestamp = new DateTime(2025, 7, 17, 9, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000002")
+                            UserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06")
                         },
                         new
                         {
                             Id = 26,
                             Timestamp = new DateTime(2025, 7, 17, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000002")
+                            UserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06")
                         },
                         new
                         {
                             Id = 27,
                             Timestamp = new DateTime(2025, 7, 17, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000003")
+                            UserId = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07")
                         },
                         new
                         {
                             Id = 28,
                             Timestamp = new DateTime(2025, 7, 17, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000003")
+                            UserId = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07")
                         },
                         new
                         {
                             Id = 29,
                             Timestamp = new DateTime(2025, 7, 17, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000004")
+                            UserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")
                         },
                         new
                         {
                             Id = 30,
                             Timestamp = new DateTime(2025, 7, 17, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000004")
+                            UserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")
                         },
                         new
                         {
                             Id = 31,
                             Timestamp = new DateTime(2025, 7, 18, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000001")
+                            UserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005")
                         },
                         new
                         {
                             Id = 32,
                             Timestamp = new DateTime(2025, 7, 18, 17, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000001")
+                            UserId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005")
                         },
                         new
                         {
                             Id = 33,
                             Timestamp = new DateTime(2025, 7, 18, 9, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000002")
+                            UserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06")
                         },
                         new
                         {
                             Id = 34,
                             Timestamp = new DateTime(2025, 7, 18, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000002")
+                            UserId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06")
                         },
                         new
                         {
                             Id = 35,
                             Timestamp = new DateTime(2025, 7, 18, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000003")
+                            UserId = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07")
                         },
                         new
                         {
                             Id = 36,
                             Timestamp = new DateTime(2025, 7, 18, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000003")
+                            UserId = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07")
                         },
                         new
                         {
                             Id = 37,
                             Timestamp = new DateTime(2025, 7, 18, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000004")
+                            UserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")
                         },
                         new
                         {
                             Id = 38,
                             Timestamp = new DateTime(2025, 7, 18, 16, 45, 0, 0, DateTimeKind.Unspecified),
                             Type = 1,
-                            UserId = new Guid("b2222222-0000-0000-0000-000000000004")
+                            UserId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")
                         });
                 });
 
@@ -906,7 +935,8 @@ namespace Workbit.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CeoId");
+                    b.HasIndex("CeoId")
+                        .IsUnique();
 
                     b.ToTable("Companies");
 
@@ -915,7 +945,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 1,
                             Address = "123 Business Blvd, New York, NY, USA",
-                            CeoId = new Guid("a1111111-0000-0000-0000-000000000001"),
+                            CeoId = new Guid("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801"),
                             ContactPhone = "+1-555-0000",
                             Name = "Workbit Solutions Inc."
                         });
@@ -1085,7 +1115,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 1,
                             Bonus = 200m,
-                            EmployeeId = new Guid("b2222222-0000-0000-0000-000000000001"),
+                            EmployeeId = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"),
                             Notes = "Full salary + punctuality bonus",
                             PaymentDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Salary = 2800m,
@@ -1095,7 +1125,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 2,
                             Bonus = 100m,
-                            EmployeeId = new Guid("b2222222-0000-0000-0000-000000000002"),
+                            EmployeeId = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"),
                             Notes = "Late arrivals detected, adjusted salary and reduced bonus",
                             PaymentDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Salary = 5000m,
@@ -1105,7 +1135,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 3,
                             Bonus = 100m,
-                            EmployeeId = new Guid("b2222222-0000-0000-0000-000000000003"),
+                            EmployeeId = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"),
                             Notes = "One absence day deducted",
                             PaymentDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Salary = 4700m,
@@ -1115,7 +1145,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 4,
                             Bonus = 400m,
-                            EmployeeId = new Guid("b2222222-0000-0000-0000-000000000004"),
+                            EmployeeId = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"),
                             Notes = "Early leaves adjusted, bonus for extra work on other days",
                             PaymentDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Salary = 6900m,
@@ -1125,7 +1155,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 5,
                             Bonus = 100m,
-                            EmployeeId = new Guid("b2222222-0000-0000-0000-000000000005"),
+                            EmployeeId = new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"),
                             Notes = "Standard payout",
                             PaymentDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Salary = 4200m,
@@ -1135,7 +1165,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 6,
                             Bonus = 400m,
-                            EmployeeId = new Guid("b2222222-0000-0000-0000-000000000006"),
+                            EmployeeId = new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"),
                             Notes = "Exceeded marketing targets",
                             PaymentDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Salary = 6500m,
@@ -1145,7 +1175,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 7,
                             Bonus = 0m,
-                            EmployeeId = new Guid("b2222222-0000-0000-0000-000000000007"),
+                            EmployeeId = new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"),
                             Notes = "One day unpaid leave adjustment",
                             PaymentDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Salary = 3000m,
@@ -1155,7 +1185,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 8,
                             Bonus = 350m,
-                            EmployeeId = new Guid("b2222222-0000-0000-0000-000000000008"),
+                            EmployeeId = new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"),
                             Notes = "On-time delivery and initiative bonus",
                             PaymentDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Salary = 6000m,
@@ -1214,6 +1244,17 @@ namespace Workbit.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Workbit.Infrastructure.Database.Entities.Account.Ceo", b =>
+                {
+                    b.HasOne("Workbit.Infrastructure.Database.Entities.Account.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("Workbit.Infrastructure.Database.Entities.Account.Employee", b =>
                 {
                     b.HasOne("Workbit.Infrastructure.Database.Entities.Account.ApplicationUser", "ApplicationUser")
@@ -1225,8 +1266,7 @@ namespace Workbit.Infrastructure.Migrations
                     b.HasOne("Workbit.Infrastructure.Database.Entities.Job", "Job")
                         .WithMany("Employees")
                         .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ApplicationUser");
 
@@ -1244,8 +1284,7 @@ namespace Workbit.Infrastructure.Migrations
                     b.HasOne("Workbit.Infrastructure.Database.Entities.Department", "Department")
                         .WithMany("Managers")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ApplicationUser");
 
@@ -1265,9 +1304,9 @@ namespace Workbit.Infrastructure.Migrations
 
             modelBuilder.Entity("Workbit.Infrastructure.Database.Entities.Company", b =>
                 {
-                    b.HasOne("Workbit.Infrastructure.Database.Entities.Account.ApplicationUser", "Ceo")
-                        .WithMany()
-                        .HasForeignKey("CeoId")
+                    b.HasOne("Workbit.Infrastructure.Database.Entities.Account.Ceo", "Ceo")
+                        .WithOne()
+                        .HasForeignKey("Workbit.Infrastructure.Database.Entities.Company", "CeoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1299,7 +1338,7 @@ namespace Workbit.Infrastructure.Migrations
             modelBuilder.Entity("Workbit.Infrastructure.Database.Entities.Payment", b =>
                 {
                     b.HasOne("Workbit.Infrastructure.Database.Entities.Account.Employee", "Employee")
-                        .WithMany("SalaryPayments")
+                        .WithMany("Payments")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1314,7 +1353,7 @@ namespace Workbit.Infrastructure.Migrations
 
             modelBuilder.Entity("Workbit.Infrastructure.Database.Entities.Account.Employee", b =>
                 {
-                    b.Navigation("SalaryPayments");
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("Workbit.Infrastructure.Database.Entities.Company", b =>

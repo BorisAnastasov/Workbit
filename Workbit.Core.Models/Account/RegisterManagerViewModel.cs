@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static Workbit.Common.DataConstants.ApplicationUser;
-using static Workbit.Common.DataConstants.Manager;
 
 namespace LearnSpace.Core.Models.Account
 {
@@ -22,9 +21,10 @@ namespace LearnSpace.Core.Models.Account
 		public string LastName { get; set; } = string.Empty;
 
 		[Required]
-		[Display(Name = "OfficePhone")]
-		[StringLength(OfficePhoneMaxLen, MinimumLength = OfficePhoneMinLen)]
-		public string OfficePhone { get; set; } = string.Empty;
+		[Phone]
+		[Display(Name = "PhoneNumber")]
+		[StringLength(PhoneMaxLen, MinimumLength = PhoneMinLen)]
+		public string PhoneNumber { get; set; } = string.Empty;
 
 
 		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]

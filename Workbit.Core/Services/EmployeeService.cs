@@ -16,19 +16,6 @@ namespace Workbit.Core.Services
             repository = _repository;
         }
 
-        public async Task CreateAsync(EmployeeCreateDto dto)
-        {
-            var employee = new Employee
-            {
-                ApplicationUserId = Guid.Parse(dto.ApplicationUserId),
-                JobId = dto.JobId,
-                Level = Enum.Parse<Workbit.Infrastructure.Enumerations.JobLevel>(dto.Level, true)
-            };
-
-            await repository.AddAsync(employee);
-            await repository.SaveChangesAsync();
-        }
-
         public async Task DeleteAsync(string id)
         {
             var guid = Guid.Parse(id);

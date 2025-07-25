@@ -22,12 +22,14 @@ namespace Workbit.Infrastructure.Database.Configuration
         private static List<AttendanceEntry> SeedAttendanceEntries()
         {
             var entries = new List<AttendanceEntry>();
+
+            // Updated GUIDs to match ApplicationUserConfiguration
             var employees = new[]
             {
-                Guid.Parse("b2222222-0000-0000-0000-000000000001"), // Alice Watson
-                Guid.Parse("b2222222-0000-0000-0000-000000000002"), // Bob Thomas
-                Guid.Parse("b2222222-0000-0000-0000-000000000003"), // Claire James
-                Guid.Parse("b2222222-0000-0000-0000-000000000004")  // Dave Walker
+                Guid.Parse("f92e7b0f-5123-40c8-9d28-8834a3c93005"), // Alice Watson
+                Guid.Parse("2b06417a-1460-4b10-8454-51069dfb2d06"), // Bob Thomas
+                Guid.Parse("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"), // Claire James
+                Guid.Parse("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08")  // Dave Walker
             };
 
             var currentId = 1;
@@ -40,12 +42,12 @@ namespace Workbit.Infrastructure.Database.Configuration
 
                 foreach (var employee in employees)
                 {
-                    // Randomly decide if someone is absent (e.g., Claire misses Wednesday)
+                    // Skip Claire on Wednesday (absent)
                     if (employee == employees[2] && day == 2) continue;
 
-                    // Check-in and Check-out times vary
-                    var checkIn = date.AddHours(employee == employees[1] ? 9.75 : 9);  // Bob is often late
-                    var checkOut = date.AddHours(employee == employees[0] ? 17 : 16.75); // Alice stays full shift, others leave a bit earlier sometimes
+                    // Check-in and check-out times
+                    var checkIn = date.AddHours(employee == employees[1] ? 9.75 : 9);  // Bob is late often
+                    var checkOut = date.AddHours(employee == employees[0] ? 17 : 16.75); // Alice stays full shift, others slightly early
 
                     entries.Add(new AttendanceEntry
                     {

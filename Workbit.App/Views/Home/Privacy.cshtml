@@ -1,6 +1,130 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<style>
+    .privacy-wrapper {
+        padding: 4rem 2rem;
+        background-color: var(--background);
+        color: var(--text-dark);
+        font-family: 'Nunito', sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .privacy-title {
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 3rem;
+    }
+
+    .privacy-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+        margin-bottom: 4rem;
+        flex-wrap: wrap;
+    }
+
+    .privacy-section:nth-child(even) {
+        flex-direction: row-reverse; /* Alternate layout */
+    }
+
+    .privacy-text {
+        flex: 1 1 500px;
+    }
+
+        .privacy-text h2 {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .privacy-text p, 
+        .privacy-text ul {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-text ul {
+            margin-left: 1.5rem;
+        }
+
+    .privacy-image {
+        flex: 1 1 400px;
+        text-align: center;
+    }
+
+        .privacy-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .privacy-section {
+            flex-direction: column !important;
+            text-align: center;
+        }
+
+        .privacy-text {
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="privacy-wrapper">
+    <h1 class="privacy-title">Privacy Policy</h1>
+
+    <!-- Section 1 -->
+    <div class="privacy-section">
+        <div class="privacy-text">
+            <h2>Information We Collect</h2>
+            <p>We may collect the following types of information:</p>
+            <ul>
+                <li>Personal details such as your name, email, and contact information.</li>
+                <li>Employee and payroll data entered by your company administrators.</li>
+                <li>Usage data to help us improve our services.</li>
+            </ul>
+        </div>
+        <div class="privacy-image">
+            <img src="~/images/privacy-data.jpg" alt="Data Security">
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="privacy-section">
+        <div class="privacy-text">
+            <h2>How We Use Your Data</h2>
+            <p>Your information is used solely for providing our HR and payroll services, including:</p>
+            <ul>
+                <li>Managing employee records and attendance.</li>
+                <li>Processing payroll and generating reports.</li>
+                <li>Improving our platform and user experience.</li>
+            </ul>
+        </div>
+        <div class="privacy-image">
+            <img src="~/images/privacy-usage.jpg" alt="Data Usage">
+        </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="privacy-section">
+        <div class="privacy-text">
+            <h2>Data Protection</h2>
+            <p>
+                We implement bank-level encryption and strict security practices to ensure your
+                data remains safe. We never sell or share your data with third parties.
+            </p>
+        </div>
+        <div class="privacy-image">
+            <img src="~/images/privacy-protection.jpg" alt="Data Protection">
+        </div>
+    </div>
+</div>

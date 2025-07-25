@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Select Your Role";
+}
+
+<div class="container text-center" style="margin-top: 100px;">
+    <h1 class="display-4" style="margin-bottom: 50px; font-weight: bold; color: #37B7C3;">
+        👋 Welcome to Workbit! Choose Your Role
+    </h1>
+
+    <div class="row justify-content-center">
+        
+
+        
+        <!-- Manager Card -->
+        <div class="col-md-3">
+            <div class="card shadow-lg role-card">
+                <div class="card-body">
+                    <h2 class="card-title" style="font-size: 2rem; color: #37B7C3;">🧑‍💼 Manager</h2>
+                    <p class="card-text" style="font-size: 1.1rem; margin: 20px 0;">
+                        Manage your department, oversee employees, and approve payroll.
+                    </p>
+                    <a asp-controller="User" asp-action="RegisterManager"
+                       class="btn btn-success btn-lg role-btn" style="background-color: #2D9DAB; border-color: #2D9DAB;">
+                        I'm a Manager
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div> <!-- Spacer -->
+
+        <!-- Employee Card -->
+        <div class="col-md-3">
+            <div class="card shadow-lg role-card">
+                <div class="card-body">
+                    <h2 class="card-title" style="font-size: 2rem; color: #37B7C3;">👷 Employee</h2>
+                    <p class="card-text" style="font-size: 1.1rem; margin: 20px 0;">
+                        Track your attendance, salary details, and job updates.
+                    </p>
+                    <a asp-controller="User" asp-action="RegisterEmployee"
+                       class="btn btn-primary btn-lg role-btn" style="background-color: #37B7C3; border-color: #37B7C3;">
+                        I'm an Employee
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-1"></div> <!-- Spacer -->
+        <!-- CEO Card -->
+        <div class="col-md-3">
+            <div class="card shadow-lg role-card">
+                <div class="card-body">
+                    <h2 class="card-title" style="font-size: 2rem; color: #37B7C3;">👑 CEO</h2>
+                    <p class="card-text" style="font-size: 1.1rem; margin: 20px 0;">
+                        Oversee your company, assign managers, and handle executive tasks.
+                    </p>
+                    <a asp-controller="User" asp-action="RegisterCeo"
+                       class="btn btn-warning btn-lg role-btn" style="color: white; background-color: #F5A623; border-color: #F5A623;">
+                        I'm the CEO
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="margin-top: 80px;">
+        <p style="font-size: 1.2rem; color: gray;">Choose your role and start managing your Workbit journey!</p>
+    </div>
+</div>
+
+<!-- Hover & Card Styling -->
+<style>
+    .role-card {
+        border-radius: 20px;
+        padding: 30px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .role-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 8px 25px rgba(55, 183, 195, 0.4);
+        }
+
+    .role-btn {
+        border-radius: 50px;
+        font-size: 1.3rem;
+        padding: 10px 30px;
+    }
+</style>

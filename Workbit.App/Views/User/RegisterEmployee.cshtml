@@ -1,0 +1,177 @@
+﻿@model RegisterEmployeeViewModel
+@{
+    ViewData["Title"] = "Register Employee";
+}
+
+<style>
+    body {
+        background: linear-gradient(to right, #EBF4F6, #DFF8FB);
+    }
+
+    .register-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 15px 60px;
+    }
+
+    .register-card {
+        max-width: 500px;
+        width: 100%;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        padding: 30px;
+        font-size: 1.05rem;
+    }
+
+        .register-card h2 {
+            color: #37B7C3;
+            margin-bottom: 25px;
+            font-size: 2.1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+    /* Row layout for icon + field */
+    .input-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+        .input-group i {
+            color: #37B7C3;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+    .form-floating {
+        flex: 1;
+    }
+
+        .form-floating > .form-control {
+            height: 54px;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+
+        .form-floating label {
+            color: #222 !important;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+    /* Row for first/last name */
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+        .form-row .input-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+    .register-card button {
+        background-color: #37B7C3;
+        border-color: #37B7C3;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        height: 50px;
+        font-weight: 600;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+        .register-card button:hover {
+            background-color: #088395;
+            border-color: #088395;
+        }
+
+    @@media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="register-wrapper">
+    <div class="register-card">
+        <h2>Register New Employee</h2>
+
+        <form asp-controller="User" asp-action="RegisterEmployee" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-4" style="font-size: 0.95rem;"></div>
+
+            <!-- First + Last Name -->
+            <div class="form-row">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <div class="form-floating">
+                        <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                        <label asp-for="FirstName"></label>
+                        <span asp-validation-for="FirstName" class="text-danger" style="font-size: 0.9rem;"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <div class="form-floating">
+                        <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                        <label asp-for="LastName"></label>
+                        <span asp-validation-for="LastName" class="text-danger" style="font-size: 0.9rem;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <div class="form-floating">
+                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                    <label asp-for="Email"></label>
+                    <span asp-validation-for="Email" class="text-danger" style="font-size: 0.9rem;"></span>
+                </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="input-group">
+                <i class="fa-solid fa-phone"></i>
+                <div class="form-floating">
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="Phone Number" />
+                    <label asp-for="PhoneNumber"></label>
+                    <span asp-validation-for="PhoneNumber" class="text-danger" style="font-size: 0.9rem;"></span>
+                </div>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="input-group">
+                <i class="fa-regular fa-calendar"></i>
+                <div class="form-floating">
+                    <input asp-for="DateOfBirth" type="date" class="form-control" placeholder="Date of Birth" />
+                    <label asp-for="DateOfBirth"></label>
+                    <span asp-validation-for="DateOfBirth" class="text-danger" style="font-size: 0.9rem;"></span>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <div class="form-floating">
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                    <label asp-for="Password"></label>
+                    <span asp-validation-for="Password" class="text-danger" style="font-size: 0.9rem;"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Register Employee
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

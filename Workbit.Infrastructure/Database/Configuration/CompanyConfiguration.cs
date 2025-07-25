@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Workbit.Infrastructure.Database.Entities;
+using Workbit.Infrastructure.Database.Entities.Account;
 
 namespace Workbit.Infrastructure.Database.Configuration
 {
@@ -9,9 +10,9 @@ namespace Workbit.Infrastructure.Database.Configuration
         public void Configure(EntityTypeBuilder<Company> builder)
         {
             builder.HasOne(c => c.Ceo)
-                   .WithMany()  // No back-reference from Manager
-                   .HasForeignKey(c => c.CeoId)
-                   .OnDelete(DeleteBehavior.Restrict);
+                        .WithOne()
+                        .HasForeignKey<Company>(c => c.CeoId)
+                        .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(c => c.Departments)
                    .WithOne(d => d.Company)
@@ -25,7 +26,7 @@ namespace Workbit.Infrastructure.Database.Configuration
                     Name = "Workbit Solutions Inc.",
                     Address = "123 Business Blvd, New York, NY, USA",
                     ContactPhone = "+1-555-0000",
-                    CeoId = Guid.Parse("a1111111-0000-0000-0000-000000000001") // John Lewis (CEO)
+                    CeoId = Guid.Parse("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801")
                 }
             );
         }

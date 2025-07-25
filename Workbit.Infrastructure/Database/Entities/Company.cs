@@ -30,7 +30,7 @@ namespace Workbit.Infrastructure.Database.Entities
 
 		[ForeignKey(nameof(Ceo))]
 		public Guid CeoId { get; set; }
-		public virtual ApplicationUser Ceo { get; set; } = null!;
+		public virtual Ceo Ceo { get; set; } = null!;
 
 		public virtual List<Department> Departments { get; set; }
 	}

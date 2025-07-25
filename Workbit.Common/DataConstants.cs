@@ -16,14 +16,6 @@
             public const int DescriptionMinLen = 5;
         }
 
-		public class Manager
-		{
-			public const int OfficePhoneMaxLen = 15;
-			public const int OfficePhoneMinLen = 8;
-
-			public const string OfficePhoneRegex = @"^\+?[0-9\s\-]+$";
-		}
-
 		public class Job 
         {
             public const int TitleMaxLen = 50;
@@ -39,6 +31,9 @@
 
             public const int LastNameMaxLen = 200;
             public const int LastNameMinLen = 3;
+
+            public const int PhoneMaxLen = 15;
+            public const int PhoneMinLen = 8;
         }
 
 		public static class Company
@@ -59,5 +54,5 @@
         {
             public const int NotesMaxLen = 150;
         }
-	}
+    }
 }

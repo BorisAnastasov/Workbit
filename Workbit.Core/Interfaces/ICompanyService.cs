@@ -20,6 +20,5 @@ namespace Workbit.Core.Interfaces
         // Helpers
         Task<bool> ExistsByIdAsync(int id);
         Task<string?> GetCeoIdAsync(int companyId);
-        Task MakeCeoAsync(int companyId, string newCeoUserId, string currentCeoId);
     }
 }

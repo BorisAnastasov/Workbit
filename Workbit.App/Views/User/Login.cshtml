@@ -1,0 +1,147 @@
+﻿@model LogInViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    /* Background + Full Height Wrapper */
+    body {
+        background: linear-gradient(to right, #EBF4F6, #DFF8FB);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .login-wrapper {
+        flex: 1; /* Fill space between navbar & footer */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Start near top */
+        padding: 80px 15px 60px; /* Push down from navbar so it's balanced */
+    }
+
+    /* Card Styling (Matches Register Page) */
+    .login-card {
+        max-width: 450px;
+        width: 100%;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        padding: 35px;
+        font-size: 1.05rem;
+    }
+
+        .login-card h2 {
+            color: #37B7C3;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+    /* Input + Icon Row */
+    .input-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+        .input-group i {
+            color: #37B7C3;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+    /* Floating label input */
+    .form-floating {
+        flex: 1;
+    }
+
+        .form-floating > .form-control {
+            height: 54px;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+
+        .form-floating label {
+            color: #222 !important;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+    /* Button */
+    .login-card button {
+        background-color: #37B7C3;
+        border-color: #37B7C3;
+        border-radius: 50px;
+        font-size: 1.25rem;
+        height: 50px;
+        font-weight: 600;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+        .login-card button:hover {
+            background-color: #088395;
+            border-color: #088395;
+        }
+
+    /* Links */
+    .login-card a {
+        color: #37B7C3;
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+        .login-card a:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <h2>Sign in to Workbit</h2>
+
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-4" style="font-size: 0.95rem;"></div>
+
+            <!-- Email -->
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <div class="form-floating">
+                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                    <label asp-for="Email"></label>
+                    <span asp-validation-for="Email" class="text-danger" style="font-size: 0.9rem;"></span>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <div class="form-floating">
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                    <label asp-for="Password"></label>
+                    <span asp-validation-for="Password" class="text-danger" style="font-size: 0.9rem;"></span>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">
+                Log In
+            </button>
+
+            <!-- Forgot Password Link -->
+            <div class="text-center mt-4">
+                <a asp-action="ForgotPassword" asp-controller="Account">
+                    Forgot Password?
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -2,6 +2,7 @@
 {
     public enum JobLevel
     {
+        Unemployed,
         Junior,
         Mid,
         Senior,

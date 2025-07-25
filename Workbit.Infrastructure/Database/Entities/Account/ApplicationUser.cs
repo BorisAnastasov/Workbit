@@ -27,6 +27,11 @@ namespace Workbit.Infrastructure.Database.Entities.Account
 
         public virtual List<AttendanceEntry> AttendanceEntries { get; set; } = null!;
 
+        [Required]
+        [Phone]
+        [StringLength(PhoneMaxLen)]
+        public override string PhoneNumber { get; set; } = null!;
+
         [NotMapped]
         public string FullName => FirstName + " " + LastName;
 

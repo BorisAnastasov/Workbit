@@ -17,7 +17,7 @@ namespace LearnSpace.Web.Extensions
 
             Task.Run(async ()=> 
             {
-                var roles = new[] { AdminRoleName, ManagerRoleName, EmployeeRoleName };
+                var roles = new[] { AdminRoleName, ManagerRoleName, EmployeeRoleName, CeoRoleName };
 
                 foreach (var role in roles)
                 {
@@ -32,7 +32,8 @@ namespace LearnSpace.Web.Extensions
                 await userManager.AddToRoleAsync(admin, AdminRoleName);
 
 
-                var employeeEmails = new[] { "student1@abv.bg", "student2@abv.bg", "student3@abv.bg", "student4@abv.bg", "student5@abv.bg" };
+                var employeeEmails = new[] { "alice.k.watson@workbit.com", "bob.c.thomas@workbit.com", "claire.b.james@workbit.com", "dave.r.walker@workbit.com",
+                                                "emily.d.young@workbit.com", "frank.h.scott@workbit.com", "grace.l.adams@workbit.com", "harry.n.brooks@workbit.com"};
 
                 foreach (var email in employeeEmails)
                 {
@@ -43,7 +44,7 @@ namespace LearnSpace.Web.Extensions
                     }
                 }
 
-                var managerEmails = new[] { "teacher1@abv.bg", "teacher2@abv.bg" };
+                var managerEmails = new[] { "john.m.lewis@workbit.com", "lisa.r.anderson@workbit.com", "carl.t.morgan@workbit.com", "nina.v.hughes@workbit.com" };
 
                 foreach (var email in managerEmails)
                 {
