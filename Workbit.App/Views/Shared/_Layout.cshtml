@@ -84,6 +84,37 @@
 			border-radius: 10px;
 		}
 
+		.navbar-nav .nav-link {
+			position: relative;
+			color: white !important;
+			font-weight: 500;
+			padding: 0.5rem 1rem;
+			transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+			text-decoration: none; /* Ensure no default underline */
+		}
+
+			.navbar-nav .nav-link::after {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 0%;
+				height: 2px;
+				background-color: var(--secondary);
+				transition: width 0.3s ease-in-out;
+			}
+
+			.navbar-nav .nav-link:hover {
+				color: var(--secondary) !important;
+				transform: scale(1.05); /* Slight pop */
+				text-shadow: 0 0 8px rgba(55, 183, 195, 0.7); /* Soft teal glow */
+				text-decoration: none; /* Disable default underline */
+			}
+
+				.navbar-nav .nav-link:hover::after {
+					width: 100%; /* Only the animated underline shows */
+				}
+
 
 		.logo-with-outline {
 			color: white;
@@ -203,13 +234,20 @@
 
 						@if (User.IsEmployee())
 						{
-
 						}
-						else if (User.IsManager())
+						@if (User.IsManager())
 						{
-
 						}
-						else if (User.IsCeo())
+						@if (User.IsCeo())
+						{
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Ceo" asp-action="Dashboard">Dashboard</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Department" asp-action="AllDepartments">Departments</a>
+							</li>
+						}
+						@if (User.IsAdmin())
 						{
 							
 						}
@@ -218,6 +256,10 @@
 
 						@if (User.IsUser())
 						{
+							@if (User.IsCeo())
+							{
+							<li>ceo</li>	
+							}
 							<a class="btn btn-light me-2 d-flex align-items-center justify-content-center" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
 						}
 						else

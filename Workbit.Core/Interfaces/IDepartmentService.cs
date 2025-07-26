@@ -9,7 +9,7 @@ namespace Workbit.Core.Interfaces
 
         // Read
         Task<IEnumerable<DepartmentSummaryDto>> GetAllAsync();
-        Task<IEnumerable<DepartmentSummaryDto>> GetAllByCompanyIdAsync(int companyId);
+        Task<IEnumerable<DepartmentSummaryDto>> GetAllByCeoIdAsync(string ceoId);
         Task<DepartmentReadDto> GetByIdAsync(int id);
 
         // Update

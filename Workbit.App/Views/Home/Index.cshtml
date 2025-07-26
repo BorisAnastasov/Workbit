@@ -1,314 +1,317 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+	ViewData["Title"] = "Home";
 }
 
 <style>
-    /* HERO SECTION */
-    .hero {
-        position: relative;
-        text-align: center;
-        padding: 5rem 2rem;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-        overflow: hidden;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        gap: 2rem;
-    }
+	/* HERO SECTION */
+	.hero {
+		position: relative;
+		text-align: center;
+		padding: 5rem 2rem;
+		background: linear-gradient(135deg, var(--primary), var(--secondary));
+		color: white;
+		overflow: hidden;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: 2rem;
+	}
 
-    .hero-content {
-        max-width: 700px;
-        z-index: 2;
-    }
+	.hero-content {
+		max-width: 700px;
+		z-index: 2;
+	}
 
-        .hero-content h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
+		.hero-content h1 {
+			font-size: 3rem;
+			font-weight: 700;
+			margin-bottom: 1rem;
+		}
 
-        .hero-content p {
-            font-size: 1.3rem;
-            max-width: 650px;
-            margin: 0 auto 2rem auto;
-        }
+		.hero-content p {
+			font-size: 1.3rem;
+			max-width: 650px;
+			margin: 0 auto 2rem auto;
+		}
 
-    .btn-custom {
-        background-color: white;
-        color: var(--primary);
-        padding: 0.8rem 2rem;
-        border: none;
-        border-radius: 30px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin: 0.5rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+	.btn-custom {
+		background-color: white;
+		color: var(--primary);
+		padding: 0.8rem 2rem;
+		border: none;
+		border-radius: 30px;
+		font-size: 1.1rem;
+		font-weight: 600;
+		margin: 0.5rem;
+		transition: all 0.3s ease;
+		box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+	}
 
-        .btn-custom:hover {
-            background-color: var(--secondary);
-            color: white;
-            transform: translateY(-3px);
-        }
+		.btn-custom:hover {
+			background-color: var(--secondary);
+			color: white;
+			transform: translateY(-3px);
+		}
 
-    .hero-img {
-        flex: 1;
-        max-width: 400px;
-        height: 400px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0.9;
-        transition: transform 0.5s ease, opacity 0.5s ease;
-        animation: fadeSlideIn 1s ease-in-out;
-    }
+	.hero-img {
+		flex: 1;
+		max-width: 400px;
+		height: 400px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0.9;
+		transition: transform 0.5s ease, opacity 0.5s ease;
+		animation: fadeSlideIn 1s ease-in-out;
+	}
 
-        .hero-img img {
-            max-height: 100%;
-            max-width: 100%;
-            object-fit: cover;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-        }
+		.hero-img img {
+			max-height: 100%;
+			max-width: 100%;
+			object-fit: cover;
+			border-radius: 15px;
+			box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+		}
 
-    .hero-img-left {
-        transform: translateX(-30px);
-    }
+	.hero-img-left {
+		transform: translateX(-30px);
+	}
 
-    .hero-img-right {
-        transform: translateX(30px);
-    }
+	.hero-img-right {
+		transform: translateX(30px);
+	}
 
-    .hero-img:hover {
-        opacity: 1;
-        transform: scale(1.05);
-    }
+	.hero-img:hover {
+		opacity: 1;
+		transform: scale(1.05);
+	}
 
-    @@keyframes fadeSlideIn {
-        from {
-            opacity: 0;
-            transform: translateY(40px);
-        }
+	@@keyframes fadeSlideIn {
+		from {
+			opacity: 0;
+			transform: translateY(40px);
+		}
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 
-    @@media (max-width: 992px) {
-        .hero {
-            flex-direction: column;
-        }
+	@@media (max-width: 992px) {
+		.hero {
+			flex-direction: column;
+		}
 
-        .hero-img {
-            display: none;
-        }
-    }
+		.hero-img {
+			display: none;
+		}
+	}
 
-    /* SHARED FLEX LAYOUT FOR ALL CARD SECTIONS */
-    .section {
-        padding: 4rem 2rem;
-        text-align: center;
-    }
+	/* SHARED FLEX LAYOUT FOR ALL CARD SECTIONS */
+	.section {
+		padding: 4rem 2rem;
+		text-align: center;
+	}
 
-        .section h2 {
-            font-weight: bold;
-            margin-bottom: 3rem;
-            color: var(--primary);
-        }
+		.section h2 {
+			font-weight: bold;
+			margin-bottom: 3rem;
+			color: var(--primary);
+		}
 
-    .card-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 2rem;
-        flex-wrap: wrap;
-    }
+	.card-container {
+		display: flex;
+		justify-content: space-between;
+		gap: 2rem;
+		flex-wrap: wrap;
+	}
 
-    .card {
-        flex: 1 1 300px;
-        max-width: 100%;
-        background-color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+	.card {
+		flex: 1 1 300px;
+		max-width: 100%;
+		background-color: white;
+		padding: 2rem;
+		border-radius: 12px;
+		text-align: center;
+		box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
 
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
+		.card:hover {
+			transform: translateY(-6px);
+			box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+		}
 
-        .card i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--secondary);
-        }
+		.card i {
+			font-size: 3rem;
+			margin-bottom: 1rem;
+			color: var(--secondary);
+		}
 
-        .card h3, .card h5 {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
+		.card h3, .card h5 {
+			font-weight: 600;
+			margin-bottom: 1rem;
+			color: var(--primary);
+		}
 
-        .card p {
-            color: #555;
-        }
+		.card p {
+			color: #555;
+		}
 
-    /* ROLES SECTION (Gradient Style) */
-    .roles {
-        background: linear-gradient(135deg, var(--secondary), var(--primary));
-        color: white;
-    }
+	/* ROLES SECTION (Gradient Style) */
+	.roles {
+		background: linear-gradient(135deg, var(--secondary), var(--primary));
+		color: white;
+	}
 
-        .roles h2 {
-            color: white;
-        }
+		.roles h2 {
+			color: white;
+		}
 
-        .roles .card {
-            background-color: rgba(255,255,255,0.1);
-            color: white;
-        }
+		.roles .card {
+			background-color: rgba(255,255,255,0.1);
+			color: white;
+		}
 
-            .roles .card i {
-                color: var(--contrast);
-            }
+			.roles .card i {
+				color: var(--contrast);
+			}
 
-            .roles .card:hover {
-                background-color: rgba(255,255,255,0.2);
-                transform: translateY(-6px);
-            }
+			.roles .card:hover {
+				background-color: rgba(255,255,255,0.2);
+				transform: translateY(-6px);
+			}
 
-        .roles .card {
-            background-color: rgba(255,255,255,0.1);
-            color: #ffffff; /* Make all text white */
-            text-shadow: 0 2px 5px rgba(0,0,0,0.7); /* Strong shadow for readability */
-        }
+		.roles .card {
+			background-color: rgba(255,255,255,0.1);
+			color: #ffffff; /* Make all text white */
+			text-shadow: 0 2px 5px rgba(0,0,0,0.7); /* Strong shadow for readability */
+		}
 
-            .roles .card h3 {
-                color: #ffffff;
-                font-weight: 700;
-                text-shadow: 0 1px 2px rgba(0,0,0,0.8); /* Extra bold shadow for titles */
-            }
+			.roles .card h3 {
+				color: #ffffff;
+				font-weight: 700;
+				text-shadow: 0 1px 2px rgba(0,0,0,0.8); /* Extra bold shadow for titles */
+			}
 
-            .roles .card p {
-                color: #ffffff;
-                opacity: 0.9; /* Slightly dim to separate from titles */
-                text-shadow: 0 2px 5px rgba(0,0,0,0.7);
-            }
+			.roles .card p {
+				color: #ffffff;
+				opacity: 0.9; /* Slightly dim to separate from titles */
+				text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+			}
 
-            .roles .card i {
-                color: var(--contrast);
-                text-shadow: 0 2px 6px rgba(0,0,0,0.7); /* Make icons pop more */
-            }
+			.roles .card i {
+				color: var(--contrast);
+				text-shadow: 0 2px 6px rgba(0,0,0,0.7); /* Make icons pop more */
+			}
 
-    /* WHY SECTION (with extra padding for footer) */
-    .why-section {
-        padding-bottom: 6rem;
-    }
+	/* WHY SECTION (with extra padding for footer) */
+	.why-section {
+		padding-bottom: 6rem;
+	}
 
-    /* RESPONSIVENESS */
-    @@media (max-width: 1500px) {
-        .hero {
-            flex-direction: column;
-        }
+	/* RESPONSIVENESS */
+	@@media (max-width: 1500px) {
+		.hero {
+			flex-direction: column;
+		}
 
-        .hero-img {
-            display: none;
-        }
-    }
+		.hero-img {
+			display: none;
+		}
+	}
 
 
-    @@media (max-width: 576px) {
-        .card {
-            flex: 1 1 100%;
-        }
-    }
+	@@media (max-width: 576px) {
+		.card {
+			flex: 1 1 100%;
+		}
+	}
 </style>
 
 <!-- HERO -->
 <section class="hero">
-    <div class="hero-img hero-img-left d-none d-lg-block">
-        <img src="~/images/office-team.jpg" alt="Team working">
-    </div>
-    <div class="hero-content text-center px-4">
-        <h1 >Empower Your Workforce</h1>
-        <p>Workbit HCM helps you manage employees, departments, attendance, and payroll effortlessly in one powerful platform.</p>
-        <a asp-controller="User" asp-action="Register"><button class="btn-custom">Get Started</button></a>
-        <a asp-controller="User" asp-action="Login"><button class="btn-custom">Login</button></a>
-    </div>
-    <div class="hero-img hero-img-right d-none d-lg-block">
-        <img src="~/images/work-meeting.jpg" alt="Work meeting">
-    </div>
+	<div class="hero-img hero-img-left d-none d-lg-block">
+		<img src="~/images/office-team.jpg" alt="Team working">
+	</div>
+	<div class="hero-content text-center px-4">
+		<h1>Empower Your Workforce</h1>
+		<p>Workbit HCM helps you manage employees, departments, attendance, and payroll effortlessly in one powerful platform.</p>
+		@if (!User.IsUser())
+		{
+			<a asp-controller="User" asp-action="Register"><button class="btn-custom">Get Started</button></a>
+			<a asp-controller="User" asp-action="Login"><button class="btn-custom">Login</button></a>
+		}
+	</div>
+	<div class="hero-img hero-img-right d-none d-lg-block">
+		<img src="~/images/work-meeting.jpg" alt="Work meeting">
+	</div>
 </section>
 
 <!-- FEATURES -->
 <section class="section features" style="background-color: var(--background);">
-    <h2>What You Can Do With Workbit</h2>
-    <div class="card-container">
-        <div class="card">
-            <i class="fa-solid fa-users"></i>
-            <h3>Employee & Manager Profiles</h3>
-            <p>Centralize employee and manager data for easy company tracking.</p>
-        </div>
-        <div class="card">
-            <i class="fa-solid fa-clock"></i>
-            <h3>Attendance & Payroll</h3>
-            <p>Automate attendance logs and generate monthly salaries seamlessly.</p>
-        </div>
-        <div class="card">
-            <i class="fa-solid fa-building"></i>
-            <h3>Departments & Jobs</h3>
-            <p>Organize your structure, job titles, and employee assignments with ease.</p>
-        </div>
-    </div>
+	<h2>What You Can Do With Workbit</h2>
+	<div class="card-container">
+		<div class="card">
+			<i class="fa-solid fa-users"></i>
+			<h3>Employee & Manager Profiles</h3>
+			<p>Centralize employee and manager data for easy company tracking.</p>
+		</div>
+		<div class="card">
+			<i class="fa-solid fa-clock"></i>
+			<h3>Attendance & Payroll</h3>
+			<p>Automate attendance logs and generate monthly salaries seamlessly.</p>
+		</div>
+		<div class="card">
+			<i class="fa-solid fa-building"></i>
+			<h3>Departments & Jobs</h3>
+			<p>Organize your structure, job titles, and employee assignments with ease.</p>
+		</div>
+	</div>
 </section>
 
 <!-- ROLES -->
 <section class="section roles">
-    <h2>Roles in Workbit</h2>
-    <div class="card-container">
-        <div class="card">
-            <i class="fa-solid fa-crown"></i>
-            <h3>CEO</h3>
-            <p>Oversee company-wide growth, departments, and analytics in real time.</p>
-        </div>
-        <div class="card">
-            <i class="fa-solid fa-user-tie"></i>
-            <h3>Manager</h3>
-            <p>Manage teams, monitor performance, and align goals efficiently.</p>
-        </div>
-        <div class="card">
-            <i class="fa-solid fa-user"></i>
-            <h3>Employee</h3>
-            <p>Track attendance, payroll, and performance with a simple dashboard.</p>
-        </div>
-    </div>
+	<h2>Roles in Workbit</h2>
+	<div class="card-container">
+		<div class="card">
+			<i class="fa-solid fa-crown"></i>
+			<h3>CEO</h3>
+			<p>Oversee company-wide growth, departments, and analytics in real time.</p>
+		</div>
+		<div class="card">
+			<i class="fa-solid fa-user-tie"></i>
+			<h3>Manager</h3>
+			<p>Manage teams, monitor performance, and align goals efficiently.</p>
+		</div>
+		<div class="card">
+			<i class="fa-solid fa-user"></i>
+			<h3>Employee</h3>
+			<p>Track attendance, payroll, and performance with a simple dashboard.</p>
+		</div>
+	</div>
 </section>
 
 <!-- WHY -->
 <section class="section why-section" style="background-color: var(--background);">
-    <h2>Why Companies Choose Workbit</h2>
-    <div class="card-container">
-        <div class="card">
-            <i class="fa-solid fa-bolt"></i>
-            <h3>Fast & Easy Setup</h3>
-            <p>Get your HR system live within minutes with minimal setup.</p>
-        </div>
-        <div class="card">
-            <i class="fa-solid fa-lock"></i>
-            <h3>Secure & Reliable</h3>
-            <p>Protect sensitive payroll and employee data with top security.</p>
-        </div>
-        <div class="card">
-            <i class="fa-solid fa-chart-pie"></i>
-            <h3>Insightful Analytics</h3>
-            <p>Make smarter decisions using visual performance and payroll data.</p>
-        </div>
-    </div>
+	<h2>Why Companies Choose Workbit</h2>
+	<div class="card-container">
+		<div class="card">
+			<i class="fa-solid fa-bolt"></i>
+			<h3>Fast & Easy Setup</h3>
+			<p>Get your HR system live within minutes with minimal setup.</p>
+		</div>
+		<div class="card">
+			<i class="fa-solid fa-lock"></i>
+			<h3>Secure & Reliable</h3>
+			<p>Protect sensitive payroll and employee data with top security.</p>
+		</div>
+		<div class="card">
+			<i class="fa-solid fa-chart-pie"></i>
+			<h3>Insightful Analytics</h3>
+			<p>Make smarter decisions using visual performance and payroll data.</p>
+		</div>
+	</div>
 </section>

@@ -15,6 +15,7 @@ namespace Workbit.App.Controllers
 
         public IActionResult Index()
         {
+            var user = User;
             return View();
         }
 

@@ -1,8 +1,10 @@
-﻿using LearnSpace.Infrastructure.Database.Repository;
+﻿using Castle.Components.DictionaryAdapter.Xml;
+using LearnSpace.Infrastructure.Database.Repository;
 using Microsoft.EntityFrameworkCore;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Department;
 using Workbit.Infrastructure.Database.Entities;
+using Workbit.Infrastructure.Database.Entities.Account;
 
 namespace Workbit.Core.Services
 {
@@ -53,15 +55,14 @@ namespace Workbit.Core.Services
                                         .ToListAsync();
         }
 
-        public async Task<IEnumerable<DepartmentSummaryDto>> GetAllByCompanyIdAsync(int companyId)
+        public async Task<IEnumerable<DepartmentSummaryDto>> GetAllByCeoIdAsync(string ceoId)
         {
-
-            return await repository.AllReadOnly<Department>()
-                .Where(d => d.CompanyId == companyId).Select(d => new DepartmentSummaryDto
+            var company = await repository.AllReadOnly<Company>().FirstAsync(c => c.CeoId.ToString() == ceoId);
+            return company.Departments.Select(d => new DepartmentSummaryDto
                 {
                     Id = d.Id,
                     Name = d.Name
-                }).ToListAsync();
+                }).ToList();
         }
 
         public async Task<DepartmentReadDto> GetByIdAsync(int id)

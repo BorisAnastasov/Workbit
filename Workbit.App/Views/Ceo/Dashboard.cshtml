@@ -1,0 +1,112 @@
+﻿@model CeoDashboardViewModel
+@{
+    ViewData["Title"] = "CEO Dashboard";
+}
+
+<style>
+    .dashboard {
+        padding: 3rem 2rem;
+        background-color: var(--background);
+    }
+
+    .dashboard h1 {
+        text-align: center;
+        color: var(--primary);
+        margin-bottom: 3rem;
+        font-weight: 700;
+    }
+
+    .stat-cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .stat-card {
+        flex: 1 1 280px;
+        max-width: 350px;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        padding: 2rem;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+    /* Payroll Highlight */
+    .stat-card.payroll h3 {
+        color: var(--success);
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .stat-cards {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+
+<section class="dashboard">
+    <h1>Welcome, CEO</h1>
+    <div class="stat-cards">
+        <!-- Employees -->
+        <div class="stat-card">
+            <i class="fa-solid fa-users"></i>
+            <h3>@Model.TotalEmployees</h3>
+            <p>Total Employees</p>
+        </div>
+
+        <!-- Managers -->
+        <div class="stat-card">
+            <i class="fa-solid fa-user-tie"></i>
+            <h3>@Model.TotalManagers</h3>
+            <p>Total Managers</p>
+        </div>
+
+        <!-- Departments -->
+        <div class="stat-card">
+            <i class="fa-solid fa-building"></i>
+            <h3>@Model.TotalDepartments</h3>
+            <p>Total Departments</p>
+        </div>
+
+        <!-- Attendance -->
+        <div class="stat-card">
+            <i class="fa-solid fa-calendar-check"></i>
+            <h3>@Model.PresentToday / @Model.TotalEmployees</h3>
+            <p>Present Today</p>
+        </div>
+
+        <!-- Payroll -->
+        <div class="stat-card payroll">
+            <i class="fa-solid fa-sack-dollar"></i>
+            <h3>$@Model.TotalPayrollThisMonth</h3>
+            <p>Payroll Paid This Month (@Model.PaidEmployeesThisMonth employees)</p>
+        </div>
+    </div>
+</section>

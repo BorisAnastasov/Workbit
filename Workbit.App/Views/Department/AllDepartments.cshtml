@@ -1,0 +1,86 @@
+﻿@model IEnumerable<DepartmentSummaryDto>
+@{
+    ViewData["Title"] = "All Departments";
+}
+
+<style>
+    .departments-wrapper {
+        padding: 50px 20px;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px); /* Prevent footer overlap */
+    }
+
+    .departments-title {
+        color: var(--primary);
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .departments-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .department-card {
+        background: #fff;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .department-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .department-card i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .department-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .department-card a {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+            .department-card a:hover {
+                color: var(--primary);
+                text-decoration: underline;
+            }
+</style>
+
+<div class="departments-wrapper">
+    <h2 class="departments-title">Company Departments</h2>
+
+    <div class="departments-grid">
+        @foreach (var dept in Model)
+        {
+            <div class="department-card">
+                <i class="fa-solid fa-building"></i>
+                <h3>@dept.Name</h3>
+                <a asp-controller="Department" asp-action="DepartmentInfo" asp-route-id="@dept.Id" class="btn btn-outline-primary">
+                    View Details
+                </a>
+            </div>
+        }
+    </div>
+</div>
