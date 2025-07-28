@@ -1,0 +1,135 @@
+﻿@model HireEmployeeViewModel
+
+<style>
+    .hire-wrapper {
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+        padding: 3rem 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        font-family: 'Nunito', sans-serif;
+    }
+
+    .hire-card {
+        background: #fff;
+        max-width: 600px;
+        width: 100%;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        padding: 2rem;
+        animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .hire-card h2 {
+        color: var(--primary);
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    select.form-select {
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        padding: 0.6rem;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    select.form-select:focus {
+        border-color: var(--secondary);
+        box-shadow: 0 0 6px rgba(55, 183, 195, 0.5);
+    }
+
+    .btn-submit {
+        background-color: var(--primary);
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        padding: 0.8rem;
+        border-radius: 12px;
+        border: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .btn-submit:hover {
+        background-color: var(--secondary);
+        transform: translateY(-2px);
+    }
+
+    .alert-success {
+        text-align: center;
+        background-color: #d1f7d1;
+        color: #155724;
+        border-radius: 10px;
+        margin-top: 1.5rem;
+        padding: 0.8rem;
+        font-weight: 600;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="hire-wrapper">
+    <div class="hire-card">
+        <h2>Hire a New Employee</h2>
+
+        <form asp-action="Hire" method="post">
+            <!-- Select User -->
+            <div class="mb-3">
+                <label for="SelectedUserId" class="form-label">Select User</label>
+                <select asp-for="SelectedUserId" class="form-select" required>
+                    <option value="">-- Choose a User --</option>
+                    @foreach (var user in Model.AvailableUsers)
+                    {
+                        <option value="@user.Id">@user.FullName</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Select Job -->
+            <div class="mb-3">
+                <label for="SelectedJobId" class="form-label">Select Job</label>
+                <select asp-for="SelectedJobId" class="form-select" required>
+                    <option value="">-- Choose a Job --</option>
+                    @foreach (var job in Model.AvailableJobs)
+                    {
+                        <option value="@job.Id">@job.Title</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Select Level -->
+            <div class="mb-3">
+                <label for="Level" class="form-label">Select Level</label>
+                <select asp-for="Level" class="form-select" required>
+                    <option value="Junior">Junior</option>
+                    <option value="Mid">Mid</option>
+                    <option value="Senior">Senior</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit">Hire Employee</button>
+        </form>
+
+        <!-- Success Message -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success mt-4">
+                @TempData["Success"]
+            </div>
+        }
+    </div>
+</div>

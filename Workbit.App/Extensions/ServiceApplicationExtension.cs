@@ -1,4 +1,4 @@
-﻿using LearnSpace.Infrastructure.Database.Repository;
+﻿using Workbit.Infrastructure.Database.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Workbit.Core.Interfaces;
@@ -20,6 +20,7 @@ namespace Workbit.App.Extensions
 			services.AddScoped<IJobService, JobService>();
 			services.AddScoped<IManagerService, ManagerService>();
 			services.AddScoped<IPaymentService, PaymentService>();
+			services.AddScoped<IDepartmentBudgetService, DepartmentBudgetService>();
 
 			services.ConfigureApplicationCookie(options =>
 			{

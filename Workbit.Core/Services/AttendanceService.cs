@@ -1,4 +1,5 @@
-﻿using LearnSpace.Infrastructure.Database.Repository;
+﻿using Workbit.Infrastructure.Database.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Attendance;
@@ -13,9 +14,12 @@ namespace Workbit.Core.Services
     {
         private readonly IRepository repository;
 
-        public AttendanceService(IRepository _repository)
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public AttendanceService(IRepository repo, UserManager<ApplicationUser> _userManager)
         {
-            repository = _repository;
+            repository = repo;
+            userManager = _userManager;
         }
 
         public async Task<int> CountAbsencesAsync(string userId, int year, int month)
@@ -42,6 +46,39 @@ namespace Workbit.Core.Services
             await repository.DeleteAsync<AttendanceEntry>(id);
             await repository.SaveChangesAsync();
         }
+
+        public async Task<List<AttendanceEntryReadDto>> GetAttendanceLogsAsync(DateTime start, DateTime end, string role)
+        {
+            var logs = await repository.AllReadOnly<AttendanceEntry>()
+                .Include(a => a.User)
+                .Where(a => a.Timestamp >= start && a.Timestamp <= end)
+                .OrderBy(a => a.Timestamp)
+                .ToListAsync();
+
+            if (!string.IsNullOrEmpty(role) && role != "All")
+            {
+                var filtered = new List<AttendanceEntry>();
+                foreach (var log in logs)
+                {
+                    var roles = await userManager.GetRolesAsync(log.User);
+                    if (roles.Contains(role))
+                    {
+                        filtered.Add(log);
+                    }
+                }
+                logs = filtered;
+            }
+
+            return logs.Select(a => new AttendanceEntryReadDto
+            {
+                Id = a.Id,
+                UserId = a.UserId.ToString(),
+                UserName = $"{a.User.FirstName} {a.User.LastName}",
+                Timestamp = a.Timestamp.ToString("yyyy-MM-dd HH:mm"),
+                Type = a.Type.ToString()
+            }).ToList();
+        }
+
 
         public async Task<IEnumerable<AttendanceEntryReadDto>> GetByDateAsync(DateTime date)
         {
@@ -89,6 +126,76 @@ namespace Workbit.Core.Services
                     Type = a.Type.ToString()
                 }).ToList();
         }
+
+        public async Task<List<DailyAttendanceSummaryDto>> GetDailySummaryAsync(
+    DateTime startDate, DateTime endDate, string? roleFilter = null)
+        {
+            // Fetch all entries within the date range
+            var entries = await repository.AllReadOnly<AttendanceEntry>()
+                .Include(a => a.User)
+                .Where(a => a.Timestamp.Date >= startDate.Date && a.Timestamp.Date <= endDate.Date)
+                .ToListAsync();
+
+            // Filter by role if provided
+            if (!string.IsNullOrEmpty(roleFilter) && roleFilter != "All")
+            {
+                var filteredEntries = new List<AttendanceEntry>();
+                foreach (var entry in entries)
+                {
+                    var roles = await userManager.GetRolesAsync(entry.User);
+                    if (roles.Contains(roleFilter))
+                    {
+                        filteredEntries.Add(entry);
+                    }
+                }
+                entries = filteredEntries;
+            }
+
+            // Group by User + Date (so each day gets its own summary per user)
+            var grouped = entries
+                .GroupBy(e => new { e.User, e.Timestamp.Date })
+                .Select(g =>
+                {
+                    var date = g.Key.Date;
+                    var checkIn = g
+                        .Where(x => x.Type == EntryType.CheckIn)
+                        .OrderBy(x => x.Timestamp)
+                        .FirstOrDefault();
+
+                    var checkOut = g
+                        .Where(x => x.Type == EntryType.CheckOut)
+                        .OrderByDescending(x => x.Timestamp)
+                        .FirstOrDefault();
+
+                    double hoursWorked = 0;
+                    if (checkIn != null && checkOut != null)
+                    {
+                        hoursWorked = (checkOut.Timestamp - checkIn.Timestamp).TotalHours;
+                    }
+
+                    string status;
+                    if (checkIn == null)
+                        status = "Absent";
+                    else if (checkIn.Timestamp.TimeOfDay > TimeSpan.FromHours(9)) // Example: Late after 9 AM
+                        status = "Late";
+                    else
+                        status = "Present";
+
+                    return new DailyAttendanceSummaryDto
+                    {
+                        Date = date,
+                        FirstCheckIn = checkIn?.Timestamp.TimeOfDay,
+                        LastCheckOut = checkOut?.Timestamp.TimeOfDay,
+                        HoursWorked = Math.Round(hoursWorked, 2),
+                        Status = status
+                    };
+                })
+                .OrderBy(x => x.Date) // Sort by date
+                .ToList();
+
+            return grouped;
+        }
+
 
         public async Task<IEnumerable<DailyAttendanceSummaryDto>> GetMonthlySummaryAsync(string userId, int year, int month)
         {
@@ -155,6 +262,81 @@ namespace Workbit.Core.Services
                 .ToList();
 
             return grouped;
+        }
+
+        public async Task<bool> CheckInAsync(string userId)
+        {
+            if (!Guid.TryParse(userId, out Guid userGuid))
+                return false;
+
+            var today = DateTime.UtcNow.Date;
+
+            // Prevent double check-in
+            var alreadyCheckedIn = await repository.All<AttendanceEntry>()
+                .AnyAsync(a => a.UserId == userGuid && a.Timestamp.Date == today && a.Type == EntryType.CheckIn);
+
+            if (alreadyCheckedIn)
+                return false;
+
+            var entry = new AttendanceEntry
+            {
+                UserId = userGuid,
+                Timestamp = DateTime.UtcNow,
+                Type = EntryType.CheckIn
+            };
+
+            await repository.AddAsync(entry);
+            await repository.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> CheckOutAsync(string userId)
+        {
+            if (!Guid.TryParse(userId, out Guid userGuid))
+                return false;
+
+            var today = DateTime.UtcNow.Date;
+
+            // Ensure check-in exists before checkout
+            var checkedIn = await repository.All<AttendanceEntry>()
+                .AnyAsync(a => a.UserId == userGuid && a.Timestamp.Date == today && a.Type == EntryType.CheckIn);
+
+            if (!checkedIn)
+                return false;
+
+            // Prevent double checkout
+            var alreadyCheckedOut = await repository.All<AttendanceEntry>()
+                .AnyAsync(a => a.UserId == userGuid && a.Timestamp.Date == today && a.Type == EntryType.CheckOut);
+
+            if (alreadyCheckedOut)
+                return false;
+
+            var entry = new AttendanceEntry
+            {
+                UserId = userGuid,
+                Timestamp = DateTime.UtcNow,
+                Type = EntryType.CheckOut
+            };
+
+            await repository.AddAsync(entry);
+            await repository.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> IsCheckedInAsync(string userId)
+        {
+            if (!Guid.TryParse(userId, out Guid userGuid))
+                return false;
+
+            var today = DateTime.UtcNow.Date;
+
+            var checkIn = await repository.All<AttendanceEntry>()
+                .AnyAsync(a => a.UserId == userGuid && a.Timestamp.Date == today && a.Type == EntryType.CheckIn);
+
+            var checkOut = await repository.All<AttendanceEntry>()
+                .AnyAsync(a => a.UserId == userGuid && a.Timestamp.Date == today && a.Type == EntryType.CheckOut);
+
+            return checkIn && !checkOut;
         }
     }
 }

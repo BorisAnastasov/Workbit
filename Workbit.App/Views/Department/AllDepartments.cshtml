@@ -7,16 +7,43 @@
     .departments-wrapper {
         padding: 50px 20px;
         background-color: var(--background);
-        min-height: calc(100vh - 120px); /* Prevent footer overlap */
+        min-height: calc(100vh - 120px);
+    }
+
+    .departments-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .departments-title {
         color: var(--primary);
         font-size: 2.5rem;
         font-weight: 700;
-        text-align: center;
-        margin-bottom: 40px;
+        margin: 0;
     }
+
+    .create-btn {
+        background-color: var(--secondary);
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 30px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+        .create-btn:hover {
+            background-color: var(--primary);
+            color: #fff;
+            transform: translateY(-3px);
+            text-decoration: none;
+        }
 
     .departments-grid {
         display: grid;
@@ -56,20 +83,31 @@
         .department-card a {
             display: inline-block;
             margin-top: 10px;
-            color: var(--secondary);
-            text-decoration: none;
+            padding: 10px 20px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
             font-weight: 600;
-            transition: color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-decoration: none; /* No underline by default */
         }
 
             .department-card a:hover {
-                color: var(--primary);
-                text-decoration: underline;
+                background-color: var(--primary);
+                color: white;
+                transform: translateY(-3px);
+                text-decoration: none; /* Prevent underline on hover */
             }
 </style>
 
 <div class="departments-wrapper">
-    <h2 class="departments-title">Company Departments</h2>
+    <div class="departments-header">
+        <h2 class="departments-title">Company Departments</h2>
+        <a asp-controller="Department" asp-action="CreateDepartment" class="create-btn">+ Create Department</a>
+    </div>
 
     <div class="departments-grid">
         @foreach (var dept in Model)
@@ -77,7 +115,7 @@
             <div class="department-card">
                 <i class="fa-solid fa-building"></i>
                 <h3>@dept.Name</h3>
-                <a asp-controller="Department" asp-action="DepartmentInfo" asp-route-id="@dept.Id" class="btn btn-outline-primary">
+                <a asp-controller="Department" asp-action="DepartmentDetails" asp-route-id="@dept.Id">
                     View Details
                 </a>
             </div>

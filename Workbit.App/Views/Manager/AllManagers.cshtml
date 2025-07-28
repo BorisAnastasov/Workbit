@@ -1,0 +1,92 @@
+﻿@model IEnumerable<ManagerSummaryDto>
+@{
+    ViewData["Title"] = "All Managers";
+}
+
+<style>
+    .managers-wrapper {
+        padding: 50px 20px;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+    }
+
+    .managers-title {
+        color: var(--primary);
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .managers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .manager-card {
+        background: #fff;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .manager-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .manager-card i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .manager-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+    .btn-custom {
+        background-color: #37B7C3;
+        color: #fff;
+        font-weight: 600;
+        padding: 8px 20px;
+        border-radius: 30px;
+        border: none;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+        .btn-custom:hover {
+            background-color: #088395;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+        }
+</style>
+
+<div class="managers-wrapper">
+    <h2 class="managers-title">Company Managers</h2>
+
+    <div class="managers-grid">
+        @foreach (var manager in Model)
+        {
+            <div class="manager-card">
+                <i class="fa-solid fa-user-tie"></i>
+                <h3>@manager.FullName</h3>
+                <a asp-controller="Manager" asp-action="ManagerDetails" asp-route-id="@manager.Id" class="btn-custom">
+                    View Details
+                </a>
+            </div>
+        }
+    </div>
+</div>

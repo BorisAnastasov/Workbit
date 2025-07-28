@@ -1,0 +1,105 @@
+﻿@model AssignManagerViewModel
+@{
+    ViewData["Title"] = "Assign Manager";
+}
+
+<style>
+    .assign-wrapper {
+        max-width: 600px;
+        margin: 50px auto;
+        background: #fff;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+        color: var(--primary);
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    label {
+        font-weight: 600;
+    }
+
+    .btn-submit {
+        background-color: var(--secondary);
+        color: #fff;
+        font-weight: 600;
+        border-radius: 50px;
+        padding: 12px 25px;
+        margin-top: 20px;
+        display: block;
+        width: 100%;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-submit:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+    .alert {
+        border-radius: 10px;
+        padding: 12px 20px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .text-danger {
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="assign-wrapper">
+    <h2>Assign Manager to @Model.DepartmentName</h2>
+
+    <!-- Display Success/Error Messages -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <!-- Validation Summary -->
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <form method="post" asp-action="AssignManager">
+        <input type="hidden" asp-for="DepartmentId" />
+
+        <div class="mb-3">
+            <label>Select Manager</label>
+            <select asp-for="SelectedManagerId" class="form-select" required>
+                <option value="">-- Choose Manager --</option>
+                @foreach (var manager in Model.AvailableManagers)
+                {
+                    <option value="@manager.Id" selected="@(Model.SelectedManagerId == manager.Id)">
+                        @manager.FullName
+                    </option>
+                }
+            </select>
+            <span asp-validation-for="SelectedManagerId" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn-submit">Assign Manager</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

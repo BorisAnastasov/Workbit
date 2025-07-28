@@ -1,8 +1,5 @@
 using LearnSpace.Web.Extensions;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Workbit.App.Extensions;
-using Workbit.Infrastructure.Database;
 
 namespace Workbit.App
 {
@@ -31,8 +28,12 @@ namespace Workbit.App
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                // Send unhandled exceptions to your custom 500 page
+                app.UseExceptionHandler("/Error/Error500");
+
+                // Redirect 404, 403, and other status codes to your custom pages
+                app.UseStatusCodePagesWithReExecute("/Error/Error{0}");
+
                 app.UseHsts();
             }
 

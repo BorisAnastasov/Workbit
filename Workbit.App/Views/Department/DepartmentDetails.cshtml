@@ -1,0 +1,226 @@
+﻿@model DepartmentReadDto
+@{
+    ViewData["Title"] = "Department Details";
+}
+
+<style>
+    .department-details-wrapper {
+        padding: 70px 20px;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .department-card {
+        max-width: 1000px;
+        width: 100%;
+        background: #fff;
+        padding: 60px 50px;
+        border-radius: 24px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        font-size: 1.2rem;
+        position: relative;
+    }
+
+        .department-card h2 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+    .assign-btn {
+        position: absolute;
+        top: 25px;
+        right: 50px;
+        background-color: var(--secondary);
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .assign-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            color: #fff;
+        }
+
+    .department-description {
+        text-align: center;
+        color: #666;
+        font-size: 1.3rem;
+        margin-bottom: 40px;
+    }
+
+    .details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .details-table th {
+            text-align: left;
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 1.4rem;
+            padding: 16px 12px;
+            width: 30%;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .details-table td {
+            padding: 16px 12px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+    .info-pill {
+        display: inline-block;
+        background-color: var(--background);
+        color: var(--primary);
+        border: 2px solid var(--secondary);
+        padding: 10px 18px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        margin: 6px 8px 6px 0;
+        transition: all 0.3s ease;
+    }
+
+        .info-pill:hover {
+            background-color: var(--secondary);
+            color: #fff;
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+    .action-btn {
+        display: inline-block;
+        margin-left: 10px;
+        padding: 8px 14px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-view {
+        background-color: var(--secondary);
+    }
+
+        .btn-view:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+    .btn-remove {
+        background-color: #e63946;
+    }
+
+        .btn-remove:hover {
+            background-color: #c1121f;
+            transform: translateY(-2px);
+        }
+
+    .back-btn {
+        margin-top: 30px;
+        display: inline-block;
+        background-color: var(--secondary);
+        color: #fff;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .back-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+</style>
+
+<div class="department-details-wrapper">
+    <div class="department-card">
+        <h2>@Model.Name</h2>
+
+        <!-- Always show Assign Manager button -->
+        <a asp-controller="Manager" asp-action="AssignManager" asp-route-departmentId="@Model.Id" class="assign-btn">
+            + Assign Manager
+        </a>
+
+        <p class="department-description">@Model.Description</p>
+
+        <table class="details-table">
+            <tr>
+                <th>Managers</th>
+                <td>
+                    @if (Model.Managers?.Any() == true)
+                    {
+                        @foreach (var manager in Model.Managers)
+                        {
+                            <div style="margin-bottom: 12px;">
+                                <span class="info-pill">@manager.FullName</span>
+
+                                <!-- View Manager -->
+                                <a asp-controller="Manager" asp-action="ManagerDetails" asp-route-id="@manager.Id" class="action-btn btn-view">
+                                    View
+                                </a>
+
+                                <!-- Remove Manager -->
+                                <form asp-controller="Manager" asp-action="RemoveManager" method="post" style="display:inline;">
+                                    <input type="hidden" name="managerId" value="@manager.Id" />
+                                    <input type="hidden" name="departmentId" value="@Model.Id" />
+                                    <button type="submit" class="action-btn btn-remove"
+                                            onclick="return confirm('Are you sure you want to remove this manager from the department?');">
+                                        Remove
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No managers assigned</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Jobs</th>
+                <td>
+                    @if (Model.Jobs?.Any() == true)
+                    {
+                        @foreach (var job in Model.Jobs)
+                        {
+                            <div style="margin-bottom: 10px;">
+                                <span class="info-pill">@job.Title</span>
+                                <a asp-controller="Job" asp-action="JobDetails" asp-route-id="@job.Id" class="action-btn btn-view">View Job</a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No jobs in this department</span>
+                    }
+                </td>
+            </tr>
+        </table>
+
+        <div class="text-center">
+            <a asp-action="AllDepartments" class="back-btn">Back to Departments</a>
+        </div>
+    </div>
+</div>

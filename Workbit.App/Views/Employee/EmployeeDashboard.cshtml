@@ -1,0 +1,275 @@
+﻿@model Workbit.Core.Models.Employee.EmployeeDashboardViewModel
+@{
+    ViewData["Title"] = "Employee Dashboard";
+    var isCheckedIn = ViewBag.IsCheckedIn as bool? ?? false;
+    var checkInStatus = ViewBag.CheckInStatusMessage as string ?? "";
+}
+
+<style>
+    .dashboard-wrapper {
+        padding: 70px 20px;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+        position: relative;
+    }
+
+    .header-row {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+        .header-row h2 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+
+        .header-row p {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+
+    /* Leave Department Button - top right */
+    .leave-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #e63946;
+        color: #fff;
+        font-weight: 700;
+        font-size: 1rem;
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: none;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+        .leave-btn:hover {
+            background-color: #c1121f;
+            transform: translateY(-3px);
+            color: #fff;
+        }
+
+    /* Status Message */
+    .status-message {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-top: 15px;
+        color: var(--secondary);
+    }
+
+    /* Check-in / Check-out Buttons */
+    .check-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .check-btn {
+        padding: 12px 28px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-checkin {
+        background-color: var(--secondary);
+        color: #fff;
+    }
+
+        .btn-checkin:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+    .btn-checkout {
+        background-color: #e63946;
+        color: #fff;
+    }
+
+        .btn-checkout:hover {
+            background-color: #c1121f;
+            transform: translateY(-3px);
+        }
+
+    /* Summary Cards Grid */
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin: 40px 0;
+    }
+
+    .summary-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+        .summary-card h4 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .summary-card p {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0;
+        }
+
+    /* Recent Payments Table */
+    .section-card {
+        background: #fff;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+        .section-card h3 {
+            text-align: center;
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+    .payments-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 12px;
+        overflow: hidden;
+        font-size: 1rem;
+    }
+
+        .payments-table th, .payments-table td {
+            padding: 0.8rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .payments-table th {
+            background-color: var(--secondary);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .payments-table tr:hover {
+            background-color: #f8fafa;
+        }
+</style>
+
+<div class="dashboard-wrapper">
+    <div class="header-row">
+        <!-- Leave Department Button -->
+        <form asp-controller="Employee" asp-action="LeaveDepartment" method="post"
+              onsubmit="return confirm('Are you sure you want to leave your department? You will no longer be part of any team.');">
+            <button type="submit" class="leave-btn">Leave Department</button>
+        </form>
+
+        <h2>Welcome, @Model.FullName</h2>
+        <p>
+            Department: <strong>@Model.DepartmentName</strong> | Job: <strong>@Model.JobTitle</strong> (@Model.Level)
+        </p>
+
+        <!-- Check-in status message -->
+        @if (!string.IsNullOrEmpty(checkInStatus))
+        {
+            <p class="status-message">@checkInStatus</p>
+        }
+
+        <!-- Check-In / Check-Out Buttons -->
+        <div class="check-buttons">
+            @if (!isCheckedIn)
+            {
+                <form asp-controller="Attendance" asp-action="CheckIn" method="post">
+                    <button type="submit" class="check-btn btn-checkin">Check In</button>
+                </form>
+            }
+            else
+            {
+                <form asp-controller="Attendance" asp-action="CheckOut" method="post">
+                    <button type="submit" class="check-btn btn-checkout"
+                            onclick="return confirm('Are you sure you want to checkout? This action cannot be undone.');">
+                        Check Out
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+        <div class="summary-card">
+            <h4>Days Present (This Month)</h4>
+            <p>@Model.TotalPresentDays</p>
+        </div>
+        <div class="summary-card">
+            <h4>Days Absent (This Month)</h4>
+            <p>@Model.TotalAbsentDays</p>
+        </div>
+        <div class="summary-card">
+            <h4>Hours Worked (This Month)</h4>
+            <p>@Model.HoursWorkedThisMonth.ToString("F1")</p>
+        </div>
+        <div class="summary-card">
+            <h4>Total Paid (This Month)</h4>
+            <p>$@Model.TotalPaidThisMonth.ToString("F2")</p>
+        </div>
+    </div>
+
+    <!-- Recent Payments Section -->
+    <div class="section-card">
+        <h3>Recent Payments</h3>
+        @if (Model.RecentPayments.Any())
+        {
+            <table class="payments-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Salary</th>
+                        <th>Bonus</th>
+                        <th>Taxes</th>
+                        <th>Net Pay</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var payment in Model.RecentPayments)
+                    {
+                        <tr>
+                            <td>@payment.PaymentDate.ToString("MMM dd, yyyy")</td>
+                            <td>$@payment.Salary.ToString("F2")</td>
+                            <td>$@payment.Bonus.ToString("F2")</td>
+                            <td>$@payment.Taxes.ToString("F2")</td>
+                            <td><strong>$@payment.NetPay.ToString("F2")</strong></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-center text-muted" style="margin-top: 15px;">No payments recorded yet.</p>
+        }
+    </div>
+</div>

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 using Workbit.Infrastructure.Database;
 
-namespace LearnSpace.Infrastructure.Database.Repository
+namespace Workbit.Infrastructure.Database.Repository
 {
     public class Repository : IRepository
     {
@@ -100,6 +100,37 @@ namespace LearnSpace.Infrastructure.Database.Repository
         {
             var entities = All<T>(deleteWhereClause);
             DeleteRange(entities);
+        }
+
+		public async Task<bool> IsManager(string id)
+		{
+			var user = await DbSet<ApplicationUser>().FindAsync(Guid.Parse(id));
+            return user!.Manager != null;
+
+		}
+
+		public async Task<bool> IsEmployee(string id)
+		{
+			var user = await DbSet<ApplicationUser>().FindAsync(Guid.Parse(id));
+			return user!.Employee != null;
+		}
+
+		public async Task<bool> IsCeo(string id)
+		{
+			var user = await DbSet<ApplicationUser>().FindAsync(Guid.Parse(id));
+			return user!.Ceo != null;
+		}
+
+        public async Task<bool> IsActiveManager(string id)
+        {
+            var user = await DbSet<ApplicationUser>().FindAsync(Guid.Parse(id));
+            return user.Manager!.Department != null;
+        }
+
+        public async Task<bool> IsActiveEmployee(string id)
+        {
+            var user = await DbSet<ApplicationUser>().FindAsync(Guid.Parse(id));
+            return user.Employee!.Job != null;
         }
     }
 }

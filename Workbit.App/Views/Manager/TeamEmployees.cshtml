@@ -1,0 +1,172 @@
+﻿@model IEnumerable<Workbit.Core.Models.Employee.EmployeeSummaryDto>
+@{
+    ViewData["Title"] = "My Team";
+}
+
+<style>
+    .team-wrapper {
+        padding: 2.5rem 2rem;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+        position: relative;
+    }
+
+        .team-wrapper h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-weight: 800;
+            font-size: 2rem;
+        }
+
+    /* Add Employee Button */
+    .btn-add-employee {
+        position: absolute;
+        top: 2.5rem;
+        right: 2rem;
+        background-color: var(--primary);
+        color: #fff;
+        font-weight: 700;
+        padding: 0.6rem 1.4rem;
+        border-radius: 30px;
+        font-size: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+    }
+
+        .btn-add-employee:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+    .team-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        margin: auto;
+        font-size: 1rem;
+    }
+
+        .team-table th, .team-table td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .team-table th {
+            background-color: var(--secondary);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .team-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .team-table tr:hover {
+            background-color: #eef8fa;
+        }
+
+    .action-btn {
+        padding: 4px 10px;
+        margin-right: 5px;
+        font-size: 0.8rem;
+        border-radius: 18px;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+    .btn-view {
+        background-color: var(--secondary);
+        color: white;
+    }
+
+        .btn-view:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+    .btn-kick {
+        background-color: #e63946;
+        color: white;
+    }
+
+        .btn-kick:hover {
+            background-color: #c1121f;
+        }
+
+    .alert {
+        max-width: 600px;
+        margin: 0 auto 15px auto;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+</style>
+
+<div class="team-wrapper">
+    <h2>My Team Members</h2>
+
+    <!-- Add Employee Button -->
+    <a asp-controller="Manager" asp-action="Hire" class="btn-add-employee">
+        + Add Employee
+    </a>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <p class="text-center" style="font-size:1.1rem; font-weight:500;">No employees found in your department.</p>
+    }
+    else
+    {
+        <table class="team-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th style="width: 160px; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model)
+                {
+                    <tr>
+                        <td>@employee.FullName</td>
+                        <td style="text-align: center;">
+                            <a asp-controller="Manager" asp-action="EmployeeDetailsForManager" asp-route-id="@employee.Id"
+                               class="btn action-btn btn-view">
+                                View
+                            </a>
+                            <form asp-action="KickEmployee" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@employee.Id" />
+                                <button type="submit" class="btn action-btn btn-kick"
+                                        onclick="return confirm('Are you sure you want to remove @employee.FullName?');">
+                                    Kick
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

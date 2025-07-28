@@ -1,0 +1,140 @@
+﻿@model ManagerDashboardViewModel
+@{
+    ViewData["Title"] = "Manager Dashboard";
+}
+
+<style>
+    .dashboard {
+        padding: 3rem 2rem;
+        background-color: var(--background);
+        position: relative;
+    }
+
+        .dashboard h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            font-weight: 700;
+        }
+
+    /* Leave Department Button */
+    .leave-btn {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        background-color: #e63946;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 30px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border: none;
+        cursor: pointer;
+    }
+
+        .leave-btn:hover {
+            background-color: #c1121f;
+            transform: translateY(-3px);
+        }
+
+    .stat-cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .stat-card {
+        flex: 1 1 280px;
+        max-width: 350px;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        padding: 2rem;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .stat-card.payroll h3 {
+            color: var(--success);
+        }
+
+    @@media (max-width: 768px) {
+        .stat-cards {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+
+<section class="dashboard">
+    <!-- Leave Department Button -->
+    <form asp-controller="Manager" asp-action="LeaveDepartment" method="post" style="display:inline;">
+        <button type="submit" class="leave-btn" onclick="return confirm('Are you sure you want to leave this department?');">
+            Leave Department
+        </button>
+    </form>
+
+    <h1>Welcome, Manager</h1>
+    <div class="stat-cards">
+        <!-- Team Members -->
+        <div class="stat-card">
+            <i class="fa-solid fa-users"></i>
+            <h3>@Model.TotalTeamMembers</h3>
+            <p>Your Team Members</p>
+        </div>
+
+        <!-- Present Today -->
+        <div class="stat-card">
+            <i class="fa-solid fa-calendar-check"></i>
+            <h3>@Model.PresentToday / @Model.TotalTeamMembers</h3>
+            <p>Present Today</p>
+        </div>
+
+        <!-- Jobs in Department -->
+        <div class="stat-card">
+            <i class="fa-solid fa-briefcase"></i>
+            <h3>@Model.TotalJobs</h3>
+            <p>Job Roles in Department</p>
+        </div>
+
+        <!-- Payroll -->
+        <div class="stat-card payroll">
+            <i class="fa-solid fa-sack-dollar"></i>
+            <h3>$@Model.DepartmentPayrollThisMonth</h3>
+            <p>Payroll Paid This Month (Team)</p>
+        </div>
+
+        <!-- Budget -->
+        <div class="stat-card">
+            <i class="fa-solid fa-coins"></i>
+            <h3>$@Model.DepartmentBudget</h3>
+            <p>Allocated Department Budget</p>
+        </div>
+    </div>
+</section>

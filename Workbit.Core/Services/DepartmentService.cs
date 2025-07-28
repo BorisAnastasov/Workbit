@@ -1,10 +1,10 @@
-﻿using Castle.Components.DictionaryAdapter.Xml;
-using LearnSpace.Infrastructure.Database.Repository;
+﻿using Workbit.Infrastructure.Database.Repository;
 using Microsoft.EntityFrameworkCore;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Department;
+using Workbit.Core.Models.Job;
+using Workbit.Core.Models.Manager;
 using Workbit.Infrastructure.Database.Entities;
-using Workbit.Infrastructure.Database.Entities.Account;
 
 namespace Workbit.Core.Services
 {
@@ -75,8 +75,8 @@ namespace Workbit.Core.Services
                 Name = department.Name,
                 Description = department.Description,
                 CompanyId = department.CompanyId,
-                ManagerNames = department.Managers.Select(m => m.ApplicationUser.FullName).ToList(),
-                JobTitles = department.Jobs.Select(j => j.Title).ToList()
+                Managers = department.Managers.Select(m => new ManagerSummaryDto { FullName = m.ApplicationUser.FullName, Id = m.ApplicationUserId.ToString() }).ToList(),
+                Jobs = department.Jobs.Select(j => new JobSummaryDto { Title = j.Title, Id = j.Id } ).ToList()
             };
         }
 

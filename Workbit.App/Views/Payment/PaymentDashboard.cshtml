@@ -1,0 +1,179 @@
+﻿@model PaymentDashboardViewModel
+@{
+    ViewData["Title"] = "Payments Dashboard";
+}
+
+<style>
+    .payments-wrapper {
+        padding: 70px 20px;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+    }
+
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+        .header-row h2 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+    .btn-history {
+        background-color: var(--secondary);
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 30px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-history:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+    .section-card {
+        background: #fff;
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-bottom: 40px;
+    }
+
+        .section-card h3 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+    .form-group label {
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .btn-submit {
+        background-color: var(--secondary);
+        color: #fff;
+        font-weight: 600;
+        border-radius: 50px;
+        padding: 12px 25px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-submit:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+    /* Consistent alert styling */
+    .alert {
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+</style>
+
+<div class="payments-wrapper">
+    <div class="header-row">
+        <h2>Payments Dashboard</h2>
+        <a asp-route-id="@Model.CeoId" asp-controller="Payment" asp-action="History" class="btn-history">
+            View History
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <!-- Pay Manager Section -->
+    <div class="section-card">
+        <h3>Pay a Manager</h3>
+        <form asp-controller="Payment" asp-action="PayManager" method="post" class="row g-4">
+            <div class="col-md-6">
+                <label for="ManagerId">Select Manager</label>
+                <select name="ManagerId" class="form-select" required>
+                    <option value="">-- Choose Manager --</option>
+                    @foreach (var manager in Model.Managers)
+                    {
+                        <option value="@manager.Id">@manager.FullName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="Salary">Salary</label>
+                <input type="number" name="Salary" class="form-control" step="0.01" required />
+            </div>
+            <div class="col-md-3">
+                <label for="Bonus">Bonus</label>
+                <input type="number" name="Bonus" class="form-control" step="0.01" />
+            </div>
+            <div class="col-md-3">
+                <label for="Taxes">Taxes</label>
+                <input type="number" name="Taxes" class="form-control" step="0.01" value="0" />
+            </div>
+            <div class="col-md-9">
+                <label for="Notes">Notes (Optional)</label>
+                <input type="text" name="Notes" class="form-control" placeholder="Optional note for this payment" />
+            </div>
+            <div class="col-12 text-center mt-3">
+                <button type="submit" class="btn-submit">Pay Manager</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Allocate Department Budget Section -->
+    <div class="section-card">
+        <h3>Allocate Department Budget</h3>
+        <form asp-controller="DepartmentBudget" asp-action="AllocateDepartmentBudget" method="post" class="row g-4">
+            <div class="col-md-6">
+                <label for="DepartmentId">Select Department</label>
+                <select name="DepartmentId" class="form-select" required>
+                    <option value="">-- Choose Department --</option>
+                    @foreach (var dept in Model.Departments)
+                    {
+                        <option value="@dept.Id">@dept.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="TotalBudget">Total Budget</label>
+                <input type="number" name="TotalBudget" class="form-control" step="0.01" required />
+            </div>
+            <div class="col-md-3">
+                <label for="BonusPool">Bonus Pool</label>
+                <input type="number" name="BonusPool" class="form-control" step="0.01" />
+            </div>
+            <div class="col-12 text-center mt-3">
+                <button type="submit" class="btn-submit">Allocate Budget</button>
+            </div>
+        </form>
+    </div>
+</div>

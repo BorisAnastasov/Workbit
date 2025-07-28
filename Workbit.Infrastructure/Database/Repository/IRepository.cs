@@ -1,7 +1,7 @@
 ﻿using Workbit.Infrastructure.Database.Entities.Account;
 using System.Linq.Expressions;
 
-namespace LearnSpace.Infrastructure.Database.Repository
+namespace Workbit.Infrastructure.Database.Repository
 {
     public interface IRepository
     {
@@ -21,5 +21,13 @@ namespace LearnSpace.Infrastructure.Database.Repository
         void DeleteRange<T>(Expression<Func<T, bool>> deleteWhereClause) where T : class;
         void Detach<T>(T entity) where T : class;
         Task<int> SaveChangesAsync();
+        Task<bool> IsManager(string id);
+        Task<bool> IsCeo(string id);
+        Task<bool> IsEmployee(string id);
+        Task<bool> IsActiveManager(string id);
+        Task<bool> IsActiveEmployee(string id);
+
+
+
     }
 }

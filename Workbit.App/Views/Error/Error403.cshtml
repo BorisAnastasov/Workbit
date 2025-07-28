@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<style>
+    .error-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 6rem 2rem;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+    }
+
+        .error-page h1 {
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--warning); /* Use warning color for emphasis */
+            margin-bottom: 1rem;
+        }
+
+        .error-page h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .error-page p {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+        }
+
+    .btn-home {
+        background-color: var(--secondary);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 12px 24px;
+        border-radius: 30px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-home:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            color: #fff;
+        }
+</style>
+
+<div class="error-page">
+    <h1>403</h1>
+    <h2>Access Denied</h2>
+    <p>You don’t have permission to access this page or perform this action.</p>
+    <a asp-controller="Home" asp-action="Index" class="btn-home">Return to Home</a>
+</div>

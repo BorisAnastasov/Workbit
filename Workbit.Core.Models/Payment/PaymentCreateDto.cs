@@ -8,6 +8,7 @@ namespace Workbit.Core.Models.Payment
     public class PaymentCreateDto
     {
         public string EmployeeId { get; set; } = null!;
+
         public DateTime PaymentDate { get; set; }
 
         [Required(ErrorMessage = RequiredMessage)]

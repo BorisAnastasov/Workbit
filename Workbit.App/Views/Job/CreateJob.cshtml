@@ -1,0 +1,87 @@
+﻿@model JobCreateDto
+@{
+    ViewData["Title"] = "Create Job";
+}
+
+<style>
+    .job-form-wrapper {
+        padding: 70px 20px;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+    }
+
+    .form-card {
+        background: #fff;
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+        .form-card h2 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+    label {
+        font-weight: 600;
+        margin-top: 15px;
+    }
+
+    .text-danger {
+        font-size: 0.9rem;
+    }
+
+    .btn-submit {
+        background-color: var(--secondary);
+        color: #fff;
+        font-weight: 600;
+        border-radius: 50px;
+        padding: 12px 25px;
+        margin-top: 25px;
+        width: 100%;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-submit:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+        }
+</style>
+
+<div class="job-form-wrapper">
+    <div class="form-card">
+        <h2>Create New Job</h2>
+        <form asp-action="CreateJob" method="post">
+            <input type="hidden" asp-for="DepartmentId" />
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="BaseSalary" class="form-label"></label>
+                <input asp-for="BaseSalary" type="number" step="0.01" class="form-control" />
+                <span asp-validation-for="BaseSalary" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn-submit">Create Job</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Workbit.Infrastructure.Database;
 using static Workbit.Common.RoleConstants;
 
 namespace Workbit.App.Extensions
@@ -19,6 +20,7 @@ namespace Workbit.App.Extensions
 
             return user.IsInRole(ManagerRoleName);
         }
+
         public static bool IsEmployee(this ClaimsPrincipal user)
         {
             return user.IsInRole(EmployeeRoleName);

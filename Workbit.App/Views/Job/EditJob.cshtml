@@ -1,0 +1,116 @@
+﻿@model JobUpdateDto
+@{
+    ViewData["Title"] = "Edit Job";
+}
+
+<style>
+    .edit-job-wrapper {
+        padding: 3rem 2rem;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .edit-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        padding: 2rem 2.5rem;
+        width: 100%;
+        max-width: 700px;
+    }
+
+        .edit-card h2 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 0.7rem;
+    }
+
+    .btn-save {
+        background-color: var(--secondary);
+        color: #fff;
+        font-weight: 600;
+        border-radius: 30px;
+        padding: 12px 25px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        margin-right: 10px;
+    }
+
+        .btn-save:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+    .btn-cancel {
+        background-color: #ccc;
+        color: #333;
+        font-weight: 600;
+        border-radius: 30px;
+        padding: 12px 25px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-cancel:hover {
+            background-color: #aaa;
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+    .validation-message {
+        color: #e63946;
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+    }
+</style>
+
+<div class="edit-job-wrapper">
+    <div class="edit-card">
+        <h2>Edit Job</h2>
+
+        <form asp-action="EditJob" method="post" class="row g-3">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="col-12">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="validation-message"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="validation-message"></span>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <label asp-for="BaseSalary" class="form-label"></label>
+                <input asp-for="BaseSalary" type="number" step="0.01" class="form-control" />
+                <span asp-validation-for="BaseSalary" class="validation-message"></span>
+            </div>
+
+            <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn-save">Save Changes</button>
+                <a asp-action="DepartmentJobs" asp-controller="Manager" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

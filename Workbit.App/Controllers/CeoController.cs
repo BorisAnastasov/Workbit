@@ -49,7 +49,7 @@ namespace Workbit.App.Controllers
 				.ToList();
 
 			decimal totalPayroll = payments.Sum(p => p.NetPay);
-			int paidEmployees = payments.Select(p => p.EmployeeId).Distinct().Count();
+			int paidEmployees = payments.Select(p => p.RecipientId).Distinct().Count();
 
 			// Pass data to View
 			var viewModel = new CeoDashboardViewModel

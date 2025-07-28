@@ -10,9 +10,9 @@ namespace Workbit.Infrastructure.Database.Entities
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey(nameof(Employee))]
-        public Guid EmployeeId { get; set; } 
-        public virtual Employee Employee { get; set; } = null!;
+        [ForeignKey(nameof(Recipient))]
+        public Guid RecipientId { get; set; } 
+        public virtual ApplicationUser Recipient { get; set; } = null!;
 
         [DataType(DataType.DateTime)]
         public DateTime PaymentDate { get; set; }

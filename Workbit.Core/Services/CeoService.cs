@@ -1,4 +1,4 @@
-﻿using LearnSpace.Infrastructure.Database.Repository;
+﻿using Workbit.Infrastructure.Database.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.ConstrainedExecution;

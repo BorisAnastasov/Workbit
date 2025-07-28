@@ -1,0 +1,155 @@
+﻿@model IEnumerable<PaymentReadDto>
+@{
+    ViewData["Title"] = "Employee Payment History";
+}
+
+<style>
+    .history-wrapper {
+        padding: 70px 20px;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+    }
+
+    .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+        .history-header h2 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+    .btn-back {
+        background-color: var(--secondary);
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 30px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-back:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+    .filter-card {
+        background: #fff;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+    }
+
+    .history-table {
+        width: 100%;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        border-collapse: collapse;
+        overflow: hidden;
+    }
+
+        .history-table th, .history-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .history-table th {
+            background-color: var(--secondary);
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .history-table tr:hover {
+            background-color: #f1f8fa;
+        }
+</style>
+
+<div class="history-wrapper">
+    <div class="history-header">
+        <h2>Employee Payment History</h2>
+        <a asp-controller="Payment" asp-action="ManagerPaymentDashboard" class="btn-back">Back to Dashboard</a>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-card">
+        <form method="get" asp-action="HistoryForManager" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Start Date</label>
+                <input type="date" name="startDate" class="form-control" value="@ViewBag.StartDate" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">End Date</label>
+                <input type="date" name="endDate" class="form-control" value="@ViewBag.EndDate" />
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100" style="background-color: var(--secondary); border: none; height: 50px;">
+                    Filter
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Payment Records Table -->
+    @if (Model.Any())
+    {
+        <table class="history-table table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Employee Name</th>
+                    <th>Salary</th>
+                    <th>Bonus</th>
+                    <th>Taxes</th>
+                    <th>Net Pay</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var payment in Model)
+                {
+                    <tr>
+                        <td>@payment.PaymentDate.ToString("yyyy-MM-dd")</td>
+                        <td>@payment.RecipientName</td>
+                        <td>$@payment.Salary.ToString("F2")</td>
+                        <td>$@payment.Bonus.ToString("F2")</td>
+                        <td>$@payment.Taxes.ToString("F2")</td>
+                        <td><strong>$@((payment.Salary + payment.Bonus - payment.Taxes).ToString("F2"))</strong></td>
+                        <td>@payment.Notes</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-muted text-center mt-4">No employee payments found for the selected dates.</p>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+    <script>
+        $(document).ready(function () {
+            $('.history-table').DataTable({
+                pageLength: 10,
+                order: [[0, "desc"]],
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search payments..."
+                }
+            });
+        });
+    </script>
+}

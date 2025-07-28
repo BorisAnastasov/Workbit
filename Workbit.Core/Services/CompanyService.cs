@@ -1,4 +1,4 @@
-﻿using LearnSpace.Infrastructure.Database.Repository;
+﻿using Workbit.Infrastructure.Database.Repository;
 using Microsoft.EntityFrameworkCore;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Company;

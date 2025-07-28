@@ -22,20 +22,22 @@ namespace Workbit.Infrastructure.Database
         public virtual DbSet<Payment> Payments { get; set; } = null!;
         public virtual DbSet<AttendanceEntry> AttendanceEntries { get; set; } = null!;
         public virtual DbSet<Company> Companies { get; set; } = null!;
+        public virtual DbSet<DepartmentBudget> DepartmentBudgets { get; set; } = null!;
 
-		protected override void OnModelCreating(ModelBuilder builder)
-		{
-			base.OnModelCreating(builder);
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
-            builder.ApplyConfiguration(new CompanyConfiguration());       
-            builder.ApplyConfiguration(new CeoConfiguration());       
-            builder.ApplyConfiguration(new DepartmentConfiguration());     
-            builder.ApplyConfiguration(new ManagerConfiguration());        
-            builder.ApplyConfiguration(new JobConfiguration());            
-            builder.ApplyConfiguration(new EmployeeConfiguration());       
-            builder.ApplyConfiguration(new PaymentConfiguration());        
-            builder.ApplyConfiguration(new AttendanceConfiguration());     
+            builder.ApplyConfiguration(new CompanyConfiguration());
+            builder.ApplyConfiguration(new CeoConfiguration());
+            builder.ApplyConfiguration(new DepartmentConfiguration());
+            builder.ApplyConfiguration(new DepartmentBudgetConfiguration());
+            builder.ApplyConfiguration(new ManagerConfiguration());
+            builder.ApplyConfiguration(new JobConfiguration());
+            builder.ApplyConfiguration(new EmployeeConfiguration());
+            builder.ApplyConfiguration(new PaymentConfiguration());
+            builder.ApplyConfiguration(new AttendanceConfiguration());
 
         }
 

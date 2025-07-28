@@ -1,0 +1,198 @@
+﻿@model EmployeeReadDto
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<style>
+    .employee-details-wrapper {
+        padding: 70px 20px;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .employee-card {
+        max-width: 1000px;
+        width: 100%;
+        background: #fff;
+        padding: 60px 50px;
+        border-radius: 24px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        font-size: 1.2rem;
+    }
+
+        .employee-card h2 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+        }
+
+    .details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .details-table th {
+            text-align: left;
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 1.4rem;
+            padding: 16px 12px;
+            width: 30%;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .details-table td {
+            padding: 16px 12px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+    /* Pills for Job, Department, Level */
+    .info-pill {
+        display: inline-block;
+        background-color: var(--background);
+        color: var(--primary);
+        border: 2px solid var(--secondary);
+        padding: 10px 18px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        margin: 6px 8px 6px 0;
+        transition: all 0.3s ease;
+    }
+
+        .info-pill:hover {
+            background-color: var(--secondary);
+            color: #fff;
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+    /* Payments Table */
+    .payments-table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+        .payments-table th, .payments-table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .payments-table th {
+            background-color: var(--secondary);
+            color: #fff;
+            font-weight: 700;
+        }
+
+    .back-btn {
+        margin-top: 30px;
+        display: inline-block;
+        background-color: var(--secondary);
+        color: #fff;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .back-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+</style>
+
+<div class="employee-details-wrapper">
+    <div class="employee-card">
+        <h2>@Model.FullName</h2>
+
+        <table class="details-table">
+            <tr>
+                <th>Email</th>
+                <td>@Model.Email</td>
+            </tr>
+            <tr>
+                <th>Job Title</th>
+                <td>
+                    @if (!string.IsNullOrEmpty(Model.JobTitle))
+                    {
+                        <span class="info-pill">@Model.JobTitle</span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No job assigned</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Department</th>
+                <td>
+                    @if (!string.IsNullOrEmpty(Model.DepartmentName))
+                    {
+                        <span class="info-pill">@Model.DepartmentName</span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No department assigned</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Level</th>
+                <td>
+                    <span class="info-pill">@Model.Level</span>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Payments Section -->
+        <h3 style="color: var(--secondary); margin-top: 40px;">Payment History</h3>
+        @if (Model.Payments.Any())
+        {
+            <table class="payments-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Salary</th>
+                        <th>Bonus</th>
+                        <th>Taxes</th>
+                        <th>Net Pay</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.Payments)
+                    {
+                        <tr>
+                            <td>@p.PaymentDate.ToShortDateString()</td>
+                            <td>$@p.Salary.ToString("F2")</td>
+                            <td>$@p.Bonus.ToString("F2")</td>
+                            <td>-$@p.Taxes.ToString("F2")</td>
+                            <td><strong>$@p.NetPay.ToString("F2")</strong></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-muted mt-3">No payments recorded for this employee.</p>
+        }
+
+        <div class="text-center">
+            <a asp-action="AllEmployees" class="back-btn">Back to Employees</a>
+        </div>
+    </div>
+</div>

@@ -8,8 +8,6 @@
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/Workbit.App.styles.css" asp-append-version="true" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-
-	<!-- Add this in your <head> -->
 	<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
 	<style>
@@ -19,17 +17,14 @@
 			--third: #071952;
 			--background: #EBF4F6;
 			--text-dark: #212121;
-			--success: #4CAF50;
+			--success: #4CAF50; 
 			--warning: #FFC107;
-			--error: #F44336;
-			--contrast: #FFC107;
 		}
 
 		body {
 			font-family: 'Nunito', sans-serif;
 		}
 
-		/* Make footer stick to bottom */
 		html, body {
 			height: 100%;
 			margin: 0;
@@ -43,39 +38,58 @@
 		}
 
 		main {
-			flex: 1; /* Pushes footer down when there's not enough content */
+			flex: 1;
 		}
 
-		/* Navbar Styling */
+		/* Navbar */
 		.navbar {
 			background-color: var(--third) !important;
 			font-size: 20px;
 		}
 
-			.navbar.border-bottom {
-				border-bottom: none !important;
-			}
-
 		.navbar-logo {
-			height: 6vh; /* Adjust to fit your navbar */
-			width: auto; /* Keeps aspect ratio */
+			height: 6vh;
+			width: auto;
 			max-height: 100%;
 			margin: 0.25rem 1rem;
 		}
 
+		.navbar-nav .nav-link {
+			color: white !important;
+			font-weight: 600;
+			padding: 0.6rem 1.5rem; /* More space around links */
+			margin: 0 0.3rem;
+			border-radius: 30px;
+			transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+			border: 2px solid transparent; /* Default no border */
+		}
+
+			.navbar-nav .nav-link:hover {
+				background-color: var(--secondary);
+				color: #fff !important;
+				transform: translateY(-2px);
+			}
+
+			/* Highlight active link */
+			.navbar-nav .nav-link.active {
+				background-color: var(--primary);
+				color: #fff !important;
+				font-weight: 700;
+				border: 2px solid var(--secondary); /* Border for active page */
+			}
+
 		.navbar .btn.btn-light {
 			background-color: white;
 			color: var(--primary);
-			border: var(--primary);
-			transition: background-color 0.3s ease, color 0.3s ease;
 			font-size: 20px;
 			font-weight: 600;
 			border-radius: 10px;
+			transition: background-color 0.3s ease, color 0.3s ease;
 		}
 
 			.navbar .btn.btn-light:hover {
-				background-color: var(--secondary); /* Green on hover */
-				color: white; /* Text turns white */
+				background-color: var(--secondary);
+				color: white;
 			}
 
 		.navbar .btn.btn-outline-light {
@@ -83,57 +97,6 @@
 			font-weight: 600;
 			border-radius: 10px;
 		}
-
-		.navbar-nav .nav-link {
-			position: relative;
-			color: white !important;
-			font-weight: 500;
-			padding: 0.5rem 1rem;
-			transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
-			text-decoration: none; /* Ensure no default underline */
-		}
-
-			.navbar-nav .nav-link::after {
-				content: '';
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				width: 0%;
-				height: 2px;
-				background-color: var(--secondary);
-				transition: width 0.3s ease-in-out;
-			}
-
-			.navbar-nav .nav-link:hover {
-				color: var(--secondary) !important;
-				transform: scale(1.05); /* Slight pop */
-				text-shadow: 0 0 8px rgba(55, 183, 195, 0.7); /* Soft teal glow */
-				text-decoration: none; /* Disable default underline */
-			}
-
-				.navbar-nav .nav-link:hover::after {
-					width: 100%; /* Only the animated underline shows */
-				}
-
-
-		.logo-with-outline {
-			color: white;
-			font-weight: bold;
-			-webkit-text-stroke: 1px black; /* Outline for text */
-			text-stroke: 1px black;
-			/* Outline for the icon using drop-shadow */
-			filter: drop-shadow(-1px -1px 0 black) drop-shadow(1px -1px 0 black) drop-shadow(-1px 1px 0 black) drop-shadow(1px 1px 0 black);
-		}
-
-
-		.navbar-brand, .navbar-nav .nav-link {
-			color: white !important;
-			font-weight: 500;
-		}
-
-			.navbar-nav .nav-link:hover {
-				text-decoration: underline;
-			}
 
 		/* Footer */
 		footer {
@@ -154,118 +117,78 @@
 				footer a:hover {
 					text-decoration: underline;
 				}
-
-		/* Typography tweaks for Nunito */
-		h1, h2, h3, h5 {
-			font-family: 'Nunito', sans-serif;
-			font-weight: 700; /* Bold headings */
-			letter-spacing: 0.5px;
-		}
-
-		/* Specific sizing */
-		h1 {
-			font-size: 3.5rem; /* Larger main headline */
-		}
-
-		h2 {
-			font-size: 2.5rem;
-			margin-bottom: 2rem;
-		}
-
-		h3, h5 {
-			font-size: 1.6rem;
-		}
-
-		p {
-			font-size: 1.2rem;
-			font-weight: 500;
-			line-height: 1.6;
-		}
-
-		/* Button adjustments */
-		.btn-custom, .btn {
-			font-size: 1.2rem;
-			font-weight: 600;
-			letter-spacing: 0.5px;
-		}
-
-		/* Hero section headline contrast */
-		.hero-content h1 {
-			font-size: 4rem;
-			font-weight: 800;
-			text-shadow: 0 3px 8px rgba(0,0,0,0.3); /* Pop more over gradient */
-		}
-
-		/* Responsive scaling */
-		@@media (max-width: 992px) {
-			h1 {
-				font-size: 2.8rem;
-			}
-
-			h2 {
-				font-size: 2rem;
-			}
-
-			p {
-				font-size: 1.5rem;
-			}
-		}
-
 	</style>
 </head>
 <body>
 	<header>
-		<nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow">
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow">
 			<div class="container-fluid">
 				<a class="navbar-brand d-flex align-items-center logo-with-outline" asp-area="" asp-controller="Home" asp-action="Index">
 					<img src="~/images/Workbit-logo.png" alt="Workbit HCM" class="navbar-logo me-2">
-				</a>                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-											aria-expanded="false" aria-label="Toggle navigation">
+				</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
 						<li class="nav-item">
-							<a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+							<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+							<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Privacy" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
 
-						@if (User.IsEmployee())
-						{
-						}
-						@if (User.IsManager())
-						{
-						}
 						@if (User.IsCeo())
 						{
 							<li class="nav-item">
-								<a class="nav-link" asp-area="" asp-controller="Ceo" asp-action="Dashboard">Dashboard</a>
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Dashboard" ? "active" : "")" asp-controller="Ceo" asp-action="Dashboard">Dashboard</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" asp-area="" asp-controller="Department" asp-action="AllDepartments">Departments</a>
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "AllDepartments" ? "active" : "")" asp-controller="Department" asp-action="AllDepartments">Departments</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "AttendanceLog" ? "active" : "")" asp-controller="Attendance" asp-action="AttendanceLog">Attendance</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "PaymentDashboard" ? "active" : "")" asp-controller="Payment" asp-action="PaymentDashboard">Payment</a>
 							</li>
 						}
-						@if (User.IsAdmin())
+						@if (User.IsManager())
 						{
-							
+							<li class="nav-item">
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "ManagerDashboard" ? "active" : "")" asp-controller="Manager" asp-action="ManagerDashboard">Dashboard</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "TeamEmployees" ? "active" : "")" asp-controller="Manager" asp-action="TeamEmployees">Team</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "DepartmentJobs" ? "active" : "")" asp-controller="Manager" asp-action="DepartmentJobs">Jobs</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "ManagerPaymentDashboard" ? "active" : "")" asp-controller="Payment" asp-action="ManagerPaymentDashboard">Payment</a>
+							</li>	
+						}
+
+						@if(User.IsEmployee())
+						{
+							<li class="nav-item">
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "EmployeeDashboard" ? "active" : "")" asp-controller="Employee" asp-action="EmployeeDashboard">Dashboard</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "HistoryForEmployee" ? "active" : "")" asp-controller="Payment" asp-action="HistoryForEmployee">Payment</a>
+							</li>
 						}
 					</ul>
 					<div class="d-flex">
-
 						@if (User.IsUser())
 						{
-							@if (User.IsCeo())
-							{
-							<li>ceo</li>	
-							}
-							<a class="btn btn-light me-2 d-flex align-items-center justify-content-center" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
+							<a class="btn btn-light me-2 d-flex align-items-center justify-content-center " onclick="return confirm('Are you sure you want to log out?');" asp-controller="User" asp-action="Logout">Logout</a>
 						}
 						else
 						{
-							<a class="btn btn-light me-2 d-flex align-items-center justify-content-center" asp-area="" asp-controller="User" asp-action="Login">Login</a>
-							<a class="btn btn-outline-light" asp-area="" asp-controller="User" asp-action="Register">Sign Up</a>
+							<a class="btn btn-light me-2 d-flex align-items-center justify-content-center" asp-controller="User" asp-action="Login">Login</a>
+							<a class="btn btn-outline-light" asp-controller="User" asp-action="Register">Sign Up</a>
 						}
 					</div>
 				</div>

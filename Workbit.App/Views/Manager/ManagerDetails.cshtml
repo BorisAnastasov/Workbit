@@ -1,0 +1,145 @@
+﻿@model ManagerReadDto
+@{
+    ViewData["Title"] = "Manager Details";
+}
+
+<style>
+    .manager-details-wrapper {
+        padding: 70px 20px;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .manager-card {
+        max-width: 1000px;
+        width: 100%;
+        background: #fff;
+        padding: 60px 50px;
+        border-radius: 24px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        font-size: 1.2rem;
+    }
+
+        .manager-card h2 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+        }
+
+    /* Table styling */
+    .details-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+    }
+
+        .details-table th {
+            text-align: left;
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 1.4rem;
+            padding: 16px 12px;
+            width: 30%;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .details-table td {
+            padding: 16px 12px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+    /* Info pills */
+    .info-pill {
+        display: inline-block;
+        background-color: var(--background);
+        color: var(--primary);
+        border: 2px solid var(--secondary);
+        padding: 10px 18px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        margin: 6px 8px 6px 0;
+        transition: all 0.3s ease;
+    }
+
+        .info-pill:hover {
+            background-color: var(--secondary);
+            color: #fff;
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+    /* Back button */
+    .back-btn {
+        margin-top: 40px;
+        display: inline-block;
+        background-color: var(--secondary);
+        color: #fff;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .back-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+</style>
+
+<div class="manager-details-wrapper">
+    <div class="manager-card">
+        <h2>@Model.FullName</h2>
+
+        <table class="details-table">
+            <tr>
+                <th>Email</th>
+                <td>@Model.Email</td>
+            </tr>
+            <tr>
+                <th>Department</th>
+                <td>
+                    @if (!string.IsNullOrEmpty(Model.DepartmentName))
+                    {
+                        <span class="info-pill">@Model.DepartmentName</span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No department assigned</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Team Employees</th>
+                <td>
+                    @if (Model.TeamEmployees?.Any() == true)
+                    {
+                        @foreach (var emp in Model.TeamEmployees)
+                        {
+                            <span class="info-pill">@emp</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No employees assigned</span>
+                    }
+                </td>
+            </tr>
+        </table>
+
+        <!-- Back Button -->
+        <div class="text-center">
+            <a asp-controller="Department" asp-action="DepartmentDetails" asp-route-id="@Model.DepartmentId" class="back-btn">Back to Department</a>
+        </div>
+    </div>
+</div>

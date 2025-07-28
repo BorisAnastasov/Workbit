@@ -1,0 +1,173 @@
+﻿@model IEnumerable<AttendanceEntryReadDto>
+@{
+    ViewData["Title"] = "Attendance Log";
+}
+
+<style>
+    .attendance-wrapper {
+        padding: 60px 20px;
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+    }
+
+    /* Title styling */
+    .attendance-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 30px;
+    }
+
+    .filter-card {
+        background: #fff;
+        padding: 25px 20px;
+        border-radius: 15px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        margin-bottom: 40px;
+    }
+
+    .attendance-table {
+        width: 100%;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        border-collapse: collapse;
+        overflow: hidden;
+        margin-top: 20px;
+    }
+
+        .attendance-table th, .attendance-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .attendance-table th {
+            background-color: var(--secondary);
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .attendance-table tr:hover {
+            background-color: #f1f8fa;
+        }
+
+    .status-checkin {
+        color: var(--success);
+        font-weight: bold;
+    }
+
+    .status-checkout {
+        color: var(--warning);
+        font-weight: bold;
+    }
+
+    /* DataTable Search input customization */
+    .dataTables_filter {
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .dataTables_filter label {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .dataTables_filter input {
+            margin-left: 10px;
+            border: 2px solid var(--secondary);
+            border-radius: 25px;
+            padding: 8px 14px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dataTables_filter input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 6px rgba(8, 131, 149, 0.3);
+        }
+
+    .status-checkin {
+        color: var(--success);
+        font-weight: bold;
+    }
+
+    .status-checkout {
+        color: var(--warning);
+        font-weight: bold;
+    }
+
+</style>
+
+<div class="attendance-wrapper">
+    <h2 class="attendance-title">Attendance Log</h2>
+
+    <div class="filter-card">
+        <form method="get" asp-action="AttendanceLog" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Start Date</label>
+                <input type="date" name="startDate" class="form-control" value="@ViewBag.StartDate" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">End Date</label>
+                <input type="date" name="endDate" class="form-control" value="@ViewBag.EndDate" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Role</label>
+                <select name="role" class="form-select">
+                    <option value="All" selected="@(ViewBag.Role == "All")">All</option>
+                    <option value="Manager" selected="@(ViewBag.Role == "Manager")">Manager</option>
+                    <option value="Employee" selected="@(ViewBag.Role == "Employee")">Employee</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100" style="background-color: var(--secondary); border: none; height: 50px;">
+                    Filter
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <table class="attendance-table table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Timestamp</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model)
+            {
+                <tr>
+                    <td>@entry.UserName</td>
+                    <td>@entry.Timestamp</td>
+                    <td class="@(entry.Type == "CheckIn" ? "status-checkin" : "status-checkout")">
+                        @entry.Type
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+    <script>
+        $(document).ready(function () {
+            $('.attendance-table').DataTable({
+                pageLength: 10,
+                order: [[1, "desc"]], // Sort by Timestamp by default
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search attendance..."
+                }
+            });
+        });
+    </script>
+}

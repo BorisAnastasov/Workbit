@@ -7,14 +7,9 @@ namespace Workbit.Infrastructure.Database.Entities.Account
 {
     public class Employee
     {
-        public Employee()
-        {
-            this.Payments = new List<Payment>();
-        }
-        [Key]
-		[ForeignKey(nameof(ApplicationUser))]
-		public Guid ApplicationUserId { get; set; }
-		public virtual ApplicationUser ApplicationUser { get; set; } = null!;
+        [Key, ForeignKey(nameof(ApplicationUser))]
+        public Guid ApplicationUserId { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; } = null!;
 
 		[ForeignKey(nameof(Job))]
         public int? JobId { get; set; }
@@ -27,6 +22,5 @@ namespace Workbit.Infrastructure.Database.Entities.Account
         public decimal EffectiveSalary =>
                         this.Job == null ? 0 : this.Job.BaseSalary * Level.GetMultiplier();
 
-        public virtual List<Payment> Payments { get; set; } = null!;
     }
 }

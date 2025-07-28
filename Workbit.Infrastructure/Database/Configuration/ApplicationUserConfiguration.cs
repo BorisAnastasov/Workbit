@@ -9,7 +9,13 @@ namespace Workbit.Infrastructure.Database.Configuration
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            builder.HasData(SeedApplicationUsers());
+
+			builder.HasMany(a => a.Payments)
+				   .WithOne(p => p.Recipient)
+				   .HasForeignKey(p => p.RecipientId)
+				   .OnDelete(DeleteBehavior.Cascade);
+
+			builder.HasData(SeedApplicationUsers());
         }
 
         private static List<ApplicationUser> SeedApplicationUsers()

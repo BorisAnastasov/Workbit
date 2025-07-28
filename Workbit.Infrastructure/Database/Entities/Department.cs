@@ -11,6 +11,7 @@ namespace Workbit.Infrastructure.Database.Entities
         {
             this.Jobs = new List<Job>();
             this.Managers = new List<Manager>();
+            this.DepartmentBudgets = new List<DepartmentBudget>();
         }
         [Key]
         public int Id { get; set; }
@@ -30,5 +31,7 @@ namespace Workbit.Infrastructure.Database.Entities
         public virtual List<Manager> Managers { get; set; } = null!;
 
         public virtual List<Job> Jobs { get; set; } = null!;
+
+        public virtual List<DepartmentBudget> DepartmentBudgets { get; set; } = null!;
     }
 }

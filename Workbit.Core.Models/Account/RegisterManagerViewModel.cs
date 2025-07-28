@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static Workbit.Common.DataConstants.ApplicationUser;
 
-namespace LearnSpace.Core.Models.Account
+namespace Workbit.Core.Models.Account
 {
 	public class RegisterManagerViewModel
 	{
@@ -31,5 +31,10 @@ namespace LearnSpace.Core.Models.Account
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string Password { get; set; } = string.Empty;
-	}
+
+        [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Date of Birth")]
+        public DateTime DateOfBirth { get; set; }
+    }
 }

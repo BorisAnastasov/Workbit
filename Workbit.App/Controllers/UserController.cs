@@ -1,5 +1,5 @@
-﻿using LearnSpace.Core.Models.Account;
-using LearnSpace.Infrastructure.Database.Repository;
+﻿using Workbit.Core.Models.Account;
+using Workbit.Infrastructure.Database.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +45,18 @@ namespace Workbit.App.Controllers
         [HttpGet]
         [AllowAnonymous]
         public IActionResult RegisterManager()
+        {
+            if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegisterCeo()
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
@@ -132,6 +144,7 @@ namespace Workbit.App.Controllers
 				Email = model.Email,
 				UserName = model.Email,
 				NormalizedUserName = model.Email.ToUpper(),
+                DateOfBirth = model.DateOfBirth,
 			};
 
 			var result = await userManager.CreateAsync(user, model.Password);
@@ -160,7 +173,54 @@ namespace Workbit.App.Controllers
 			return View(model);
 		}
 
-		[HttpGet]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterCeo(RegisterCeoViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+
+            var user = new ApplicationUser()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                NormalizedEmail = model.Email.ToUpper(),
+                Email = model.Email,
+                UserName = model.Email,
+                NormalizedUserName = model.Email.ToUpper(),
+                DateOfBirth = model.DateOfBirth,
+            };
+
+            var result = await userManager.CreateAsync(user, model.Password);
+
+
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user, CeoRoleName);
+
+                var ceo = new Manager
+                {
+                    ApplicationUserId = user.Id,
+                    ApplicationUser = user,
+                };
+                await repository.AddAsync(ceo);
+                await repository.SaveChangesAsync();
+
+                return RedirectToAction("Login", "User");
+            }
+
+            foreach (var item in result.Errors)
+            {
+                ModelState.AddModelError("", item.Description);
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
         {
