@@ -17,7 +17,7 @@ It helps organizations manage employees, departments, payroll, attendance, and b
 
 ## Database Schema
 
-![ERD](docs/screenshots/screenshot_19.png)
+![ERD](docs/screenshots/screenshot_21.png)
 
 ### Tables Overview
 - **ApplicationUser** – Base user with identity authentication.
@@ -49,7 +49,7 @@ It helps organizations manage employees, departments, payroll, attendance, and b
 
 ### Error Pages
 ![403](docs/screenshots/screenshot_17.png) ![404](docs/screenshots/screenshot_18.png)  
-![500](docs/screenshots/screenshot_20.png)
+![500](docs/screenshots/screenshot_19.png)
 
 ---
 
