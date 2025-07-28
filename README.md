@@ -48,7 +48,7 @@ It helps organizations manage employees, departments, payroll, attendance, and b
 ![Admin Users](docs/screenshots/screenshot_15.png) ![Company Payment History](docs/screenshots/screenshot_16.png)
 
 ### Error Pages
-![403](docs/screenshots/screenshot_17.png) ![404](docs/screenshots/screenshot_18.png)  
+![403](docs/screenshots/screenshot_20.png) ![404](docs/screenshots/screenshot_18.png)  
 ![500](docs/screenshots/screenshot_19.png)
 
 ---
