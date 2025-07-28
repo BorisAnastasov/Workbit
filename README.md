@@ -39,13 +39,16 @@ It helps organizations manage employees, departments, payroll, attendance, and b
 ![CEO Dashboard](docs/screenshots/screenshot_5.png) ![Departments](docs/screenshots/screenshot_6.png)  
 ![Attendance](docs/screenshots/screenshot_7.png) ![Payments](docs/screenshots/screenshot_8.png)
 
-### Manager & Employee Modules
-![Manager Dashboard](docs/screenshots/screenshot_9.png) ![Team Management](docs/screenshots/screenshot_10.png)  
-![Jobs](docs/screenshots/screenshot_11.png) ![Manager Payments](docs/screenshots/screenshot_12.png)  
-![Employee Dashboard](docs/screenshots/screenshot_13.png) ![Employee Payments](docs/screenshots/screenshot_14.png)
+### Manager Dashboard & Modules
+![Manager Dashboard](docs/screenshots/screenshot_12.png) ![Team Management](docs/screenshots/screenshot_13.png)  
+![Jobs](docs/screenshots/screenshot_14.png) ![Manager Payments](docs/screenshots/screenshot_11.png)  
 
-### Admin Panel & Payment History
-![Admin Users](docs/screenshots/screenshot_15.png) ![Company Payment History](docs/screenshots/screenshot_16.png)
+
+### Employee Dashboard & Modules
+![Employee Dashboard](docs/screenshots/screenshot_12.png)![Employee Payment](docs/screenshots/screenshot_17.png)
+
+### Admin Panel
+![Admin Users](docs/screenshots/screenshot_16.png)
 
 ### Error Pages
 ![403](docs/screenshots/screenshot_20.png) ![404](docs/screenshots/screenshot_18.png)  
