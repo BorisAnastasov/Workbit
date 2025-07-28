@@ -1,59 +1,62 @@
-using LearnSpace.Web.Extensions;
+using Workbit.Web.Extensions;
 using Workbit.App.Extensions;
 
 namespace Workbit.App
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddApplicationDbContext(builder.Configuration);
+			builder.Services.AddApplicationDbContext(builder.Configuration);
 
-            builder.Services.AddApplicationIdentity(builder.Configuration);
+			builder.Services.AddApplicationIdentity(builder.Configuration);
 
-            builder.Services.AddApplicationServices();
+			builder.Services.AddApplicationServices();
 
-            builder.Services.AddControllersWithViews();
+			builder.Services.AddControllersWithViews();
 
-            builder.Services.AddRazorPages();
+			builder.Services.AddRazorPages();
 
-            var app = builder.Build();
+			var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseMigrationsEndPoint();
-            }
-            else
-            {
-                // Send unhandled exceptions to your custom 500 page
-                app.UseExceptionHandler("/Error/Error500");
+			// Configure the HTTP request pipeline.
+			if (app.Environment.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
 
-                // Redirect 404, 403, and other status codes to your custom pages
-                app.UseStatusCodePagesWithReExecute("/Error/Error{0}");
+				app.UseExceptionHandler("/Error/Error500");
 
-                app.UseHsts();
-            }
+				app.UseStatusCodePagesWithReExecute("/Error/Error{0}");
+			}
+			else
+			{
+				app.UseExceptionHandler("/Error/Error500");
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+				app.UseStatusCodePagesWithReExecute("/Error/Error{0}");
 
-            app.UseRouting();
+				app.UseHsts();
+			}
+			app.UseHttpsRedirection();
+			app.UseStaticFiles();
 
-            app.UseAuthentication();
+			app.UseRouting();
 
-            app.UseAuthorization();
+			app.UseAuthentication();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapRazorPages();
+			app.UseAuthorization();
 
-            app.SeedRoles();
+			app.MapControllerRoute(
+					name: "areas",
+					pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+					);
 
-            app.Run();
-        }
-    }
+			app.MapDefaultControllerRoute();
+
+			app.SeedRoles();
+
+			app.Run();
+		}
+	}
 }

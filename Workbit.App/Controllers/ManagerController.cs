@@ -141,7 +141,7 @@ namespace Workbit.App.Controllers
         {
             // Get department info
 
-            if (departmentId == null) 
+            if (!await departmentService.ExistByIdAsync(departmentId)) 
             {
                 return RedirectToAction("Error500", "Error");
             }

@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Workbit.Infrastructure.Database.Entities.Account;
 using static Workbit.Common.RoleConstants;
 
-namespace LearnSpace.Web.Extensions
+namespace Workbit.Web.Extensions
 {
 	public static class ApplicationBuilderExtension
     {

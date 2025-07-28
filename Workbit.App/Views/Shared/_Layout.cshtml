@@ -133,68 +133,69 @@
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
 						<li class="nav-item">
-							<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+							<a class="nav-link @Html.IsActive("Index", "Home")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Privacy" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+							<a class="nav-link @Html.IsActive("Privacy", "Home")" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
 
 						@if (User.IsCeo())
 						{
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Dashboard" ? "active" : "")" asp-controller="Ceo" asp-action="Dashboard">Dashboard</a>
+								<a class="nav-link @Html.IsActive("Dashboard", "Ceo")" asp-controller="Ceo" asp-action="Dashboard">Dashboard</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "AllDepartments" ? "active" : "")" asp-controller="Department" asp-action="AllDepartments">Departments</a>
+								<a class="nav-link @Html.IsActive("AllDepartments", "Department")" asp-controller="Department" asp-action="AllDepartments">Departments</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "AttendanceLog" ? "active" : "")" asp-controller="Attendance" asp-action="AttendanceLog">Attendance</a>
+								<a class="nav-link @Html.IsActive("AttendanceLog", "Attendance")" asp-controller="Attendance" asp-action="AttendanceLog">Attendance</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "PaymentDashboard" ? "active" : "")" asp-controller="Payment" asp-action="PaymentDashboard">Payment</a>
+								<a class="nav-link @Html.IsActive("PaymentDashboard", "Payment")" asp-controller="Payment" asp-action="PaymentDashboard">Payment</a>
 							</li>
 						}
 						@if (User.IsManager())
 						{
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "ManagerDashboard" ? "active" : "")" asp-controller="Manager" asp-action="ManagerDashboard">Dashboard</a>
+								<a class="nav-link @Html.IsActive("ManagerDashboard", "Manager")" asp-controller="Manager" asp-action="ManagerDashboard">Dashboard</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "TeamEmployees" ? "active" : "")" asp-controller="Manager" asp-action="TeamEmployees">Team</a>
+								<a class="nav-link @Html.IsActive("TeamEmployees", "Manager")" asp-controller="Manager" asp-action="TeamEmployees">Team</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "DepartmentJobs" ? "active" : "")" asp-controller="Manager" asp-action="DepartmentJobs">Jobs</a>
+								<a class="nav-link @Html.IsActive("DepartmentJobs", "Manager")" asp-controller="Manager" asp-action="DepartmentJobs">Jobs</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "ManagerPaymentDashboard" ? "active" : "")" asp-controller="Payment" asp-action="ManagerPaymentDashboard">Payment</a>
+								<a class="nav-link @Html.IsActive("ManagerPaymentDashboard", "Manager")" asp-controller="Payment" asp-action="ManagerPaymentDashboard">Payment</a>
 							</li>	
 						}
 
 						@if(User.IsEmployee())
 						{
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "EmployeeDashboard" ? "active" : "")" asp-controller="Employee" asp-action="EmployeeDashboard">Dashboard</a>
+								<a class="nav-link @Html.IsActive("EmployeeDashboard", "Employee")" asp-controller="Employee" asp-action="EmployeeDashboard">Dashboard</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "HistoryForEmployee" ? "active" : "")" asp-controller="Payment" asp-action="HistoryForEmployee">Payment</a>
+								<a class="nav-link @Html.IsActive("HistoryForEmployee", "Payment")" asp-controller="Payment" asp-action="HistoryForEmployee">Payment</a>
 							</li>
 						}
 						@if (User.IsAdmin())
 						{
 							<li class="nav-item">
-								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "ManageUsers" ? "active" : "")" asp-controller="Admin" asp-action="ManageUsers">Users</a>
+								<a class="nav-link @Html.IsActive("AllUsers", "Admin")" asp-area="Admin" asp-controller="Admin" asp-action="AllUsers">Users</a>
 							</li>
 						}
 					</ul>
 					<div class="d-flex">
 						@if (User.IsUser())
 						{
-							<a class="btn btn-light me-2 d-flex align-items-center justify-content-center " onclick="return confirm('Are you sure you want to log out?');" asp-controller="User" asp-action="Logout">Logout</a>
+							<a class="btn btn-light me-2 d-flex align-items-center justify-content-center " onclick="return confirm('Are you sure you want to log out?');"
+														asp-area=""	asp-controller="User" asp-action="Logout">Logout</a>
 						}
 						else
 						{
 							<a class="btn btn-light me-2 d-flex align-items-center justify-content-center" asp-controller="User" asp-action="Login">Login</a>
-							<a class="btn btn-outline-light" asp-controller="User" asp-action="Register">Sign Up</a>
+							<a class="btn btn-outline-light" asp-area="" asp-controller="User" asp-action="Register">Sign Up</a>
 						}
 					</div>
 				</div>

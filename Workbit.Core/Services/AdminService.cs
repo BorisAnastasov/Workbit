@@ -2,13 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Admin;
-using Workbit.Infrastructure.Database.Entities;
 using Workbit.Infrastructure.Database.Entities.Account;
 using Workbit.Infrastructure.Database.Repository;
 
 namespace Workbit.Core.Services
 {
-    public class AdminService:IAdminService
+    public class AdminService : IAdminService
     {
         private readonly IRepository repository;
         private readonly UserManager<ApplicationUser> userManager;
@@ -19,88 +18,100 @@ namespace Workbit.Core.Services
             this.userManager = userManager;
         }
 
-		public async Task<AdminUserListViewModel> GetAllUsersForAdminAsync(
-	string? search, string? role, string? sortBy, bool sortDesc)
+        public async Task<AdminUserListViewModel> GetAllUsersForAdminAsync(
+                                                string? search, string? role = "All")
+        {
+            var users = await repository.AllReadOnly<ApplicationUser>().ToListAsync();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                string normalizedSearch = search.ToLower();
+
+                users = users.Where(u =>
+                        u.FirstName.Contains(normalizedSearch) ||
+                        u.LastName.Contains(normalizedSearch) ||
+                        u.Email!.Contains(normalizedSearch)).ToList();
+            }
+
+
+            var userDtos = new List<AdminUserDto>();
+
+
+
+            foreach (var user in users)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                var userRole = roles.FirstOrDefault() ?? "Unknown";
+
+                if (role != "All" &&
+                !string.Equals(userRole, role, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                userDtos.Add(new AdminUserDto
+                {
+                    Id = user.Id.ToString(),
+                    FullName = $"{user.FirstName} {user.LastName}",
+                    Email = user.Email!,
+                    Role = userRole,
+                    Department = user.Employee?.Job?.Department?.Name,
+                    IsEmployed = user.Employee?.Job != null || user.Manager?.Department != null || user.Ceo != null
+                });
+            }
+
+            return new AdminUserListViewModel
+            {
+                SearchTerm = search,
+                SelectedRole = role,
+                Users = userDtos
+            };
+        }
+
+        public async Task DeleteUserAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user.Employee != null)
+                repository.Delete(user.Employee);
+
+            if (user.Manager != null)
+                repository.Delete(user.Manager);
+
+            if (user.Ceo != null)
+                repository.Delete(user.Ceo);
+
+            await repository.SaveChangesAsync();
+
+            await userManager.DeleteAsync(user);
+        }
+
+		public async Task<bool> UserExistsById(string userId)
 		{
-			var query = repository.AllReadOnly<ApplicationUser>();
+            var user = await repository.GetByIdAsync<ApplicationUser>(Guid.Parse(userId));
 
-			// SQL filtering for performance (only search fields)
-			if (!string.IsNullOrWhiteSpace(search))
-			{
-				query = query.Where(u =>
-					u.FirstName.Contains(search) ||
-					u.LastName.Contains(search) ||
-					u.Email.Contains(search));
-			}
-
-			// Load users from DB (we'll handle roles & sorting in memory)
-			var usersList = await query.ToListAsync();
-
-			var userDtos = new List<AdminUserDto>();
-
-			foreach (var user in usersList)
-			{
-				var roles = await userManager.GetRolesAsync(user);
-				var userRole = roles.FirstOrDefault() ?? "User"; // Default to "User" if no role
-
-				// Filter by role (AFTER fetching roles)
-				if (!string.IsNullOrEmpty(role) && role != "All" &&
-					!string.Equals(userRole, role, StringComparison.OrdinalIgnoreCase))
-				{
-					continue;
-				}
-
-				userDtos.Add(new AdminUserDto
-				{
-					Id = user.Id.ToString(),
-					FullName = $"{user.FirstName} {user.LastName}",
-					Email = user.Email,
-					Role = userRole,
-					Department = user.Employee?.Job?.Department?.Name,
-					IsEmployed = user.Employee != null
-				});
-			}
-
-			// In-memory sorting
-			userDtos = sortBy switch
-			{
-				"Email" => sortDesc
-					? userDtos.OrderByDescending(u => u.Email).ToList()
-					: userDtos.OrderBy(u => u.Email).ToList(),
-
-				_ => sortDesc
-					? userDtos.OrderByDescending(u => u.FullName).ToList()
-					: userDtos.OrderBy(u => u.FullName).ToList()
-			};
-
-			return new AdminUserListViewModel
-			{
-				SearchTerm = search,
-				SelectedRole = role,
-				SortBy = sortBy,
-				SortDesc = sortDesc,
-				Users = userDtos
-			};
+            return user != null;
 		}
 
-		public async Task DeleteUserAsync(string userId)
+		public async Task<UserDetailsViewModel?> GetUserDetailsAsync(string userId)
 		{
-			var user = await userManager.FindByIdAsync(userId);
+			var user = await repository.AllReadOnly<ApplicationUser>()
+				.Where(u => u.Id.ToString() == userId)
+				.FirstOrDefaultAsync();
 
-			if (user.Employee != null)
-				repository.Delete(user.Employee);
+			var roles = await userManager.GetRolesAsync(user);
+			var role = roles.FirstOrDefault() ?? "Unknown";
 
-			if (user.Manager != null)
-				repository.Delete(user.Manager);
-
-			if (user.Ceo != null)
-				repository.Delete(user.Ceo);
-
-			await repository.SaveChangesAsync();
-
-			await userManager.DeleteAsync(user);
+			return new UserDetailsViewModel
+			{
+				Id = user.Id.ToString(),
+				FullName = $"{user.FirstName} {user.LastName}",
+				Email = user.Email ?? "N/A",
+				PhoneNumber = user.PhoneNumber ?? "N/A",
+				DateOfBirth = user.DateOfBirth,
+				Role = role,
+			};
 		}
-
 
 	}
 }

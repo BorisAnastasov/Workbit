@@ -1,4 +1,4 @@
-﻿@model Workbit.Core.Models.Admin.AdminUserListViewModel
+﻿@model AdminUserListViewModel
 @{
 	ViewData["Title"] = "Manage Users";
 }
@@ -112,78 +112,101 @@
 			background-color: #c1121f;
 			transform: translateY(-2px);
 		}
+
+	.dataTables_length {
+		margin-bottom: 1rem; /* Adds space between dropdown and table */
+		margin-top: 0.5rem; /* Optional: some space above as well */
+	}
+
+	.no-action-text {
+		font-size: 1rem; /* Make text smaller */
+		color: #888; /* Gray, so it doesn’t dominate */
+		text-align: center; /* Center align it */
+		margin: 0; /* Remove extra spacing */
+		line-height: 1; /* Keep the line compact */
+	}
 </style>
 
 <div class="admin-wrapper">
 	<div class="admin-header">
 		<h2 style="color: var(--primary); font-weight: 800;">Manage Users</h2>
 
-		<!-- Filter & Search -->
+		<!-- Search and Role Filter -->
 		<form method="get" class="filter-bar">
 			<input type="text" name="search" value="@Model.SearchTerm" placeholder="Search by name or email" />
-
-			<!-- Role Filter -->
 			<select name="role">
 				<option value="All" selected="@(Model.SelectedRole == null || Model.SelectedRole == "All")">All Roles</option>
 				<option value="Employee" selected="@(Model.SelectedRole == "Employee")">Employee</option>
 				<option value="Manager" selected="@(Model.SelectedRole == "Manager")">Manager</option>
-				<option value="CEO" selected="@(Model.SelectedRole == "Ceo")">Ceo</option>
+				<option value="Ceo" selected="@(Model.SelectedRole == "Ceo")">Ceo</option>
 				<option value="Admin" selected="@(Model.SelectedRole == "Admin")">Admin</option>
 			</select>
-
-
 			<button type="submit" class="btn-filter">Apply</button>
 		</form>
 	</div>
 
-	<!-- Users Table -->
-	<table class="admin-table">
+	<!-- User Table -->
+	<table class="admin-table display">
 		<thead>
 			<tr>
-				<th>
-					<a href="?sortBy=Name&sortDesc=@(!Model.SortDesc)" style="color: inherit; text-decoration: none;">
-						Name
-					</a>
-				</th>
-				<th>
-					<a href="?sortBy=Email&sortDesc=@(!Model.SortDesc)" style="color: inherit; text-decoration: none;">
-						Email
-					</a>
-				</th>
+				<th>Name</th>
+				<th>Email</th>
 				<th>Role</th>
 				<th>Status</th>
 				<th style="width: 200px;">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
-			@if (!Model.Users.Any())
+
+			@foreach (var user in Model.Users)
 			{
 				<tr>
-					<td colspan="6" style="text-align: center; padding: 1rem; font-weight: 600;">
-						No users found.
-					</td>
-				</tr>
-			}
-			else
-			{
-				@foreach (var user in Model.Users)
-				{
-					<tr>
-						<td>@user.FullName</td>
-						<td>@user.Email</td>
-						<td>@user.Role</td>
-						<td>@(user.IsEmployed ? "Employed" : "Unemployed")</td>
-						<td>
+					<td>@user.FullName</td>
+					<td>@user.Email</td>
+					<td>@user.Role</td>
+					<td>@(user.IsEmployed ? "Employed" : "Unemployed")</td>
+					<td>
+						<a asp-controller="Admin" asp-action="UserDetails" asp-route-id="@user.Id"
+						   class="action-btn btn-edit" style="text-decoration:none; color:white;">View</a>
+						@if (user.Role != "Admin")
+						{
 							<form asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@user.Id" method="post" style="display:inline;">
 								<button type="submit" class="action-btn btn-delete"
 										onclick="return confirm('Are you sure you want to delete @user.FullName?');">
 									Delete
 								</button>
 							</form>
-						</td>
-					</tr>
-				}
+						}
+					</td>
+				</tr>
 			}
 		</tbody>
 	</table>
 </div>
+
+@section Scripts {
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+	<script>
+		$(document).ready(function () {
+			$('.admin-table').DataTable({
+				pageLength: 10,
+				order: [[0, "asc"]], // Sort by Name by default
+				searching: false,
+				columnDefs: [
+					{
+						targets: [3], // Status column
+						render: function (data, type) {
+							if (type === 'sort' || type === 'type') {
+								return data === "Employed" ? 1 : 0;
+							}
+							return data;
+						}
+					}
+				]
+			});
+		});
+	</script>
+}

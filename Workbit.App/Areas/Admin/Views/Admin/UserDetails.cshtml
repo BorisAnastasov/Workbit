@@ -1,0 +1,96 @@
+﻿@model UserDetailsViewModel
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<style>
+    .details-card {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        padding: 30px;
+        font-family: 'Nunito', sans-serif;
+    }
+
+        .details-card h2 {
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+    .details-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .details-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f1f1;
+            font-size: 1rem;
+        }
+
+            .details-list li:last-child {
+                border-bottom: none;
+            }
+
+    .details-label {
+        font-weight: 700;
+        color: var(--third);
+    }
+
+    .details-value {
+        color: var(--text-dark);
+    }
+
+    .btn-back {
+        display: inline-block;
+        margin-top: 20px;
+        background-color: var(--secondary);
+        color: #fff;
+        padding: 10px 18px;
+        font-weight: 600;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-back:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+        }
+</style>
+
+<div class="details-card">
+    <h2>User Details</h2>
+
+    <ul class="details-list">
+        <li>
+            <span class="details-label">Full Name:</span>
+            <span class="details-value">@Model.FullName</span>
+        </li>
+        <li>
+            <span class="details-label">Email:</span>
+            <span class="details-value">@Model.Email</span>
+        </li>
+        <li>
+            <span class="details-label">Phone:</span>
+            <span class="details-value">@Model.PhoneNumber</span>
+        </li>
+        <li>
+            <span class="details-label">Date of Birth:</span>
+            <span class="details-value">@Model.DateOfBirth.ToShortDateString()</span>
+        </li>
+        <li>
+            <span class="details-label">Role:</span>
+            <span class="details-value">@Model.Role</span>
+        </li>
+    </ul>
+
+    <a asp-area="Admin" asp-controller="Admin" asp-action="AllUsers" class="btn-back" style="color:white;">Back to Users</a>
+</div>

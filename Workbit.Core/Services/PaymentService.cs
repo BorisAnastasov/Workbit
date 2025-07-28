@@ -135,10 +135,8 @@ namespace Workbit.Core.Services
 		}
 
         public async Task<IEnumerable<PaymentReadDto>> GetAllByCeoIdAsync(
-    string ceoId,
-    DateTime? startDate = null,
-    DateTime? endDate = null,
-    string role = "All")
+                                            string ceoId,DateTime? startDate = null,
+                                            DateTime? endDate = null,string role = "All")
         {
             // Fetch all tracked payments (no AsNoTracking so lazy loading works)
             var payments = await repository.All<Payment>()
