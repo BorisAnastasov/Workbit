@@ -1,0 +1,76 @@
+﻿@model CompanyCreateDto
+@{
+    ViewData["Title"] = "Create Company";
+}
+
+<style>
+    .create-company-wrapper {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 2rem;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        font-family: 'Nunito', sans-serif;
+    }
+
+        .create-company-wrapper h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .form-control {
+        border-radius: 10px;
+        margin-bottom: 1rem;
+    }
+
+    .btn-create {
+        background-color: var(--secondary);
+        color: white;
+        font-weight: 700;
+        border-radius: 25px;
+        padding: 10px 20px;
+        width: 100%;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-create:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+        }
+</style>
+
+<div class="create-company-wrapper">
+    <h2>Create Company</h2>
+    <form asp-action="CreateCompany" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="CeoId" />
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Address" class="form-label"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ContactPhone" class="form-label"></label>
+            <input asp-for="ContactPhone" class="form-control" />
+            <span asp-validation-for="ContactPhone" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-create">Create Company</button>
+    </form>
+</div>

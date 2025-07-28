@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Workbit.App.Extensions;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Ceo;
 
@@ -6,45 +7,50 @@ namespace Workbit.App.Controllers
 {
     public class CeoController : Controller
     {
-		private readonly IEmployeeService _employeeService;
-		private readonly IManagerService _managerService;
-		private readonly IDepartmentService _departmentService;
-		private readonly IAttendanceService _attendanceService;
-		private readonly IPaymentService _paymentService;
+		private readonly IEmployeeService employeeService;
+		private readonly IManagerService managerService;
+		private readonly IDepartmentService departmentService;
+		private readonly IAttendanceService attendanceService;
+		private readonly IPaymentService paymentService;
+        private readonly ICeoService ceoService;
 
 		public CeoController(
 			IEmployeeService employeeService,
 			IManagerService managerService,
 			IDepartmentService departmentService,
 			IAttendanceService attendanceService,
-			IPaymentService paymentService)
+			IPaymentService paymentService,
+            ICeoService ceoService)
 		{
-			_employeeService = employeeService;
-			_managerService = managerService;
-			_departmentService = departmentService;
-			_attendanceService = attendanceService;
-			_paymentService = paymentService;
+			this.employeeService = employeeService;
+			this.managerService = managerService;
+			this.departmentService = departmentService;
+			this.attendanceService = attendanceService;
+			this.paymentService = paymentService;
+			this.ceoService = ceoService;
 		}
 
 		public async Task<IActionResult> Dashboard()
 		{
 			// Employees & Departments
-			var employees = await _employeeService.GetAllAsync();
-			var managers = await _managerService.GetAllAsync();
-			var departments = await _departmentService.GetAllAsync();
+			var employees = await employeeService.GetAllAsync();
+			var managers = await managerService.GetAllAsync();
+			var departments = await departmentService.GetAllAsync();
+
+			var ceo = await ceoService.GetByUserIdAsync(User.Id());
 
 			int totalEmployees = employees.Count();
 			int totalManagers = managers.Count();
 			int totalDepartments = departments.Count();
 
 			// Attendance Today
-			var todayAttendance = await _attendanceService.GetByDateAsync(DateTime.Today);
+			var todayAttendance = await attendanceService.GetByDateAsync(DateTime.Today);
 			int presentToday = todayAttendance.Count();
 			int absentToday = totalEmployees - presentToday;
 
 			// Payroll Snapshot (this month)
 			var payments = employees
-				.SelectMany(e => _paymentService.GetByEmployeeIdAsync(e.Id).Result) // Synchronous wait (replace with proper async aggregation later)
+				.SelectMany(e => paymentService.GetByEmployeeIdAsync(e.Id).Result) // Synchronous wait (replace with proper async aggregation later)
 				.Where(p => p.PaymentDate.Month == DateTime.Now.Month && p.PaymentDate.Year == DateTime.Now.Year)
 				.ToList();
 
@@ -54,6 +60,7 @@ namespace Workbit.App.Controllers
 			// Pass data to View
 			var viewModel = new CeoDashboardViewModel
 			{
+				CopmanyId = ceo.CompanyId!.Value,
 				TotalEmployees = totalEmployees,
 				TotalManagers = totalManagers,
 				TotalDepartments = totalDepartments,

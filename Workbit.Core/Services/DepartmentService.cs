@@ -31,11 +31,6 @@ namespace Workbit.Core.Services
 
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            await repository.DeleteAsync<Department>(id);
-            await repository.SaveChangesAsync();
-        }
 
         public async Task<bool> ExistByIdAsync(int id)
         {
@@ -89,6 +84,14 @@ namespace Workbit.Core.Services
 
             await repository.SaveChangesAsync();
 
+        }
+
+        public async Task DeleteDepartmentAsync(int id)
+        {
+            var department = await repository.GetByIdAsync<Department>(id);
+
+            repository.Delete(department);
+            await repository.SaveChangesAsync();
         }
     }
 }

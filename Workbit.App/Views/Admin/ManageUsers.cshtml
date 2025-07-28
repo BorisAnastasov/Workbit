@@ -1,0 +1,189 @@
+﻿@model Workbit.Core.Models.Admin.AdminUserListViewModel
+@{
+	ViewData["Title"] = "Manage Users";
+}
+
+<style>
+	.admin-wrapper {
+		padding: 40px;
+		background-color: var(--background);
+		min-height: calc(100vh - 120px);
+		font-family: 'Nunito', sans-serif;
+	}
+
+	.admin-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-wrap: wrap;
+		margin-bottom: 30px;
+	}
+
+	.filter-bar {
+		display: flex;
+		gap: 15px;
+		flex-wrap: wrap;
+	}
+
+		.filter-bar input,
+		.filter-bar select {
+			border-radius: 10px;
+			padding: 6px 12px;
+			border: 1px solid #ddd;
+			font-size: 1rem;
+			min-width: 180px;
+		}
+
+	.btn-filter {
+		background-color: var(--secondary);
+		color: #fff;
+		font-weight: 600;
+		padding: 6px 16px;
+		border-radius: 12px;
+		border: none;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+	}
+
+		.btn-filter:hover {
+			background-color: var(--primary);
+			transform: translateY(-2px);
+		}
+
+	.admin-table {
+		width: 100%;
+		border-collapse: collapse;
+		background: #fff;
+		border-radius: 14px;
+		overflow: hidden;
+		box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+		margin-top: 20px;
+		font-size: 1rem;
+	}
+
+		.admin-table th, .admin-table td {
+			padding: 0.8rem 1rem;
+			text-align: left;
+			border-bottom: 1px solid #f1f1f1;
+		}
+
+		.admin-table th {
+			background-color: var(--secondary);
+			color: #fff;
+			font-weight: 600;
+			cursor: pointer;
+		}
+
+		.admin-table tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+		.admin-table tr:hover {
+			background-color: #eef8fa;
+		}
+
+	.action-btn {
+		padding: 4px 12px;
+		margin-right: 5px;
+		font-size: 0.85rem;
+		border-radius: 16px;
+		font-weight: 600;
+		cursor: pointer;
+		border: none;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+	}
+
+	.btn-edit {
+		background-color: var(--secondary);
+		color: #fff;
+	}
+
+		.btn-edit:hover {
+			background-color: var(--primary);
+			transform: translateY(-2px);
+		}
+
+	.btn-delete {
+		background-color: #e63946;
+		color: #fff;
+	}
+
+		.btn-delete:hover {
+			background-color: #c1121f;
+			transform: translateY(-2px);
+		}
+</style>
+
+<div class="admin-wrapper">
+	<div class="admin-header">
+		<h2 style="color: var(--primary); font-weight: 800;">Manage Users</h2>
+
+		<!-- Filter & Search -->
+		<form method="get" class="filter-bar">
+			<input type="text" name="search" value="@Model.SearchTerm" placeholder="Search by name or email" />
+
+			<!-- Role Filter -->
+			<select name="role">
+				<option value="All" selected="@(Model.SelectedRole == null || Model.SelectedRole == "All")">All Roles</option>
+				<option value="Employee" selected="@(Model.SelectedRole == "Employee")">Employee</option>
+				<option value="Manager" selected="@(Model.SelectedRole == "Manager")">Manager</option>
+				<option value="CEO" selected="@(Model.SelectedRole == "Ceo")">Ceo</option>
+				<option value="Admin" selected="@(Model.SelectedRole == "Admin")">Admin</option>
+			</select>
+
+
+			<button type="submit" class="btn-filter">Apply</button>
+		</form>
+	</div>
+
+	<!-- Users Table -->
+	<table class="admin-table">
+		<thead>
+			<tr>
+				<th>
+					<a href="?sortBy=Name&sortDesc=@(!Model.SortDesc)" style="color: inherit; text-decoration: none;">
+						Name
+					</a>
+				</th>
+				<th>
+					<a href="?sortBy=Email&sortDesc=@(!Model.SortDesc)" style="color: inherit; text-decoration: none;">
+						Email
+					</a>
+				</th>
+				<th>Role</th>
+				<th>Status</th>
+				<th style="width: 200px;">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			@if (!Model.Users.Any())
+			{
+				<tr>
+					<td colspan="6" style="text-align: center; padding: 1rem; font-weight: 600;">
+						No users found.
+					</td>
+				</tr>
+			}
+			else
+			{
+				@foreach (var user in Model.Users)
+				{
+					<tr>
+						<td>@user.FullName</td>
+						<td>@user.Email</td>
+						<td>@user.Role</td>
+						<td>@(user.IsEmployed ? "Employed" : "Unemployed")</td>
+						<td>
+							<form asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@user.Id" method="post" style="display:inline;">
+								<button type="submit" class="action-btn btn-delete"
+										onclick="return confirm('Are you sure you want to delete @user.FullName?');">
+									Delete
+								</button>
+							</form>
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
+</div>

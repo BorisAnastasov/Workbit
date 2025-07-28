@@ -35,6 +35,36 @@ namespace Workbit.Core.Services
 
         public async Task DeleteAsync(int id)
         {
+            var company = await repository.All<Company>()
+                            .Include(c => c.Departments)
+                            .ThenInclude(d => d.Managers)
+                            .Include(c => c.Departments)
+                            .ThenInclude(d => d.Jobs)
+                            .ThenInclude(j => j.Employees)
+                            .FirstOrDefaultAsync(c => c.Id == id);
+
+            foreach (var manager in company.Departments.SelectMany(d => d.Managers))
+            {
+                manager.DepartmentId = null;
+            }
+
+            // Unassign all Employees (set JobId to null)
+            foreach (var employee in company.Departments.SelectMany(d => d.Jobs.SelectMany(j => j.Employees)))
+            {
+                employee.JobId = null;
+            }
+
+            var userIds = company.Departments
+                    .SelectMany(d => d.Managers.Select(m => m.ApplicationUserId))
+                    .Concat(company.Departments.SelectMany(d => d.Jobs.SelectMany(j => j.Employees.Select(e => e.ApplicationUserId))))
+                    .Distinct()
+                    .ToList();
+
+            var attendanceEntries = repository.All<AttendanceEntry>()
+                                .Where(a => userIds.Contains(a.UserId))
+                                .ToList();
+            repository.DeleteRange(attendanceEntries);
+
             await repository.DeleteAsync<Company>(id);
             await repository.SaveChangesAsync();
         }

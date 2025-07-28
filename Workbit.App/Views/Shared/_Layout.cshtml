@@ -179,6 +179,12 @@
 								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "HistoryForEmployee" ? "active" : "")" asp-controller="Payment" asp-action="HistoryForEmployee">Payment</a>
 							</li>
 						}
+						@if (User.IsAdmin())
+						{
+							<li class="nav-item">
+								<a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "ManageUsers" ? "active" : "")" asp-controller="Admin" asp-action="ManageUsers">Users</a>
+							</li>
+						}
 					</ul>
 					<div class="d-flex">
 						@if (User.IsUser())

@@ -16,7 +16,8 @@ namespace Workbit.Core.Interfaces
         Task UpdateAsync(DepartmentUpdateDto dto);
 
         // Delete
-        Task DeleteAsync(int id);
+
+        Task DeleteDepartmentAsync(int id);
 
         //Helpers
         Task<bool> ExistByIdAsync(int id);

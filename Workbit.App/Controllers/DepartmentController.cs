@@ -71,6 +71,22 @@ namespace Workbit.App.Controllers
                 return View(model);
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteDepartment(int id)
+        {
+            try
+            {
+                await departmentService.DeleteDepartmentAsync(id);
+
+                return RedirectToAction(nameof(AllDepartments));
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error500", "Error");
+            }
+        }
     }
 }
 

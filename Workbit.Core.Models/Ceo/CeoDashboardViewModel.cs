@@ -2,7 +2,8 @@
 {
 	public class CeoDashboardViewModel
 	{
-		public int TotalEmployees { get; set; }
+        public int CopmanyId { get; set; }
+        public int TotalEmployees { get; set; }
 		public int TotalManagers { get; set; }
 		public int TotalDepartments { get; set; }
 		public int PresentToday { get; set; }
