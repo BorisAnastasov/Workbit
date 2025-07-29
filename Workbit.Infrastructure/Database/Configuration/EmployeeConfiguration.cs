@@ -9,17 +9,6 @@ namespace Workbit.Infrastructure.Database.Configuration
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
-            builder.HasOne(e => e.ApplicationUser)
-                        .WithOne(u => u.Employee)  // explicitly use the navigation
-                    .HasForeignKey<Employee>(e => e.ApplicationUserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(e => e.Job)
-                   .WithMany(j => j.Employees)
-                   .HasForeignKey(e => e.JobId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
-
             builder.HasData(
                 new Employee { ApplicationUserId = Guid.Parse("f92e7b0f-5123-40c8-9d28-8834a3c93005"), JobId = 1, Level = JobLevel.Mid },     // Alice Watson
                 new Employee { ApplicationUserId = Guid.Parse("2b06417a-1460-4b10-8454-51069dfb2d06"), JobId = 1, Level = JobLevel.Junior }, // Bob Thomas

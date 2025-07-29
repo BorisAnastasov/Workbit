@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 using Workbit.Infrastructure.Database.Configuration;
 using Workbit.Infrastructure.Database.Entities;
 using Workbit.Infrastructure.Database.Entities.Account;
+using Workbit.Infrastructure.Extensions;
 
 namespace Workbit.Infrastructure.Database
 {
@@ -29,53 +30,7 @@ namespace Workbit.Infrastructure.Database
         {
             base.OnModelCreating(builder);
 
-            // Department -> Budgets (Cascade: budgets are deleted when department is deleted)
-            builder.Entity<Department>()
-                .HasMany(d => d.DepartmentBudgets)
-                .WithOne(b => b.Department)
-                .HasForeignKey(b => b.DepartmentId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Department -> Jobs (Cascade: jobs are deleted when department is deleted)
-            builder.Entity<Department>()
-                .HasMany(d => d.Jobs)
-                .WithOne(j => j.Department)
-                .HasForeignKey(j => j.DepartmentId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Department -> Managers (SetNull: managers remain, department is set to NULL)
-            builder.Entity<Department>()
-                .HasMany(d => d.Managers)
-                .WithOne(m => m.Department)
-                .HasForeignKey(m => m.DepartmentId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            // Job -> Employees (SetNull: employees remain, job is set to NULL)
-            builder.Entity<Job>()
-                .HasMany(j => j.Employees)
-                .WithOne(e => e.Job)
-                .HasForeignKey(e => e.JobId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            // ApplicationUser -> Payments (Cascade: payments deleted with user)
-            builder.Entity<ApplicationUser>()
-                .HasMany(u => u.Payments)
-                .WithOne(p => p.Recipient)
-                .HasForeignKey(p => p.RecipientId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // ApplicationUser -> AttendanceEntries (Cascade: attendance deleted with user)
-            builder.Entity<ApplicationUser>()
-                .HasMany(u => u.AttendanceEntries)
-                .WithOne(a => a.User)
-                .HasForeignKey(a => a.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<Company>()
-                .HasMany(c => c.Departments)
-                .WithOne(d => d.Company)
-                .HasForeignKey(d => d.CompanyId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.ConfigureDeleteBehaviourEntities();
 
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new CompanyConfiguration());

@@ -9,13 +9,6 @@ namespace Workbit.Infrastructure.Database.Configuration
     {
         public void Configure(EntityTypeBuilder<AttendanceEntry> builder)
         {
-            builder.HasKey(a => a.Id);
-
-            builder.HasOne(a => a.User)
-                   .WithMany(u => u.AttendanceEntries)
-                   .HasForeignKey(a => a.UserId)
-                   .OnDelete(DeleteBehavior.Cascade);
-
             builder.HasData(SeedAttendanceEntries());
         }
 

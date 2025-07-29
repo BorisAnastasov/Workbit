@@ -8,9 +8,6 @@ namespace Workbit.Infrastructure.Database.Configuration
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
-            builder.HasOne(p => p.Recipient)
-                   .WithMany(e => e.Payments)
-                   .HasForeignKey(p => p.RecipientId);
 
             builder.HasData(SeedPayments());
         }

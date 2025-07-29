@@ -164,7 +164,9 @@
 					<td>@user.FullName</td>
 					<td>@user.Email</td>
 					<td>@user.Role</td>
-					<td>@(user.IsEmployed ? "Employed" : "Unemployed")</td>
+					<td>
+						@(user.Role!="Admin" ? (user.IsEmployed ? "Employed" : "Unemployed") : "--")
+						</td>
 					<td>
 						<a asp-controller="Admin" asp-action="UserDetails" asp-route-id="@user.Id"
 						   class="action-btn btn-edit" style="text-decoration:none; color:white;">View</a>

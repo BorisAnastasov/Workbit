@@ -55,7 +55,6 @@ namespace Workbit.Core.Services
                     FullName = $"{user.FirstName} {user.LastName}",
                     Email = user.Email!,
                     Role = userRole,
-                    Department = user.Employee?.Job?.Department?.Name,
                     IsEmployed = user.Employee?.Job != null || user.Manager?.Department != null || user.Ceo != null
                 });
             }
@@ -67,23 +66,12 @@ namespace Workbit.Core.Services
                 Users = userDtos
             };
         }
-
         public async Task DeleteUserAsync(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
 
-            if (user.Employee != null)
-                repository.Delete(user.Employee);
-
-            if (user.Manager != null)
-                repository.Delete(user.Manager);
-
-            if (user.Ceo != null)
-                repository.Delete(user.Ceo);
-
-            await repository.SaveChangesAsync();
-
             await userManager.DeleteAsync(user);
+            await repository.SaveChangesAsync();
         }
 
 		public async Task<bool> UserExistsById(string userId)

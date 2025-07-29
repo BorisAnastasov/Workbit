@@ -8,11 +8,6 @@ namespace Workbit.Infrastructure.Database.Configuration
 	{
 		public void Configure(EntityTypeBuilder<DepartmentBudget> builder)
 		{
-            builder.HasOne(db => db.Department)
-                   .WithMany(d=>d.DepartmentBudgets) // Assuming Department does not have a collection of budgets
-                   .HasForeignKey(db => db.DepartmentId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasData(
 				new DepartmentBudget
 				{

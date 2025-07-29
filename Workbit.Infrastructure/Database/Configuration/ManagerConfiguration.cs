@@ -8,12 +8,6 @@ namespace Workbit.Infrastructure.Database.Configuration
     {
         public void Configure(EntityTypeBuilder<Manager> builder)
         {
-            // Each manager belongs to a department (no join table)
-            builder.HasOne(m => m.Department)
-                   .WithMany(d => d.Managers)
-                   .HasForeignKey(m => m.DepartmentId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasData(
                 new Manager
                 {

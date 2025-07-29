@@ -8,10 +8,6 @@ namespace Workbit.Infrastructure.Database.Configuration
     {
         public void Configure(EntityTypeBuilder<Department> builder)
         {
-            builder.HasOne(d => d.Company)
-                   .WithMany(c => c.Departments)
-                   .HasForeignKey(d => d.CompanyId)
-                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(
                 new Department
