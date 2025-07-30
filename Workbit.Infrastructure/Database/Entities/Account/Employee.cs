@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Workbit.Infrastructure.Attributes;
 using Workbit.Infrastructure.Enumerations;
 using Workbit.Infrastructure.Extensions;
 
@@ -13,10 +14,13 @@ namespace Workbit.Infrastructure.Database.Entities.Account
 
 		[ForeignKey(nameof(Job))]
         public int? JobId { get; set; }
-        public virtual Job Job { get; set; }
+        public virtual Job? Job { get; set; }
 
 		[Required]
 		public JobLevel Level { get; set; } = JobLevel.Unemployed;
+
+        [ValidIban]
+        public string IBAN { get; set; } = null!;
 
         [NotMapped]
         public decimal EffectiveSalary =>

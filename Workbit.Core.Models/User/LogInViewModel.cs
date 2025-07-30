@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Workbit.Core.Models.Account
+namespace Workbit.Core.Models.User
 {
     public class LogInViewModel
     {

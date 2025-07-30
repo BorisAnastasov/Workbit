@@ -1,4 +1,4 @@
-﻿@model Workbit.Core.Models.Employee.EmployeeDashboardViewModel
+﻿@model Workbit.Core.Models.Employee.EmployeeProfileViewModel
 @{
     ViewData["Title"] = "Employee Dashboard";
     var isCheckedIn = ViewBag.IsCheckedIn as bool? ?? false;
@@ -31,7 +31,6 @@
             color: var(--text-dark);
         }
 
-    /* Leave Department Button - top right */
     .leave-btn {
         position: absolute;
         top: 0;
@@ -54,7 +53,6 @@
             color: #fff;
         }
 
-    /* Status Message */
     .status-message {
         font-size: 1rem;
         font-weight: 600;
@@ -62,7 +60,6 @@
         color: var(--secondary);
     }
 
-    /* Check-in / Check-out Buttons */
     .check-buttons {
         margin-top: 20px;
         display: flex;
@@ -102,7 +99,23 @@
             transform: translateY(-3px);
         }
 
-    /* Summary Cards Grid */
+    .month-selector {
+        margin: 20px auto;
+        text-align: center;
+    }
+
+        .month-selector label {
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .month-selector select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
     .summary-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -138,7 +151,6 @@
             margin: 0;
         }
 
-    /* Recent Payments Table */
     .section-card {
         background: #fff;
         padding: 30px;
@@ -189,16 +201,33 @@
 
         <h2>Welcome, @Model.FullName</h2>
         <p>
-            Department: <strong>@Model.DepartmentName</strong> | Job: <strong>@Model.JobTitle</strong> (@Model.Level)
+            Department: <strong>@Model.DepartmentName</strong> |
+            Job: <strong>@Model.JobTitle</strong> (@Model.Level) |
+            Country: <strong>@Model.Country</strong>
         </p>
 
-        <!-- Check-in status message -->
+        <!-- Month Selector -->
+        <div class="month-selector">
+            <form method="get" asp-action="EmployeeDashboard" asp-controller="Employee">
+                <label for="month">Select Month:</label>
+                <select name="month" id="month" onchange="this.form.submit()">
+                    @for (int m = 1; m <= 12; m++)
+                    {
+                        <option value="@m" selected="@(Model.SelectedMonth == m)">
+                            @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)
+                        </option>
+                    }
+                </select>
+            </form>
+        </div>
+
+        <!-- Check-in Status -->
         @if (!string.IsNullOrEmpty(checkInStatus))
         {
             <p class="status-message">@checkInStatus</p>
         }
 
-        <!-- Check-In / Check-Out Buttons -->
+        <!-- Check-in / Check-out Buttons -->
         <div class="check-buttons">
             @if (!isCheckedIn)
             {
@@ -221,55 +250,24 @@
     <!-- Summary Cards -->
     <div class="summary-grid">
         <div class="summary-card">
-            <h4>Days Present (This Month)</h4>
+            <h4>Days Present (@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth))</h4>
             <p>@Model.TotalPresentDays</p>
         </div>
         <div class="summary-card">
-            <h4>Days Absent (This Month)</h4>
+            <h4>Days Absent (@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth))</h4>
             <p>@Model.TotalAbsentDays</p>
         </div>
         <div class="summary-card">
-            <h4>Hours Worked (This Month)</h4>
+            <h4>Hours Worked (@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth))</h4>
             <p>@Model.HoursWorkedThisMonth.ToString("F1")</p>
         </div>
         <div class="summary-card">
-            <h4>Total Paid (This Month)</h4>
+            <h4>Total Paid (@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth))</h4>
             <p>$@Model.TotalPaidThisMonth.ToString("F2")</p>
         </div>
-    </div>
-
-    <!-- Recent Payments Section -->
-    <div class="section-card">
-        <h3>Recent Payments</h3>
-        @if (Model.RecentPayments.Any())
-        {
-            <table class="payments-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Salary</th>
-                        <th>Bonus</th>
-                        <th>Taxes</th>
-                        <th>Net Pay</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var payment in Model.RecentPayments)
-                    {
-                        <tr>
-                            <td>@payment.PaymentDate.ToString("MMM dd, yyyy")</td>
-                            <td>$@payment.Salary.ToString("F2")</td>
-                            <td>$@payment.Bonus.ToString("F2")</td>
-                            <td>$@payment.Taxes.ToString("F2")</td>
-                            <td><strong>$@payment.NetPay.ToString("F2")</strong></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p class="text-center text-muted" style="margin-top: 15px;">No payments recorded yet.</p>
-        }
+        <div class="summary-card">
+            <h4>Working Days (@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth))</h4>
+            <p>@(Model.WorkingDays > 0 ? Model.WorkingDays.ToString() : "N/A")</p>
+        </div>
     </div>
 </div>

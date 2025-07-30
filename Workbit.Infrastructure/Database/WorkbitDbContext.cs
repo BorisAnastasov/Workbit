@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 using Workbit.Infrastructure.Database.Configuration;
 using Workbit.Infrastructure.Database.Entities;
 using Workbit.Infrastructure.Database.Entities.Account;
@@ -9,7 +8,7 @@ using Workbit.Infrastructure.Extensions;
 
 namespace Workbit.Infrastructure.Database
 {
-    public class WorkbitDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+	public class WorkbitDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public WorkbitDbContext(DbContextOptions<WorkbitDbContext> options)
             : base(options)
@@ -25,6 +24,7 @@ namespace Workbit.Infrastructure.Database
         public virtual DbSet<AttendanceEntry> AttendanceEntries { get; set; } = null!;
         public virtual DbSet<Company> Companies { get; set; } = null!;
         public virtual DbSet<DepartmentBudget> DepartmentBudgets { get; set; } = null!;
+        public virtual DbSet<Country> Countries { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,6 +32,7 @@ namespace Workbit.Infrastructure.Database
 
             builder.ConfigureDeleteBehaviourEntities();
 
+            builder.ApplyConfiguration(new CountryConfiguration());
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new CompanyConfiguration());
             builder.ApplyConfiguration(new CeoConfiguration());

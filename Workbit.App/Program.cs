@@ -1,6 +1,6 @@
 using Workbit.Web.Extensions;
 using Workbit.App.Extensions;
-
+using IbanNet.DependencyInjection.ServiceProvider;
 namespace Workbit.App
 {
 	public class Program
@@ -19,16 +19,15 @@ namespace Workbit.App
 
 			builder.Services.AddRazorPages();
 
-			var app = builder.Build();
+            builder.Services.AddIbanNet();
+
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 
-				app.UseExceptionHandler("/Error/Error500");
-
-				app.UseStatusCodePagesWithReExecute("/Error/Error{0}");
 			}
 			else
 			{

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Workbit.Infrastructure.Database;
 
@@ -11,9 +12,11 @@ using Workbit.Infrastructure.Database;
 namespace Workbit.Infrastructure.Migrations
 {
     [DbContext(typeof(WorkbitDbContext))]
-    partial class WorkbitDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250730200851_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

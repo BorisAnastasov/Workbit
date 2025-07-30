@@ -22,6 +22,8 @@ namespace Workbit.App.Extensions
 			services.AddScoped<IPaymentService, PaymentService>();
 			services.AddScoped<IDepartmentBudgetService, DepartmentBudgetService>();
 			services.AddScoped<IAdminService, AdminService>();
+			services.AddScoped<ICountryService, CountryService>();
+			services.AddScoped<IUserService, UserService>();
 
 			services.ConfigureApplicationCookie(options =>
 			{

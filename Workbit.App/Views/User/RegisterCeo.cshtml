@@ -143,6 +143,19 @@
                 </div>
             </div>
 
+            <!-- Country -->
+            <div class="input-group">
+                <i class="fa-solid fa-globe"></i>
+                <div class="form-floating">
+                    <select asp-for="CountryCode" class="form-control"
+                            asp-items="@(new SelectList(Model.Countries, "Code", "Name"))">
+                        <option value="">-- Select Country --</option>
+                    </select>
+                    <label asp-for="CountryCode"></label>
+                    <span asp-validation-for="CountryCode" class="text-danger" style="font-size: 0.9rem;"></span>
+                </div>
+            </div>
+
             <!-- Date of Birth -->
             <div class="input-group">
                 <i class="fa-regular fa-calendar"></i>

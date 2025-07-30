@@ -28,31 +28,17 @@ namespace Workbit.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "Countries",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Code = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CurrencyCode = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Continent = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.PrimaryKey("PK_Countries", x => x.Code);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,6 +59,41 @@ namespace Workbit.Infrastructure.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    CountryCode = table.Column<string>(type: "nvarchar(2)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Countries_CountryCode",
+                        column: x => x.CountryCode,
+                        principalTable: "Countries",
+                        principalColumn: "Code",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -242,7 +263,7 @@ namespace Workbit.Infrastructure.Migrations
                         column: x => x.CeoId,
                         principalTable: "Ceos",
                         principalColumn: "ApplicationUserId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -286,7 +307,7 @@ namespace Workbit.Infrastructure.Migrations
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -316,7 +337,8 @@ namespace Workbit.Infrastructure.Migrations
                 columns: table => new
                 {
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true)
+                    DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    IBAN = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -331,8 +353,7 @@ namespace Workbit.Infrastructure.Migrations
                         name: "FK_Managers_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -341,7 +362,8 @@ namespace Workbit.Infrastructure.Migrations
                 {
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     JobId = table.Column<int>(type: "int", nullable: true),
-                    Level = table.Column<int>(type: "int", nullable: false)
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    IBAN = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -356,28 +378,283 @@ namespace Workbit.Infrastructure.Migrations
                         name: "FK_Employees_Jobs_JobId",
                         column: x => x.JobId,
                         principalTable: "Jobs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Countries",
+                columns: new[] { "Code", "Continent", "CurrencyCode", "Name" },
+                values: new object[,]
+                {
+                    { "AD", "Europe", "EUR", "Andorra" },
+                    { "AE", "Asia", "AED", "United Arab Emirates" },
+                    { "AF", "Asia", "AFN", "Afghanistan" },
+                    { "AG", "North America", "XCD", "Antigua and Barbuda" },
+                    { "AI", "North America", "XCD", "Anguilla" },
+                    { "AL", "Europe", "ALL", "Albania" },
+                    { "AM", "Asia", "AMD", "Armenia" },
+                    { "AO", "Africa", "AOA", "Angola" },
+                    { "AQ", "Antarctica", "", "Antarctica" },
+                    { "AR", "South America", "ARS", "Argentina" },
+                    { "AS", "Oceania", "USD", "American Samoa" },
+                    { "AT", "Europe", "EUR", "Austria" },
+                    { "AU", "Oceania", "AUD", "Australia" },
+                    { "AW", "North America", "AWG", "Aruba" },
+                    { "AX", "Europe", "EUR", "Åland Islands" },
+                    { "AZ", "Asia", "AZN", "Azerbaijan" },
+                    { "BA", "Europe", "BAM", "Bosnia and Herzegovina" },
+                    { "BB", "North America", "BBD", "Barbados" },
+                    { "BD", "Asia", "BDT", "Bangladesh" },
+                    { "BE", "Europe", "EUR", "Belgium" },
+                    { "BF", "Africa", "XOF", "Burkina Faso" },
+                    { "BG", "Europe", "BGN", "Bulgaria" },
+                    { "BH", "Asia", "BHD", "Bahrain" },
+                    { "BI", "Africa", "BIF", "Burundi" },
+                    { "BJ", "Africa", "XOF", "Benin" },
+                    { "BL", "North America", "EUR", "Saint Barthélemy" },
+                    { "BM", "North America", "BMD", "Bermuda" },
+                    { "BN", "Asia", "BND", "Brunei Darussalam" },
+                    { "BO", "South America", "BOB", "Bolivia" },
+                    { "BQ", "North America", "USD", "Bonaire, Sint Eustatius and Saba" },
+                    { "BR", "South America", "BRL", "Brazil" },
+                    { "BS", "North America", "BSD", "Bahamas" },
+                    { "BT", "Asia", "BTN", "Bhutan" },
+                    { "BV", "Antarctica", "NOK", "Bouvet Island" },
+                    { "BW", "Africa", "BWP", "Botswana" },
+                    { "BY", "Europe", "BYN", "Belarus" },
+                    { "BZ", "North America", "BZD", "Belize" },
+                    { "CA", "North America", "CAD", "Canada" },
+                    { "CC", "Oceania", "AUD", "Cocos (Keeling) Islands" },
+                    { "CD", "Africa", "CDF", "Congo (Democratic Republic)" },
+                    { "CF", "Africa", "XAF", "Central African Republic" },
+                    { "CG", "Africa", "XAF", "Congo" },
+                    { "CH", "Europe", "CHF", "Switzerland" },
+                    { "CI", "Africa", "XOF", "Côte d'Ivoire" },
+                    { "CK", "Oceania", "NZD", "Cook Islands" },
+                    { "CL", "South America", "CLP", "Chile" },
+                    { "CM", "Africa", "XAF", "Cameroon" },
+                    { "CN", "Asia", "CNY", "China" },
+                    { "CO", "South America", "COP", "Colombia" },
+                    { "CR", "North America", "CRC", "Costa Rica" },
+                    { "CU", "North America", "CUP", "Cuba" },
+                    { "CV", "Africa", "CVE", "Cabo Verde" },
+                    { "CW", "North America", "ANG", "Curaçao" },
+                    { "CX", "Oceania", "AUD", "Christmas Island" },
+                    { "CY", "Europe", "EUR", "Cyprus" },
+                    { "CZ", "Europe", "CZK", "Czechia" },
+                    { "DE", "Europe", "EUR", "Germany" },
+                    { "DJ", "Africa", "DJF", "Djibouti" },
+                    { "DK", "Europe", "DKK", "Denmark" },
+                    { "DM", "North America", "XCD", "Dominica" },
+                    { "DO", "North America", "DOP", "Dominican Republic" },
+                    { "DZ", "Africa", "DZD", "Algeria" },
+                    { "EC", "South America", "USD", "Ecuador" },
+                    { "EE", "Europe", "EUR", "Estonia" },
+                    { "EG", "Africa", "EGP", "Egypt" },
+                    { "EH", "Africa", "MAD", "Western Sahara" },
+                    { "ER", "Africa", "ERN", "Eritrea" },
+                    { "ES", "Europe", "EUR", "Spain" },
+                    { "ET", "Africa", "ETB", "Ethiopia" },
+                    { "FI", "Europe", "EUR", "Finland" },
+                    { "FJ", "Oceania", "FJD", "Fiji" },
+                    { "FK", "South America", "FKP", "Falkland Islands (Malvinas)" },
+                    { "FM", "Oceania", "USD", "Micronesia (Federated States)" },
+                    { "FO", "Europe", "DKK", "Faroe Islands" },
+                    { "FR", "Europe", "EUR", "France" },
+                    { "GA", "Africa", "XAF", "Gabon" },
+                    { "GB", "Europe", "GBP", "United Kingdom" },
+                    { "GD", "North America", "XCD", "Grenada" },
+                    { "GE", "Asia", "GEL", "Georgia" },
+                    { "GF", "South America", "EUR", "French Guiana" },
+                    { "GG", "Europe", "GBP", "Guernsey" },
+                    { "GH", "Africa", "GHS", "Ghana" },
+                    { "GI", "Europe", "GIP", "Gibraltar" },
+                    { "GL", "North America", "DKK", "Greenland" },
+                    { "GM", "Africa", "GMD", "Gambia" },
+                    { "GN", "Africa", "GNF", "Guinea" },
+                    { "GP", "North America", "EUR", "Guadeloupe" },
+                    { "GQ", "Africa", "XAF", "Equatorial Guinea" },
+                    { "GR", "Europe", "EUR", "Greece" },
+                    { "GS", "Antarctica", "GBP", "South Georgia and the South Sandwich Islands" },
+                    { "GT", "North America", "GTQ", "Guatemala" },
+                    { "GU", "Oceania", "USD", "Guam" },
+                    { "GW", "Africa", "XOF", "Guinea-Bissau" },
+                    { "GY", "South America", "GYD", "Guyana" },
+                    { "HK", "Asia", "HKD", "Hong Kong" },
+                    { "HM", "Antarctica", "AUD", "Heard Island and McDonald Islands" },
+                    { "HN", "North America", "HNL", "Honduras" },
+                    { "HR", "Europe", "EUR", "Croatia" },
+                    { "HT", "North America", "HTG", "Haiti" },
+                    { "HU", "Europe", "HUF", "Hungary" },
+                    { "ID", "Asia", "IDR", "Indonesia" },
+                    { "IE", "Europe", "EUR", "Ireland" },
+                    { "IL", "Asia", "ILS", "Israel" },
+                    { "IM", "Europe", "GBP", "Isle of Man" },
+                    { "IN", "Asia", "INR", "India" },
+                    { "IO", "Asia", "USD", "British Indian Ocean Territory" },
+                    { "IQ", "Asia", "IQD", "Iraq" },
+                    { "IR", "Asia", "IRR", "Iran" },
+                    { "IS", "Europe", "ISK", "Iceland" },
+                    { "IT", "Europe", "EUR", "Italy" },
+                    { "JE", "Europe", "GBP", "Jersey" },
+                    { "JM", "North America", "JMD", "Jamaica" },
+                    { "JO", "Asia", "JOD", "Jordan" },
+                    { "JP", "Asia", "JPY", "Japan" },
+                    { "KE", "Africa", "KES", "Kenya" },
+                    { "KG", "Asia", "KGS", "Kyrgyzstan" },
+                    { "KH", "Asia", "KHR", "Cambodia" },
+                    { "KI", "Oceania", "AUD", "Kiribati" },
+                    { "KM", "Africa", "KMF", "Comoros" },
+                    { "KN", "North America", "XCD", "Saint Kitts and Nevis" },
+                    { "KP", "Asia", "KPW", "North Korea" },
+                    { "KR", "Asia", "KRW", "South Korea" },
+                    { "KW", "Asia", "KWD", "Kuwait" },
+                    { "KY", "North America", "KYD", "Cayman Islands" },
+                    { "KZ", "Asia", "KZT", "Kazakhstan" },
+                    { "LA", "Asia", "LAK", "Laos" },
+                    { "LB", "Asia", "LBP", "Lebanon" },
+                    { "LC", "North America", "XCD", "Saint Lucia" },
+                    { "LI", "Europe", "CHF", "Liechtenstein" },
+                    { "LK", "Asia", "LKR", "Sri Lanka" },
+                    { "LR", "Africa", "LRD", "Liberia" },
+                    { "LS", "Africa", "LSL", "Lesotho" },
+                    { "LT", "Europe", "EUR", "Lithuania" },
+                    { "LU", "Europe", "EUR", "Luxembourg" },
+                    { "LV", "Europe", "EUR", "Latvia" },
+                    { "LY", "Africa", "LYD", "Libya" },
+                    { "MA", "Africa", "MAD", "Morocco" },
+                    { "MC", "Europe", "EUR", "Monaco" },
+                    { "MD", "Europe", "MDL", "Moldova" },
+                    { "ME", "Europe", "EUR", "Montenegro" },
+                    { "MF", "North America", "EUR", "Saint Martin (French part)" },
+                    { "MG", "Africa", "MGA", "Madagascar" },
+                    { "MH", "Oceania", "USD", "Marshall Islands" },
+                    { "MK", "Europe", "MKD", "North Macedonia" },
+                    { "ML", "Africa", "XOF", "Mali" },
+                    { "MM", "Asia", "MMK", "Myanmar" },
+                    { "MN", "Asia", "MNT", "Mongolia" },
+                    { "MO", "Asia", "MOP", "Macao" },
+                    { "MP", "Oceania", "USD", "Northern Mariana Islands" },
+                    { "MQ", "North America", "EUR", "Martinique" },
+                    { "MR", "Africa", "MRU", "Mauritania" },
+                    { "MS", "North America", "XCD", "Montserrat" },
+                    { "MT", "Europe", "EUR", "Malta" },
+                    { "MU", "Africa", "MUR", "Mauritius" },
+                    { "MV", "Asia", "MVR", "Maldives" },
+                    { "MW", "Africa", "MWK", "Malawi" },
+                    { "MX", "North America", "MXN", "Mexico" },
+                    { "MY", "Asia", "MYR", "Malaysia" },
+                    { "MZ", "Africa", "MZN", "Mozambique" },
+                    { "NA", "Africa", "NAD", "Namibia" },
+                    { "NC", "Oceania", "XPF", "New Caledonia" },
+                    { "NE", "Africa", "XOF", "Niger" },
+                    { "NF", "Oceania", "AUD", "Norfolk Island" },
+                    { "NG", "Africa", "NGN", "Nigeria" },
+                    { "NI", "North America", "NIO", "Nicaragua" },
+                    { "NL", "Europe", "EUR", "Netherlands" },
+                    { "NO", "Europe", "NOK", "Norway" },
+                    { "NP", "Asia", "NPR", "Nepal" },
+                    { "NR", "Oceania", "AUD", "Nauru" },
+                    { "NU", "Oceania", "NZD", "Niue" },
+                    { "NZ", "Oceania", "NZD", "New Zealand" },
+                    { "OM", "Asia", "OMR", "Oman" },
+                    { "PA", "North America", "PAB", "Panama" },
+                    { "PE", "South America", "PEN", "Peru" },
+                    { "PF", "Oceania", "XPF", "French Polynesia" },
+                    { "PG", "Oceania", "PGK", "Papua New Guinea" },
+                    { "PH", "Asia", "PHP", "Philippines" },
+                    { "PK", "Asia", "PKR", "Pakistan" },
+                    { "PL", "Europe", "PLN", "Poland" },
+                    { "PM", "North America", "EUR", "Saint Pierre and Miquelon" },
+                    { "PN", "Oceania", "NZD", "Pitcairn" },
+                    { "PR", "North America", "USD", "Puerto Rico" },
+                    { "PS", "Asia", "ILS", "Palestine, State of" },
+                    { "PT", "Europe", "EUR", "Portugal" },
+                    { "PW", "Oceania", "USD", "Palau" },
+                    { "PY", "South America", "PYG", "Paraguay" },
+                    { "QA", "Asia", "QAR", "Qatar" },
+                    { "RE", "Africa", "EUR", "Réunion" },
+                    { "RO", "Europe", "RON", "Romania" },
+                    { "RS", "Europe", "RSD", "Serbia" },
+                    { "RU", "Europe", "RUB", "Russia" },
+                    { "RW", "Africa", "RWF", "Rwanda" },
+                    { "SA", "Asia", "SAR", "Saudi Arabia" },
+                    { "SB", "Oceania", "SBD", "Solomon Islands" },
+                    { "SC", "Africa", "SCR", "Seychelles" },
+                    { "SD", "Africa", "SDG", "Sudan" },
+                    { "SE", "Europe", "SEK", "Sweden" },
+                    { "SG", "Asia", "SGD", "Singapore" },
+                    { "SH", "Africa", "SHP", "Saint Helena, Ascension and Tristan da Cunha" },
+                    { "SI", "Europe", "EUR", "Slovenia" },
+                    { "SJ", "Europe", "NOK", "Svalbard and Jan Mayen" },
+                    { "SK", "Europe", "EUR", "Slovakia" },
+                    { "SL", "Africa", "SLL", "Sierra Leone" },
+                    { "SM", "Europe", "EUR", "San Marino" },
+                    { "SN", "Africa", "XOF", "Senegal" },
+                    { "SO", "Africa", "SOS", "Somalia" },
+                    { "SR", "South America", "SRD", "Suriname" },
+                    { "SS", "Africa", "SSP", "South Sudan" },
+                    { "ST", "Africa", "STN", "Sao Tome and Principe" },
+                    { "SV", "North America", "USD", "El Salvador" },
+                    { "SX", "North America", "ANG", "Sint Maarten (Dutch part)" },
+                    { "SY", "Asia", "SYP", "Syrian Arab Republic" },
+                    { "SZ", "Africa", "SZL", "Eswatini" },
+                    { "TC", "North America", "USD", "Turks and Caicos Islands" },
+                    { "TD", "Africa", "XAF", "Chad" },
+                    { "TF", "Antarctica", "EUR", "French Southern Territories" },
+                    { "TG", "Africa", "XOF", "Togo" },
+                    { "TH", "Asia", "THB", "Thailand" },
+                    { "TJ", "Asia", "TJS", "Tajikistan" },
+                    { "TK", "Oceania", "NZD", "Tokelau" },
+                    { "TL", "Asia", "USD", "Timor-Leste" },
+                    { "TM", "Asia", "TMT", "Turkmenistan" },
+                    { "TN", "Africa", "TND", "Tunisia" },
+                    { "TO", "Oceania", "TOP", "Tonga" },
+                    { "TR", "Asia", "TRY", "Turkey" },
+                    { "TT", "North America", "TTD", "Trinidad and Tobago" },
+                    { "TV", "Oceania", "AUD", "Tuvalu" },
+                    { "TW", "Asia", "TWD", "Taiwan" },
+                    { "TZ", "Africa", "TZS", "Tanzania" },
+                    { "UA", "Europe", "UAH", "Ukraine" },
+                    { "UG", "Africa", "UGX", "Uganda" },
+                    { "UM", "Oceania", "USD", "United States Minor Outlying Islands" },
+                    { "US", "North America", "USD", "United States" },
+                    { "UY", "South America", "UYU", "Uruguay" },
+                    { "UZ", "Asia", "UZS", "Uzbekistan" },
+                    { "VA", "Europe", "EUR", "Holy See (Vatican City State)" },
+                    { "VC", "North America", "XCD", "Saint Vincent and the Grenadines" },
+                    { "VE", "South America", "VES", "Venezuela" },
+                    { "VG", "North America", "USD", "Virgin Islands (British)" },
+                    { "VI", "North America", "USD", "Virgin Islands (U.S.)" },
+                    { "VN", "Asia", "VND", "Vietnam" },
+                    { "VU", "Oceania", "VUV", "Vanuatu" },
+                    { "WF", "Oceania", "XPF", "Wallis and Futuna" },
+                    { "WS", "Oceania", "WST", "Samoa" },
+                    { "YE", "Asia", "YER", "Yemen" },
+                    { "YT", "Africa", "EUR", "Mayotte" },
+                    { "ZA", "Africa", "ZAR", "South Africa" },
+                    { "ZM", "Africa", "ZMW", "Zambia" },
+                    { "ZW", "Africa", "ZWL", "Zimbabwe" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CountryCode", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"), 0, "9b7edd35-e9da-4c61-820a-37613483ffd7", new DateTime(1994, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "bob.c.thomas@workbit.com", false, "Bob", "Thomas", false, null, "BOB.C.THOMAS@WORKBIT.COM", "BOB.C.THOMAS", "AQAAAAIAAYagAAAAEJmq8K5qi0d+GFP1lzPQb9ISlGSvE4k0+l9B9pRVFq7PIkL431cd1LGfTtlZGSmI3w==", "+1-555-833-7506", false, "9a5ac456-3af4-42d2-8ead-1729f1fb71ea", false, "bob.c.thomas" },
-                    { new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"), 0, "ac4b7eed-543b-4a60-b311-5d2cc98c9005", new DateTime(1991, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "emily.d.young@workbit.com", false, "Emily", "Young", false, null, "EMILY.D.YOUNG@WORKBIT.COM", "EMILY.D.YOUNG", "AQAAAAIAAYagAAAAEHO7b3ZOp6DC0u9GdTuFyI8bUBguwlmcPbU5324S16flnxvez1DwplRSs9b2cUrzVQ==", "+1-555-900-5684", false, "ef420c90-46c2-4d94-a468-2f78c38b7f9c", false, "emily.d.young" },
-                    { new Guid("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"), 0, "c25bdc3f-315b-44b7-b753-246e95c1b55b", new DateTime(1978, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "carl.t.morgan@workbit.com", false, "Carl", "Morgan", false, null, "CARL.T.MORGAN@WORKBIT.COM", "CARL.T.MORGAN", "AQAAAAIAAYagAAAAEDX2dxkPd36jqHpKBa2ePuvpc3pHmu9z3D0Kiem/XH/xAaHa3cXngeKB/A8oktBgFQ==", "+1-555-528-6881", false, "5ba8bb2a-b1b9-48c2-8086-3c4e52cc8bb0", false, "carl.t.morgan" },
-                    { new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"), 0, "6292f197-bf15-4c18-830e-e42b48dd0c81", new DateTime(1993, 4, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "dave.r.walker@workbit.com", false, "Dave", "Walker", false, null, "DAVE.R.WALKER@WORKBIT.COM", "DAVE.R.WALKER", "AQAAAAIAAYagAAAAENOBCQLMptWp0E49H3tIpkRGsVchqQjt6KQmxfN9yz6aaIWa0KO4KLMPG50mjf6p1Q==", "+1-555-735-3311", false, "d772792c-9a0c-4a67-94df-71da2e67d784", false, "dave.r.walker" },
-                    { new Guid("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801"), 0, "589919a1-a1ab-415e-b2e8-a8d918de60f9", new DateTime(1980, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "john.m.lewis@workbit.com", false, "John", "Lewis", false, null, "JOHN.M.LEWIS@WORKBIT.COM", "JOHN.M.LEWIS", "AQAAAAIAAYagAAAAEAtpZ8InsMk83gt/FmdNXwUosX7nV/tvGtbrK4nVHG5FxHb8+EGDUFY+KfpZggUNBg==", "+1-555-214-6998", false, "b4ee9581-05c5-43dc-8ea2-7286670d5c60", false, "john.m.lewis" },
-                    { new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"), 0, "0089a000-30e6-4abb-8eee-5ae98f3d5ff4", new DateTime(1990, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "frank.h.scott@workbit.com", false, "Frank", "Scott", false, null, "FRANK.H.SCOTT@WORKBIT.COM", "FRANK.H.SCOTT", "AQAAAAIAAYagAAAAEJFsQQkdJ3m2go22Phh+GYlusdTwIgmvMQuReTCg9AtsYtdxbikCbzwWiR536NQF8A==", "+1-555-960-6850", false, "477d148d-dfed-482f-aa75-658ba69ccc11", false, "frank.h.scott" },
-                    { new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"), 0, "fde2b4bc-b392-456a-9e7a-854ec8564062", new DateTime(1997, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "harry.n.brooks@workbit.com", false, "Harry", "Brooks", false, null, "HARRY.N.BROOKS@WORKBIT.COM", "HARRY.N.BROOKS", "AQAAAAIAAYagAAAAEKYUYQIdCeTwME6nQvuHzSpBoWVtoVMMfImCiV8oI/yhGSKixCo9wsIKa43TB1lczA==", "+1-555-113-7310", false, "b989800f-538f-43a3-9246-793c9a938e44", false, "harry.n.brooks" },
-                    { new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"), 0, "13ef2b30-a95a-4a66-b6f7-d01567311b18", new DateTime(1992, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "claire.b.james@workbit.com", false, "Claire", "James", false, null, "CLAIRE.B.JAMES@WORKBIT.COM", "CLAIRE.B.JAMES", "AQAAAAIAAYagAAAAEIIdMPANa3nkcsQDiblZDbza59QIKipxBWsTGCzAFLI2MrSRcTpRczu3CbHnpfJjPQ==", "+1-555-441-6410", false, "d40eff75-310e-4123-bc10-e03a49746bf7", false, "claire.b.james" },
-                    { new Guid("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"), 0, "0c3c9255-f44a-477b-9991-9c55b36c505c", new DateTime(1985, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "nina.v.hughes@workbit.com", false, "Nina", "Hughes", false, null, "NINA.V.HUGHES@WORKBIT.COM", "NINA.V.HUGHES", "AQAAAAIAAYagAAAAEGVBzhc3ZOVXXmvvTdcYgNuzKsG78nRkBB4uMhqpL40eGz24DZA2HZexN1Ta/5x/ug==", "+1-555-679-4615", false, "6bd09f61-c719-4814-aee5-2ed88cd35368", false, "nina.v.hughes" },
-                    { new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"), 0, "4dbdb579-69a6-442a-ae10-fc673765723f", new DateTime(1996, 7, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "grace.l.adams@workbit.com", false, "Grace", "Adams", false, null, "GRACE.L.ADAMS@WORKBIT.COM", "GRACE.L.ADAMS", "AQAAAAIAAYagAAAAEFUeYsvC2U96zQC0NCeXsLdg41dPf9cn4voEyDfyvf+FZC7qfunC+s/ClXA7JjavoQ==", "+1-555-616-5225", false, "96202423-884e-4d87-9c9e-13dbb4d8a2a9", false, "grace.l.adams" },
-                    { new Guid("d5e7f9a2-0ac3-4b6d-8c64-6fd8e4c0c013"), 0, "a00ef335-d1bf-4da0-8c26-9daa76aeeae4", new DateTime(1994, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", false, "Admin", "Adminov", false, null, "ADMIN@GMAIL.COM", "ADMINADMIN", "AQAAAAIAAYagAAAAEC274G7ZVef/xePwvIfzWyLbFFuLkAx9su7EvLBYU+SkXV/b43N3ZBmM28im/e6k3g==", "+1-555-455-4853", false, "45e48525-252e-4828-85ae-f049be3c34ac", false, "adminadmin" },
-                    { new Guid("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"), 0, "ae2e4a5b-b631-4b4a-86fb-df5f715adc26", new DateTime(1982, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "lisa.r.anderson@workbit.com", false, "Lisa", "Anderson", false, null, "LISA.R.ANDERSON@WORKBIT.COM", "LISA.R.ANDERSON", "AQAAAAIAAYagAAAAEJvciTPnlYfvGmmN0sDO1Vbe3hHztzlXhzbpQ2yyvw/LEdEF5HKhXGuTz2ojrxpylg==", "+1-555-380-6971", false, "44545281-1a7c-4ac1-b09a-270857b02675", false, "lisa.r.anderson" },
-                    { new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"), 0, "8604d0df-9a3c-487e-88ae-d1cbfbbb421b", new DateTime(1995, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "alice.k.watson@workbit.com", false, "Alice", "Watson", false, null, "ALICE.K.WATSON@WORKBIT.COM", "ALICE.K.WATSON", "AQAAAAIAAYagAAAAEKuCD9YLpFKNVcr1U08zsCQlGk2ZQGVy0m7Pi13YnVjU2izecGsf2/b4+SJUlMECtA==", "+1-555-736-9670", false, "a7012131-499d-4bd8-8c27-f0653caba574", false, "alice.k.watson" }
+                    { new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"), 0, "f98b1069-77b1-4b13-aede-b0773819db04", "IT", new DateTime(1994, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "bob.c.thomas@workbit.com", false, "Bob", "Thomas", false, null, "BOB.C.THOMAS@WORKBIT.COM", "BOB.C.THOMAS", "AQAAAAIAAYagAAAAEGv4hr2JrE6ns2Vsfk2O5THnk4gOWasgPrFS2y/VmOXM3qsgh0fpI1CMfkr5ta+JBg==", "+1-555-610-7434", false, "1245a4ce-b6d9-4500-9f7a-1e9a882d7915", false, "bob.c.thomas" },
+                    { new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"), 0, "12bb9425-ebb5-4d7a-a805-7fe81b6578d0", "NL", new DateTime(1991, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "emily.d.young@workbit.com", false, "Emily", "Young", false, null, "EMILY.D.YOUNG@WORKBIT.COM", "EMILY.D.YOUNG", "AQAAAAIAAYagAAAAEDpOVZtqdu1nSPBNb3/uAFAaoSBFI0mMKyt/hXt/NY6w4KiE+aAb9HnmPjVRW6mPmw==", "+1-555-768-2445", false, "6567b52a-4b83-4e68-ab38-dea87a58bac3", false, "emily.d.young" },
+                    { new Guid("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"), 0, "cf47cf31-eacf-4d91-9034-b402fcef9c4e", "DE", new DateTime(1978, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "carl.t.morgan@workbit.com", false, "Carl", "Morgan", false, null, "CARL.T.MORGAN@WORKBIT.COM", "CARL.T.MORGAN", "AQAAAAIAAYagAAAAEDMYQmdpT0FE0CN9vgiZQoNY7L7dh+iS6ZseSQT82hfPPr9JLKoRf5mp/csVVw1fKQ==", "+1-555-792-9044", false, "5d312025-c602-47e7-91c6-82fddeae4515", false, "carl.t.morgan" },
+                    { new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"), 0, "5a69fd08-77d2-4a41-8165-00aac169db25", "RO", new DateTime(1993, 4, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "dave.r.walker@workbit.com", false, "Dave", "Walker", false, null, "DAVE.R.WALKER@WORKBIT.COM", "DAVE.R.WALKER", "AQAAAAIAAYagAAAAELRCl8FRSCe7JsSqNBVr7nYlMMNNHmiPalHJ9L/a0/rArhJPuVcRoJ5aalPMNy9yeA==", "+1-555-812-9938", false, "1f4ce1be-909c-4ac6-984a-fe2aa3965ab8", false, "dave.r.walker" },
+                    { new Guid("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801"), 0, "6af584c7-1d0a-4c4d-9e49-12ad5d309460", "US", new DateTime(1980, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "john.m.lewis@workbit.com", false, "John", "Lewis", false, null, "JOHN.M.LEWIS@WORKBIT.COM", "JOHN.M.LEWIS", "AQAAAAIAAYagAAAAEDloZjZVL4WnWGSA1O7mqMS61jer4wv+gNjF9KxU/3Kz/zLmX8gWMhmU/9FHGdPLtg==", "+1-555-671-5847", false, "98acf246-5257-4fa2-b393-2b51c930b597", false, "john.m.lewis" },
+                    { new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"), 0, "d0e4d57e-80cd-4ea7-b84e-7d5b4f8d12ee", "PL", new DateTime(1990, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "frank.h.scott@workbit.com", false, "Frank", "Scott", false, null, "FRANK.H.SCOTT@WORKBIT.COM", "FRANK.H.SCOTT", "AQAAAAIAAYagAAAAEMT7CU2LNUlOWNbpHNeDkNR8NpIdHFZxx/uG6H+5UyHbDlTYmKvjlzhD24n8m2l82A==", "+1-555-977-3548", false, "ed27242d-c8cb-4242-9a06-3a1095d9cecf", false, "frank.h.scott" },
+                    { new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"), 0, "f50a3af0-0428-40c4-90c0-0504f4a45566", "IE", new DateTime(1997, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "harry.n.brooks@workbit.com", false, "Harry", "Brooks", false, null, "HARRY.N.BROOKS@WORKBIT.COM", "HARRY.N.BROOKS", "AQAAAAIAAYagAAAAEFJ9iJLZ+1qnDAm5GYIcfEWY/nZwgQrdaz2gZgqbdvX3GIiZjPuPcUGp7yLXN8Z0aA==", "+1-555-583-2070", false, "30f0450e-aaf5-47dd-a06e-3f46ac5d33c1", false, "harry.n.brooks" },
+                    { new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"), 0, "8de8f663-fe80-407d-b3d3-b9239c73d77a", "ES", new DateTime(1992, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "claire.b.james@workbit.com", false, "Claire", "James", false, null, "CLAIRE.B.JAMES@WORKBIT.COM", "CLAIRE.B.JAMES", "AQAAAAIAAYagAAAAEBNOqklGIkaLuM/4vYs/Pu0RD9disb3mq9NMEObxeHTHxblsj3Z5V1S2dh6PdqrXzQ==", "+1-555-594-1558", false, "eee21643-c991-4a08-8910-b54a4fcfb5a6", false, "claire.b.james" },
+                    { new Guid("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"), 0, "7157815a-c984-438b-ba95-260c041383cf", "FR", new DateTime(1985, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "nina.v.hughes@workbit.com", false, "Nina", "Hughes", false, null, "NINA.V.HUGHES@WORKBIT.COM", "NINA.V.HUGHES", "AQAAAAIAAYagAAAAEFU3FAd1kHw9UCfq3ADrOCKhQ1UdNDwrkeE7OZTKD+CCRNekFyXJhOWxAqCbFzN8/Q==", "+1-555-649-1540", false, "0b6e357f-2d81-4af8-9a0a-145362f13a33", false, "nina.v.hughes" },
+                    { new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"), 0, "a4642353-f9f2-43c5-b80d-955389ba4df9", "SE", new DateTime(1996, 7, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "grace.l.adams@workbit.com", false, "Grace", "Adams", false, null, "GRACE.L.ADAMS@WORKBIT.COM", "GRACE.L.ADAMS", "AQAAAAIAAYagAAAAEE3mQZqWF77eUOdVO5fGZQQwbbKcPKC3GTmqB8OT8eVR/O4Dx1t5o5JM0WvXEqtqjA==", "+1-555-350-4402", false, "181c27ae-cef2-4de0-86ef-85114cecc14a", false, "grace.l.adams" },
+                    { new Guid("d5e7f9a2-0ac3-4b6d-8c64-6fd8e4c0c013"), 0, "00cc59a8-afc1-4d84-8996-caed660ea12a", "BG", new DateTime(1994, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", false, "Admin", "Adminov", false, null, "ADMIN@GMAIL.COM", "ADMINADMIN", "AQAAAAIAAYagAAAAEKz3v1MBum1Sb3z9Fx9f/N++7EBNZ4g2uNK1gN3HUuEiG/H/BsEn9I9jU6Pbgl+uFw==", "+1-555-358-4789", false, "e68fbe07-5046-40e1-b6f4-160e6d8e6f80", false, "adminadmin" },
+                    { new Guid("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"), 0, "8f10df1a-868f-49ac-8797-682cfadfca53", "GB", new DateTime(1982, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "lisa.r.anderson@workbit.com", false, "Lisa", "Anderson", false, null, "LISA.R.ANDERSON@WORKBIT.COM", "LISA.R.ANDERSON", "AQAAAAIAAYagAAAAEA+wpxSgYZaX7YIvFgrjpAS804QBK1b/YTeUve/zgCYlMglJg1x9tTzRD7l2xm0Kpw==", "+1-555-771-2029", false, "1684f192-ac0d-463e-a3b2-82be8b31553d", false, "lisa.r.anderson" },
+                    { new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"), 0, "8c5a184b-c714-41ad-8aee-06c1d8ddad0a", "BG", new DateTime(1995, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "alice.k.watson@workbit.com", false, "Alice", "Watson", false, null, "ALICE.K.WATSON@WORKBIT.COM", "ALICE.K.WATSON", "AQAAAAIAAYagAAAAEKjGpycEby+bzzznSAcgbw8rYVwU/X2lznWsx68pgOwTgqnIysaaEIU+mWwVTtRIeA==", "+1-555-871-6181", false, "2a5de8a7-3231-49ad-83e3-c864749bce01", false, "alice.k.watson" }
                 });
 
             migrationBuilder.InsertData(
@@ -484,27 +761,27 @@ namespace Workbit.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Managers",
-                columns: new[] { "ApplicationUserId", "DepartmentId" },
+                columns: new[] { "ApplicationUserId", "DepartmentId", "IBAN" },
                 values: new object[,]
                 {
-                    { new Guid("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"), 2 },
-                    { new Guid("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"), 3 },
-                    { new Guid("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"), 1 }
+                    { new Guid("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"), 2, "DE89370400440532013000" },
+                    { new Guid("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"), 3, "FR1420041010050500013M02606" },
+                    { new Guid("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"), 1, "GB29NWBK60161331926819" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "ApplicationUserId", "JobId", "Level" },
+                columns: new[] { "ApplicationUserId", "IBAN", "JobId", "Level" },
                 values: new object[,]
                 {
-                    { new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"), 1, 1 },
-                    { new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"), 3, 2 },
-                    { new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"), 2, 3 },
-                    { new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"), 3, 1 },
-                    { new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"), 4, 4 },
-                    { new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"), 2, 4 },
-                    { new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"), 4, 3 },
-                    { new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"), 1, 2 }
+                    { new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"), "IT60X0542811101000000123456", 1, 1 },
+                    { new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"), "NL91ABNA0417164300", 3, 2 },
+                    { new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"), "RO49AAAA1B31007593840000", 2, 3 },
+                    { new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"), "PL61109010140000071219812874", 3, 1 },
+                    { new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"), "IE29AIBK93115212345678", 4, 4 },
+                    { new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"), "ES9121000418450200051332", 2, 4 },
+                    { new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"), "SE3550000000054910000003", 4, 3 },
+                    { new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"), "BG80BNBG96611020345678", 1, 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -538,6 +815,11 @@ namespace Workbit.Infrastructure.Migrations
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_CountryCode",
+                table: "AspNetUsers",
+                column: "CountryCode");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -638,6 +920,9 @@ namespace Workbit.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
         }
     }
 }

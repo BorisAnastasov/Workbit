@@ -110,23 +110,20 @@ namespace Workbit.Core.Services
             return employees;
         }
 
-        public async Task<EmployeeDashboardViewModel> GetDashboardAsync(string employeeId)
+        public async Task<EmployeeProfileViewModel> GetProfileAsync(string employeeId, int? month = null)
         {
             var guid = Guid.Parse(employeeId);
             var user = await repository.GetByIdAsync<ApplicationUser>(guid);
-
-            if (user == null || user.Employee == null)
-                throw new InvalidOperationException("Employee not found.");
 
             var employee = user.Employee;
             var job = employee.Job;
             var department = job?.Department;
 
-            // Attendance for current month
-            var currentMonth = DateTime.UtcNow.Month;
-            var currentYear = DateTime.UtcNow.Year;
+            int selectedMonth = month ?? DateTime.UtcNow.Month;
+            int currentYear = DateTime.UtcNow.Year;
+
             var attendanceEntries = user.AttendanceEntries
-                .Where(a => a.Timestamp.Month == currentMonth && a.Timestamp.Year == currentYear)
+                .Where(a => a.Timestamp.Month == selectedMonth && a.Timestamp.Year == currentYear)
                 .ToList();
 
             int totalPresentDays = attendanceEntries
@@ -135,14 +132,13 @@ namespace Workbit.Core.Services
                 .Distinct()
                 .Count();
 
-            int totalDaysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
+            int totalDaysInMonth = DateTime.DaysInMonth(currentYear, selectedMonth);
             int totalAbsentDays = totalDaysInMonth - totalPresentDays;
 
             double hoursWorkedThisMonth = CalculateTotalHoursWorked(attendanceEntries);
 
-            // Payroll for current month
             var payments = user.Payments
-                .Where(p => p.PaymentDate.Month == currentMonth && p.PaymentDate.Year == currentYear)
+                .Where(p => p.PaymentDate.Month == selectedMonth && p.PaymentDate.Year == currentYear)
                 .OrderByDescending(p => p.PaymentDate)
                 .ToList();
 
@@ -158,11 +154,11 @@ namespace Workbit.Core.Services
                     Taxes = p.Taxes,
                 }).ToList();
 
-            return new EmployeeDashboardViewModel
+            return new EmployeeProfileViewModel
             {
                 EmployeeId = user.Id.ToString(),
                 FullName = user.FullName,
-                Email = user.Email!,
+                Email = user.Email ?? string.Empty,
                 DepartmentName = department?.Name ?? "Unassigned",
                 JobTitle = job?.Title ?? "Unassigned",
                 Level = employee.Level.ToString(),
@@ -170,7 +166,9 @@ namespace Workbit.Core.Services
                 TotalAbsentDays = totalAbsentDays,
                 HoursWorkedThisMonth = hoursWorkedThisMonth,
                 TotalPaidThisMonth = totalPaidThisMonth,
-                RecentPayments = recentPayments
+                SelectedMonth = selectedMonth,
+                WorkingDays = 0,
+                Country = user.Country.Name
             };
         }
 
@@ -276,5 +274,11 @@ namespace Workbit.Core.Services
             await repository.SaveChangesAsync();
         }
 
+        public async Task<bool> HasJobAsync(string id)
+        {
+            var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(id));
+
+            return employee.JobId != null;
+        }
     }
 }

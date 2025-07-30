@@ -8,6 +8,8 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="IbanNet" Version="5.18.0" />
+		<PackageReference Include="IbanNet.DependencyInjection.ServiceProvider" Version="5.18.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.18" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.18" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.18" />
@@ -25,13 +27,5 @@
     <ProjectReference Include="..\Workbit.Core\Workbit.Core.csproj" />
     <ProjectReference Include="..\Workbit.Infrastructure\Workbit.Infrastructure.csproj" />
   </ItemGroup>
-
-
-	<ItemGroup>
-	  <Folder Include="Areas\Employee\Controllers\" />
-	  <Folder Include="Areas\Employee\Data\" />
-	  <Folder Include="Areas\Employee\Models\" />
-	  <Folder Include="Areas\Employee\Views\" />
-	</ItemGroup>
 
 </Project>

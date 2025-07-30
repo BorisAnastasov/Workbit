@@ -1,9 +1,7 @@
-﻿using Workbit.Core.Models.Account;
-using Workbit.Infrastructure.Database.Repository;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Workbit.Core.Models.Account;
+using Workbit.Core.Interfaces;
+using Workbit.Core.Models.User;
 using Workbit.Infrastructure.Database.Entities.Account;
 using static Workbit.Common.RoleConstants;
 
@@ -11,23 +9,11 @@ namespace Workbit.App.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IUserService userService;
 
-        private readonly SignInManager<ApplicationUser> signInManager;
-
-        private readonly RoleManager<IdentityRole<Guid>> roleManager;
-        private readonly IRepository repository;
-
-        public UserController(
-            UserManager<ApplicationUser> _userManager,
-            SignInManager<ApplicationUser> _signInManager,
-            RoleManager<IdentityRole<Guid>> _roleManager,
-			IRepository _repository)
+        public UserController(IUserService _userService)
         {
-            userManager = _userManager;
-            signInManager = _signInManager;
-            roleManager = _roleManager;
-            repository = _repository;
+            userService = _userService;
         }
 
         [HttpGet]
@@ -44,38 +30,53 @@ namespace Workbit.App.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult RegisterManager()
+        public async Task<IActionResult> RegisterManager()
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            var model = new RegisterCeoViewModel
+            {
+                Countries = await userService.GetCountries(),
+            };
+
+            return View(model);
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult RegisterCeo()
+        public async Task<IActionResult> RegisterCeo()
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            var model = new RegisterCeoViewModel
+            {
+                Countries = await userService.GetCountries(),
+            };
+
+            return View(model);
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult RegisterEmployee()
+        public async Task<IActionResult> RegisterEmployee()
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            var model = new RegisterCeoViewModel
+            {
+                Countries = await userService.GetCountries(),
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -87,7 +88,6 @@ namespace Workbit.App.Controllers
                 return View(model);
             }
 
-
             var user = new ApplicationUser()
             {
 				FirstName = model.FirstName,
@@ -96,25 +96,25 @@ namespace Workbit.App.Controllers
 				Email = model.Email,
 				UserName = model.Email,
 				NormalizedUserName = model.Email.ToUpper(),
+                DateOfBirth = model.DateOfBirth,
+                CountryCode = model.CountryCode,
+                PhoneNumber = model.PhoneNumber
 			};
 
-            var result = await userManager.CreateAsync(user, model.Password);
+            var result = await userService.RegisterUserAsync(user, model.Password);
 
 
-            if (result.Succeeded)
+            if (result!.Succeeded)
             {
-                await userManager.AddToRoleAsync(user, EmployeeRoleName);
-
-				var student = new Employee
+				var employee = new Employee
 				{
 					ApplicationUserId = user.Id,
 					ApplicationUser = user
 				};
 
-				await repository.AddAsync(student);
-				await repository.SaveChangesAsync();
+                await userService.RegisterEmployeeAsync(employee);
 
-				return RedirectToAction("Login", "User");
+				return RedirectToAction(nameof(Login),"User");
             }
 
 
@@ -135,7 +135,6 @@ namespace Workbit.App.Controllers
 				return View(model);
 			}
 
-
 			var user = new ApplicationUser()
 			{
 				FirstName = model.FirstName,
@@ -145,24 +144,24 @@ namespace Workbit.App.Controllers
 				UserName = model.Email,
 				NormalizedUserName = model.Email.ToUpper(),
                 DateOfBirth = model.DateOfBirth,
-			};
+                CountryCode = model.CountryCode,
+                PhoneNumber = model.PhoneNumber
+            };
 
-			var result = await userManager.CreateAsync(user, model.Password);
+            var result = await userService.RegisterUserAsync(user, model.Password);
 
 
-			if (result.Succeeded)
+			if (result!.Succeeded)
 			{
-				await userManager.AddToRoleAsync(user, ManagerRoleName);
+                var manager = new Manager
+                {
+                    ApplicationUserId = user.Id,
+                    ApplicationUser = user,
+                };
+                
+                await userService.RegisterManagerAsync(manager);
 
-				var manager = new Manager
-				{
-					ApplicationUserId = user.Id,
-					ApplicationUser = user,
-				};
-				await repository.AddAsync(manager);
-				await repository.SaveChangesAsync();
-
-				return RedirectToAction("Login", "User");
+				return RedirectToAction(nameof(Login), "User");
 			}
 
 			foreach (var item in result.Errors)
@@ -182,7 +181,6 @@ namespace Workbit.App.Controllers
                 return View(model);
             }
 
-
             var user = new ApplicationUser()
             {
                 FirstName = model.FirstName,
@@ -192,22 +190,21 @@ namespace Workbit.App.Controllers
                 UserName = model.Email,
                 NormalizedUserName = model.Email.ToUpper(),
                 DateOfBirth = model.DateOfBirth,
+                CountryCode = model.CountryCode,
+                PhoneNumber = model.PhoneNumber
             };
 
-            var result = await userManager.CreateAsync(user, model.Password);
+            var result = await userService.RegisterUserAsync(user, model.Password);
 
-
-            if (result.Succeeded)
+            if (result!.Succeeded)
             {
-                await userManager.AddToRoleAsync(user, CeoRoleName);
-
-                var ceo = new Manager
+                var ceo = new Ceo
                 {
                     ApplicationUserId = user.Id,
                     ApplicationUser = user,
                 };
-                await repository.AddAsync(ceo);
-                await repository.SaveChangesAsync();
+
+                await userService.RegisterCeoAsync(ceo);
 
                 return RedirectToAction("Login", "User");
             }
@@ -244,13 +241,13 @@ namespace Workbit.App.Controllers
                 return View(model);
             }
 
-            var user = await userManager.FindByEmailAsync(model.Email);
+            var user = await userService.FindUserByEmailAsync(model.Email);
 
             if (user != null)
             {
-                var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
+                var result = await userService.LoginAsync(user, model.Password);
 
-                if (result.Succeeded)
+                if (result)
                 {
                     return RedirectToAction("Index", "Home", new { area = "" });
                 }
@@ -263,29 +260,9 @@ namespace Workbit.App.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            await userService.LogoutAsync();
 
             return RedirectToAction("Index", "Home");
         }
-
-        public async Task<IActionResult> CreateRoles()
-        {
-            await roleManager.CreateAsync(new IdentityRole<Guid>(AdminRoleName));
-
-            return RedirectToAction("Index", "Home");
-        }
-        
-        public async Task<IActionResult> AddUserToRoles()
-        {
-            string email = "admin@gmail.com";
-
-            var user = await userManager.FindByEmailAsync(email);
-
-            await userManager.AddToRoleAsync(user, AdminRoleName);
-
-            return RedirectToAction("Index", "Home");
-        }
-
-
     }
 }

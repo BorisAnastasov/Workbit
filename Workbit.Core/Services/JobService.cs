@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Job;
 using Workbit.Infrastructure.Database.Entities;
+using Workbit.Infrastructure.Database.Entities.Account;
 
 namespace Workbit.Core.Services
 {
@@ -31,6 +32,15 @@ namespace Workbit.Core.Services
 
         public async Task DeleteAsync(int id)
         {
+            var employees = await repository.All<Employee>()
+                                        .Where(e => e.JobId == id).ToListAsync();
+
+            foreach (var employee in employees) 
+            {
+                employee.JobId = null;
+            }
+
+
             await repository.DeleteAsync<Job>(id);
             await repository.SaveChangesAsync();
         }

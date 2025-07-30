@@ -1,26 +1,29 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Workbit.App.Extensions;
 using Workbit.Core.Interfaces;
-using Workbit.Core.Services;
 
-namespace Workbit.App.Controllers
+namespace Workbit.App.Areas.Employee.Controllers
 {
-    public class EmployeeController : Controller
+    public class EmployeeController : BaseController
     {
         private readonly IEmployeeService employeeService;
         private readonly IAttendanceService attendanceService;
+        private readonly IApiNinjasService apiNinjasService;
 
-        public EmployeeController(IEmployeeService _employeeService, IAttendanceService _attendanceService)
+        public EmployeeController(IEmployeeService _employeeService,
+                                IAttendanceService _attendanceService,
+                                IApiNinjasService _apiNinjasService)
         {
-            this.employeeService = _employeeService;
-            this.attendanceService = _attendanceService;
+            employeeService = _employeeService;
+            attendanceService = _attendanceService;
+            apiNinjasService = _apiNinjasService;
         }
 
         public async Task<IActionResult> AllEmployees()
         {
             var employees = await employeeService.GetAllByCeoIdAsync(User.Id());
-            return View(employees);        }
+            return View(employees);
+        }
 
         public async Task<IActionResult> EmployeeDetails(string id)
         {
@@ -30,37 +33,44 @@ namespace Workbit.App.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EmployeeDashboard()
+        public async Task<IActionResult> Profile(int? month)
         {
             try
             {
-                if (!await employeeService.ExistsByIdAsync(User.Id())) 
+                var userId = User.Id();
+
+                if (!await employeeService.ExistsByIdAsync(userId))
                 {
                     return RedirectToAction("Error404", "Error");
                 }
 
-                var employee = await employeeService.GetByIdAsync(User.Id());
-                if (employee.JobId == null) 
+                if (!await employeeService.HasJobAsync(userId))
                 {
                     return RedirectToAction("Error500", "Error");
                 }
-                
-                var dashboard = await employeeService.GetDashboardAsync(User.Id());
 
-                var isCheckedIn = await attendanceService.IsCheckedInAsync(User.Id());
+                int selectedMonth = month ?? DateTime.UtcNow.Month;
 
+                var profile = await employeeService.GetProfileAsync(userId, selectedMonth);
+
+                // Get working days from API Ninjas for the employee’s country
+                var workingDaysResponse = await apiNinjasService.GetWorkingDaysAsync(profile.Country, selectedMonth);
+                profile.WorkingDays = workingDaysResponse;
+
+                var isCheckedIn = await attendanceService.IsCheckedInAsync(userId);
                 ViewBag.IsCheckedIn = isCheckedIn;
                 ViewBag.CheckInStatusMessage = isCheckedIn
                     ? "You are currently checked in today."
                     : "You haven't checked in yet today.";
 
-                return View(dashboard);
+                return View(profile);
             }
             catch (Exception)
             {
                 return RedirectToAction("Error500", "Error");
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> LeaveDepartment()
         {

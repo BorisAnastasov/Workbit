@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Workbit.Core.Models.Country;
 using static Workbit.Common.DataConstants.ApplicationUser;
 
-namespace Workbit.Core.Models.Account
+namespace Workbit.Core.Models.User
 {
 	public class RegisterManagerViewModel
 	{
@@ -36,5 +37,12 @@ namespace Workbit.Core.Models.Account
         [DataType(DataType.Date)]
         [Display(Name = "Date of Birth")]
         public DateTime DateOfBirth { get; set; }
+
+        [Required]
+        [Display(Name = "CountryCode")]
+        [StringLength(2)]
+        public string CountryCode { get; set; } = null!;
+
+        public IEnumerable<CountrySummaryDto> Countries { get; set; } = new List<CountrySummaryDto>();
     }
 }

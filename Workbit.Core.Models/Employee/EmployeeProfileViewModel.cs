@@ -1,8 +1,6 @@
-﻿using Workbit.Core.Models.Payment;
-
-namespace Workbit.Core.Models.Employee
+﻿namespace Workbit.Core.Models.Employee
 {
-    public class EmployeeDashboardViewModel
+	public class EmployeeProfileViewModel
     {
         // Basic info
         public string EmployeeId { get; set; } = null!;
@@ -20,7 +18,9 @@ namespace Workbit.Core.Models.Employee
         // Payroll summary for current month
         public decimal TotalPaidThisMonth { get; set; }
 
-        // Recent payments (e.g. last 5)
-        public List<PaymentSummaryDto> RecentPayments { get; set; } = new();
+        // New: API Ninjas Working Days data
+        public int SelectedMonth { get; set; }  // Which month is selected (1–12)
+        public int WorkingDays { get; set; }    // API result for that month
+        public string Country { get; set; } = null!;  // Employee’s country (ISO code)
     }
 }

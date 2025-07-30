@@ -173,7 +173,7 @@
 						@if(User.IsEmployee())
 						{
 							<li class="nav-item">
-								<a class="nav-link @Html.IsActive("EmployeeDashboard", "Employee")" asp-controller="Employee" asp-action="EmployeeDashboard">Dashboard</a>
+								<a class="nav-link @Html.IsActive("Profile", "Employee")" asp-area="Employee" asp-controller="Employee" asp-action="Profile">Profile</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link @Html.IsActive("HistoryForEmployee", "Payment")" asp-controller="Payment" asp-action="HistoryForEmployee">Payment</a>

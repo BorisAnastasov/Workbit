@@ -10,8 +10,7 @@ namespace Workbit.Core.Interfaces
         Task<IEnumerable<EmployeeSummaryDto>> GetByDepartmentIdAsync(int departmentId);
         Task<IEnumerable<EmployeeSummaryDto>> GetByJobIdAsync(int jobId);
         Task<EmployeeReadDto> GetByIdAsync(string id);
-        Task<EmployeeDashboardViewModel> GetDashboardAsync(string employeeId);
-
+        Task<EmployeeProfileViewModel> GetProfileAsync(string employeeId, int? month = null);//u
         Task<IEnumerable<EmployeeSummaryDto>> GetAllByCeoIdAsync(string id);
 
         // Update
@@ -23,7 +22,7 @@ namespace Workbit.Core.Interfaces
         // Helpers
         Task<bool> ExistsByIdAsync(string id);
         Task<bool> HasPaymentsAsync(string id);
-
+        Task<bool> HasJobAsync(string id);
 		Task<List<EmployeeSummaryDto>> GetUnemployedUsersAsync();
 		Task<List<JobSummaryDto>> GetJobsForManagerAsync(string managerId);
 		Task HireEmployeeAsync(string userId, int jobId, string level);
