@@ -14,22 +14,9 @@ namespace Workbit.App.Areas.Employee.Controllers
                                 IAttendanceService _attendanceService,
                                 IApiNinjasService _apiNinjasService)
         {
-            employeeService = _employeeService;
-            attendanceService = _attendanceService;
-            apiNinjasService = _apiNinjasService;
-        }
-
-        public async Task<IActionResult> AllEmployees()
-        {
-            var employees = await employeeService.GetAllByCeoIdAsync(User.Id());
-            return View(employees);
-        }
-
-        public async Task<IActionResult> EmployeeDetails(string id)
-        {
-            var employee = await employeeService.GetByIdAsync(id); // returns EmployeeReadDto
-
-            return View(employee);
+            this.employeeService = _employeeService;
+			this.attendanceService = _attendanceService;
+			this.apiNinjasService = _apiNinjasService;
         }
 
         [HttpGet]
@@ -46,24 +33,25 @@ namespace Workbit.App.Areas.Employee.Controllers
 
                 if (!await employeeService.HasJobAsync(userId))
                 {
-                    return RedirectToAction("Error500", "Error");
+                    return RedirectToAction(nameof(NoJob), "Employee", new { area = "Employee"});
                 }
 
                 int selectedMonth = month ?? DateTime.UtcNow.Month;
 
-                var profile = await employeeService.GetProfileAsync(userId, selectedMonth);
+                var countryCode = await employeeService.GetCountryCodeByIdAsync(userId);
 
-                // Get working days from API Ninjas for the employee’s country
-                var workingDaysResponse = await apiNinjasService.GetWorkingDaysAsync(profile.Country, selectedMonth);
-                profile.WorkingDays = workingDaysResponse;
+                var workingDaysResponse = await apiNinjasService.GetWorkingDaysAsync(countryCode, selectedMonth);
+
+                var profile = await employeeService.GetProfileAsync(userId, workingDaysResponse, selectedMonth);
 
                 var isCheckedIn = await attendanceService.IsCheckedInAsync(userId);
-                ViewBag.IsCheckedIn = isCheckedIn;
-                ViewBag.CheckInStatusMessage = isCheckedIn
-                    ? "You are currently checked in today."
-                    : "You haven't checked in yet today.";
+                var isCheckedOut = await attendanceService.IsCheckedOutAsync(userId);
 
-                return View(profile);
+				ViewBag.HasChekedInToday = isCheckedIn;
+                ViewBag.HasCheckedOutToday = isCheckedOut;
+                ViewBag.IsTodayWorkingDay = apiNinjasService.IsTodayWorkingDayAsync(workingDaysResponse);
+
+				return View(profile);
             }
             catch (Exception)
             {
@@ -72,11 +60,23 @@ namespace Workbit.App.Areas.Employee.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LeaveDepartment()
+        public async Task<IActionResult> LeaveJob()
         {
             try
             {
-                await employeeService.LeaveDepartmentAsync(User.Id());
+                var userId = User.Id();
+
+                if (!await employeeService.ExistsByIdAsync(userId)) 
+                {
+					return RedirectToAction("Error404", "Error");
+				}
+
+				if (!await employeeService.HasJobAsync(userId))
+				{
+					return RedirectToAction(nameof(NoJob), "Employee", new { area = "Employee" });
+				}
+
+				await employeeService.LeaveJobAsync(User.Id());
 
                 return RedirectToAction("Index", "Home");
 
@@ -86,5 +86,10 @@ namespace Workbit.App.Areas.Employee.Controllers
                 return RedirectToAction("Error500", "Error");
             }
         }
-    }
+        [HttpGet]
+        public IActionResult NoJob() 
+        {
+            return View();
+        }
+	}
 }

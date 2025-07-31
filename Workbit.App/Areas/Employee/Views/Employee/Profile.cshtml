@@ -1,273 +1,448 @@
-﻿@model Workbit.Core.Models.Employee.EmployeeProfileViewModel
+﻿@model EmployeeProfileViewModel
+
 @{
-    ViewData["Title"] = "Employee Dashboard";
-    var isCheckedIn = ViewBag.IsCheckedIn as bool? ?? false;
-    var checkInStatus = ViewBag.CheckInStatusMessage as string ?? "";
+	ViewData["Title"] = "Employee Dashboard";
+	var hasCheckedIn = ViewBag.HasChekedInToday as bool? ?? false;
+	var hasCheckedOut = ViewBag.HasCheckedOutToday as bool? ?? false;
+	var isTodayWorkingDay = ViewBag.IsTodayWokingDay as bool? ?? true;
 }
 
 <style>
-    .dashboard-wrapper {
-        padding: 70px 20px;
-        background-color: var(--background);
-        min-height: calc(100vh - 120px);
-        position: relative;
-    }
+	html, body {
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
 
-    .header-row {
-        text-align: center;
-        margin-bottom: 40px;
-        position: relative;
-    }
+	body {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		background-color: #eaf4f7;
+	}
 
-        .header-row h2 {
-            color: var(--primary);
-            font-weight: 800;
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-        }
+	.dashboard-wrapper {
+		flex: 1 0 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 24px 0 0 0;
+	}
 
-        .header-row p {
-            font-size: 1.1rem;
-            color: var(--text-dark);
-        }
+	.month-selector-row {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 18px;
+		gap: 14px;
+	}
 
-    .leave-btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: #e63946;
-        color: #fff;
-        font-weight: 700;
-        font-size: 1rem;
-        padding: 10px 20px;
-        border-radius: 30px;
-        border: none;
-        text-decoration: none;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+		.month-selector-row label {
+			font-weight: 600;
+			margin-right: 8px;
+		}
 
-        .leave-btn:hover {
-            background-color: #c1121f;
-            transform: translateY(-3px);
-            color: #fff;
-        }
+		.month-selector-row select {
+			padding: 8px 16px;
+			border-radius: 8px;
+			border: 1px solid #bbb;
+			font-size: 1.07rem;
+			background: #fff;
+			margin-left: 10px;
+		}
 
-    .status-message {
-        font-size: 1rem;
-        font-weight: 600;
-        margin-top: 15px;
-        color: var(--secondary);
-    }
+	.dashboard-main {
+		display: grid;
+		grid-template-columns: 1.22fr 1fr;
+		gap: 2.3rem;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
 
-    .check-buttons {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
+	.left-panel {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		gap: 0.8rem;
+	}
 
-    .check-btn {
-        padding: 12px 28px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        border-radius: 30px;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+	.summary-grid-cards {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 2rem 2rem;
+	}
 
-    .btn-checkin {
-        background-color: var(--secondary);
-        color: #fff;
-    }
+	.summary-card {
+		background: #fff;
+		border-radius: 18px;
+		box-shadow: 0 8px 28px rgba(0,0,0,0.09);
+		padding: 28px 20px 26px 20px;
+		min-width: 250px;
+		min-height: 165px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		transition: box-shadow 0.2s, transform 0.2s;
+	}
 
-        .btn-checkin:hover {
-            background-color: var(--primary);
-            transform: translateY(-3px);
-        }
+		.summary-card h4 {
+			font-size: 1.21rem;
+			color: #179ca8;
+			font-weight: 700;
+			margin-bottom: 17px;
+			letter-spacing: 0.1px;
+		}
 
-    .btn-checkout {
-        background-color: #e63946;
-        color: #fff;
-    }
+		.summary-card p {
+			font-size: 2.25rem;
+			font-weight: 800;
+			color: #12777e;
+			margin: 0;
+		}
 
-        .btn-checkout:hover {
-            background-color: #c1121f;
-            transform: translateY(-3px);
-        }
+	.percent-badge {
+		display: inline-block;
+		margin-left: 6px;
+		padding: 6px 16px;
+		border-radius: 22px;
+		font-size: 1.13rem;
+		font-weight: 700;
+		letter-spacing: 0.2px;
+		background: #eafaf4;
+		color: #0aad7b;
+	}
 
-    .month-selector {
-        margin: 20px auto;
-        text-align: center;
-    }
+		.percent-badge.absent {
+			background: #fce6ea;
+			color: #e63946;
+		}
 
-        .month-selector label {
-            font-weight: 600;
-            margin-right: 10px;
-        }
+	.progress-bar {
+		width: 86%;
+		height: 10px;
+		background: #eee;
+		border-radius: 5px;
+		overflow: hidden;
+		margin: 13px auto 0 auto;
+	}
 
-        .month-selector select {
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 1rem;
-        }
+	.progress-bar-fill {
+		height: 100%;
+		border-radius: 5px;
+	}
 
-    .summary-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1.5rem;
-        margin: 40px 0;
-    }
+	.progress-present {
+		background: #0aad7b;
+	}
 
-    .summary-card {
-        background: #fff;
-        border-radius: 16px;
-        padding: 25px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-        text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+	.progress-absent {
+		background: #e63946;
+	}
 
-        .summary-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-        }
+	.total-paid-card {
+		grid-column: 1 / span 2;
+		min-width: 0;
+		min-height: 125px;
+	}
 
-        .summary-card h4 {
-            font-size: 1.1rem;
-            color: var(--secondary);
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+	.right-panel {
+		display: flex;
+		flex-direction: column;
+		gap: 1.4rem;
+		height: 100%;
+		justify-content: flex-start;
+		align-items: stretch;
+		min-width: 320px;
+	}
 
-        .summary-card p {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin: 0;
-        }
+	.profile-card, .check-card {
+		background: #fff;
+		border-radius: 22px;
+		box-shadow: 0 8px 28px rgba(0,0,0,0.09);
+		padding: 28px 28px 18px 28px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		min-width: 0;
+	}
 
-    .section-card {
-        background: #fff;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-    }
+		.profile-card h2 {
+			font-size: 2.05rem;
+			color: #179ca8;
+			font-weight: 800;
+			margin-bottom: 10px;
+			text-align: center;
+		}
 
-        .section-card h3 {
-            text-align: center;
-            color: var(--primary);
-            font-weight: 800;
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
+	.profile-info-list {
+		font-size: 1.08rem;
+		color: #222;
+		line-height: 2.0;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		text-align: center;
+	}
 
-    .payments-table {
-        width: 100%;
-        border-collapse: collapse;
-        border-radius: 12px;
-        overflow: hidden;
-        font-size: 1rem;
-    }
+		.profile-info-list strong {
+			color: #17b0c7;
+			font-weight: 600;
+			margin-right: 5px;
+		}
 
-        .payments-table th, .payments-table td {
-            padding: 0.8rem 1rem;
-            text-align: center;
-            border-bottom: 1px solid #f1f1f1;
-        }
+	.leave-btn {
+		display: block;
+		margin: 26px auto 0 auto;
+		background-color: #e63946;
+		color: #fff;
+		font-weight: 700;
+		font-size: 1.09rem;
+		padding: 11px 28px;
+		border-radius: 30px;
+		border: none;
+		transition: background-color 0.3s, transform 0.2s;
+		box-shadow: 0 4px 14px rgba(0,0,0,0.09);
+		cursor: pointer;
+	}
 
-        .payments-table th {
-            background-color: var(--secondary);
-            color: #fff;
-            font-weight: 600;
-        }
+		.leave-btn:hover {
+			background-color: #c1121f;
+			transform: translateY(-3px);
+		}
 
-        .payments-table tr:hover {
-            background-color: #f8fafa;
-        }
+	.check-card-title {
+		text-align: center;
+		font-size: 1.19rem;
+		font-weight: 700;
+		color: #179ca8;
+		margin-bottom: 17px;
+		letter-spacing: 0.1px;
+	}
+
+	.check-buttons {
+		display: flex;
+		gap: 18px;
+		justify-content: center;
+		margin-bottom: 12px;
+	}
+
+	.check-btn {
+		padding: 15px 31px;
+		font-size: 1.07rem;
+		font-weight: 700;
+		border-radius: 30px;
+		border: none;
+		cursor: pointer;
+		transition: background 0.3s, transform 0.2s;
+		box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+	}
+
+	.btn-checkin {
+		background: #19b5be;
+		color: #fff;
+	}
+
+		.btn-checkin:hover {
+			background: #0a8ea3;
+			transform: translateY(-2px);
+		}
+
+	.btn-checkout {
+		background: #e63946;
+		color: #fff;
+	}
+
+		.btn-checkout:hover {
+			background: #c1121f;
+			transform: translateY(-2px);
+		}
+
+	.status-message {
+		font-size: 1.07rem;
+		font-weight: 500;
+		margin-top: 10px;
+		color: #179ca8;
+		text-align: center;
+	}
+
+	/* Responsive */
+	@@media (max-width: 1100px) {
+		.dashboard-main {
+			grid-template-columns: 1fr;
+		}
+
+		.right-panel {
+			flex-direction: row;
+			gap: 2.2vw;
+			justify-content: center;
+		}
+
+		.profile-card, .check-card {
+			min-width: 220px;
+		}
+
+		.left-panel {
+			margin-bottom: 2rem;
+		}
+	}
+
+	@@media (max-width: 800px) {
+		.summary-grid-cards {
+			grid-template-columns: 1fr;
+		}
+
+		.summary-card {
+			min-width: 180px;
+		}
+	}
 </style>
 
 <div class="dashboard-wrapper">
-    <div class="header-row">
-        <!-- Leave Department Button -->
-        <form asp-controller="Employee" asp-action="LeaveDepartment" method="post"
-              onsubmit="return confirm('Are you sure you want to leave your department? You will no longer be part of any team.');">
-            <button type="submit" class="leave-btn">Leave Department</button>
-        </form>
+	<!-- Month Selector at Top -->
+	<div class="month-selector-row">
+		<form method="get" asp-action="Profile" asp-controller="Employee" style="display: flex;align-items:center;">
+			<label for="month">Select Month:</label>
+			<select name="month" id="month" onchange="this.form.submit()">
+				@for (int m = 1; m <= 12; m++)
+				{
+					<option value="@m" selected="@(Model.SelectedMonth == m)">
+						@((EnglishMonth)m)
+					</option>
+				}
+			</select>
+		</form>
+	</div>
 
-        <h2>Welcome, @Model.FullName</h2>
-        <p>
-            Department: <strong>@Model.DepartmentName</strong> |
-            Job: <strong>@Model.JobTitle</strong> (@Model.Level) |
-            Country: <strong>@Model.Country</strong>
-        </p>
+	<div class="dashboard-main">
+		<!-- LEFT: Summary Cards Grid -->
+		<div class="left-panel">
+			<div class="summary-grid-cards">
+				<div class="summary-card">
+					<h4>Days Present</h4>
+					<p>
+						@Model.TotalPresentDays / @Model.WorkingDaysElapsed
+						<span class="percent-badge">
+							@Model.AttendancePercentage.ToString("F0")%
+						</span>
+					</p>
+					<div class="progress-bar">
+						<div class="progress-bar-fill progress-present" style="width:@Model.AttendancePercentage.ToString("F0")%;"></div>
+					</div>
+				</div>
+				<div class="summary-card">
+					<h4>Days Absent</h4>
+					<p>
+						@Model.TotalAbsentDays / @Model.WorkingDaysElapsed
+						<span class="percent-badge absent">
+							@Model.AbsencePercentage.ToString("F0")%
+						</span>
+					</p>
+					<div class="progress-bar">
+						<div class="progress-bar-fill progress-absent" style="width:@Model.AbsencePercentage.ToString("F0")%;"></div>
+					</div>
+				</div>
+				<div class="summary-card">
+					<h4>Hours Worked</h4>
+					<p>@Model.HoursWorkedThisMonth.ToString("F1")</p>
+				</div>
+				<div class="summary-card">
+					<h4>Working Days (in Month)</h4>
+					<p>@Model.WorkingDays</p>
+				</div>
+				<div class="summary-card total-paid-card">
+					<h4>Total Paid</h4>
+					<p>$@Model.TotalPaidThisMonth.ToString("F2")</p>
+				</div>
+			</div>
+		</div>
+		<!-- RIGHT: Profile & Check-in Cards (stacked) -->
+		<div class="right-panel">
+			<div class="profile-card">
+				<h2>@Model.FullName</h2>
+				<ul class="profile-info-list">
+					<li><strong>Department:</strong> @Model.DepartmentName</li>
+					<li><strong>Job:</strong> @Model.JobTitle (@Model.Level)</li>
+					<li><strong>Country:</strong> @Model.Country</li>
+					<li><strong>Email:</strong> @Model.Email</li>
+				</ul>
+				<form asp-area="Employee" asp-controller="Employee" asp-action="LeaveJob" method="post"
+					  onsubmit="return confirm('Are you sure you want to leave your job? You will no longer be part of any department.');">
+					<button type="submit" class="leave-btn">Leave Department</button>
+				</form>
+			</div>
 
-        <!-- Month Selector -->
-        <div class="month-selector">
-            <form method="get" asp-action="EmployeeDashboard" asp-controller="Employee">
-                <label for="month">Select Month:</label>
-                <select name="month" id="month" onchange="this.form.submit()">
-                    @for (int m = 1; m <= 12; m++)
-                    {
-                        <option value="@m" selected="@(Model.SelectedMonth == m)">
-                            @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)
-                        </option>
-                    }
-                </select>
-            </form>
-        </div>
+			@if (isTodayWorkingDay)
+			{
+				<div class="check-card">
+					<div class="check-card-title">
+						Attendance Actions
+					</div>
+					<div class="check-buttons">
+						@if (hasCheckedOut && hasCheckedIn)
+						{
+							<button type="button" class="check-btn btn-checkout" disabled style="opacity:0.7; cursor:not-allowed;">
+								Attendance Complete
+							</button>
+							<div class="status-message" style="color:#17a85c; font-weight:600; margin-top:8px;">
+								You have completed your attendance for today.
+							</div>
+						}
+						else if (!hasCheckedIn)
+						{
+							<form asp-area="Employee" asp-controller="Attendance" asp-action="CheckIn" method="post">
+								<button type="submit" class="check-btn btn-checkin">Check In</button>
+							</form>
+							<div class="status-message" style="color:#17a85c; font-weight:600; margin-top:8px;">
+								You haven't checked in yet today.
+							</div>
+						}
+						else
+						{
+							<form asp-area="Employee" asp-controller="Attendance" asp-action="CheckOut" method="post">
+								<button type="submit" class="check-btn btn-checkout"
+										onclick="return confirm('Are you sure you want to checkout? This action cannot be undone.');">
+									Check Out
+								</button>
+							</form>
+							<div class="status-message" style="color:#17a85c; font-weight:600; margin-top:8px;">
+								You haven't checked out yet today.
+							</div>
+						}
+					</div>
+				</div>
+			}
+			else
+			{
+				var nonWorkingDay = Model.WorkingDaysResponse.NonWorkingDays.First(d => d.Date == DateTime.Now.Date);
+				var nonWorkingReason = nonWorkingDay.Reason;
+				var holidayName = nonWorkingDay.HolidayName;
 
-        <!-- Check-in Status -->
-        @if (!string.IsNullOrEmpty(checkInStatus))
-        {
-            <p class="status-message">@checkInStatus</p>
-        }
-
-        <!-- Check-in / Check-out Buttons -->
-        <div class="check-buttons">
-            @if (!isCheckedIn)
-            {
-                <form asp-controller="Attendance" asp-action="CheckIn" method="post">
-                    <button type="submit" class="check-btn btn-checkin">Check In</button>
-                </form>
-            }
-            else
-            {
-                <form asp-controller="Attendance" asp-action="CheckOut" method="post">
-                    <button type="submit" class="check-btn btn-checkout"
-                            onclick="return confirm('Are you sure you want to checkout? This action cannot be undone.');">
-                        Check Out
-                    </button>
-                </form>
-            }
-        </div>
-    </div>
-
-    <!-- Summary Cards -->
-    <div class="summary-grid">
-        <div class="summary-card">
-            <h4>Days Present (@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth))</h4>
-            <p>@Model.TotalPresentDays</p>
-        </div>
-        <div class="summary-card">
-            <h4>Days Absent (@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth))</h4>
-            <p>@Model.TotalAbsentDays</p>
-        </div>
-        <div class="summary-card">
-            <h4>Hours Worked (@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth))</h4>
-            <p>@Model.HoursWorkedThisMonth.ToString("F1")</p>
-        </div>
-        <div class="summary-card">
-            <h4>Total Paid (@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth))</h4>
-            <p>$@Model.TotalPaidThisMonth.ToString("F2")</p>
-        </div>
-        <div class="summary-card">
-            <h4>Working Days (@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Model.SelectedMonth))</h4>
-            <p>@(Model.WorkingDays > 0 ? Model.WorkingDays.ToString() : "N/A")</p>
-        </div>
-    </div>
+				<div class="check-card">
+					<div class="check-card-title">
+						Attendance Unavailable
+					</div>
+					<div style="background:#fff9d7; color:#b87a00; border-radius:12px; padding:18px 18px; text-align:center; font-weight:600; box-shadow:0 4px 12px rgba(200,160,0,0.09);">
+						<i class="fa fa-sun fa-fw"></i>
+						@if (!string.IsNullOrEmpty(holidayName))
+						{
+							<span>Today is a <b>@holidayName</b> (<span style="font-weight:400;">@nonWorkingReason</span>).</span>
+						}
+						else if (!string.IsNullOrEmpty(nonWorkingReason))
+						{
+							<span>Today is a non-working day: <b>@nonWorkingReason</b>.</span>
+						}
+						else
+						{
+							<span>Today is a non-working day weekend.</span>
+						}
+					</div>
+					<div class="status-message" style="color:#b87a00; font-weight:600; margin-top:14px;">
+						Attendance is not required today.
+					</div>
+				</div>
+			}
+		</div>
+	</div>
 </div>

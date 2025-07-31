@@ -128,7 +128,7 @@
                     @foreach (var payment in Model.Payments)
                     {
                         <tr>
-                            <td>@payment.PaymentDate.ToString(DateFormat)</td>
+                            <td>@payment.PaymentDate.ToString(DateFormatShort)</td>
                             <td>$@payment.Salary</td>
                             <td>$@payment.Bonus</td>
                             <td>$@payment.Taxes</td>

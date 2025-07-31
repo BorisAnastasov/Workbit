@@ -7,9 +7,10 @@ namespace Workbit.Core.Interfaces
         // Add a new check-in or check-out
         Task CreateAsync(AttendanceEntryCreateDto dto);
 
-        Task<bool> CheckInAsync(string userId);
-        Task<bool> CheckOutAsync(string userId);
+        Task CheckInAsync(string userId);
+        Task CheckOutAsync(string userId);
         Task<bool> IsCheckedInAsync(string userId);
+        Task<bool> IsCheckedOutAsync(string userId);
 
         // Read
         Task<IEnumerable<AttendanceEntryReadDto>> GetByUserIdAsync(string userId);

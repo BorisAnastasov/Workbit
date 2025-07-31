@@ -174,6 +174,27 @@ namespace Workbit.Infrastructure.Extensions
                       .HasForeignKey(a => a.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
+
+            // ------------------------
+            // Country Config
+            // ------------------------
+            builder.Entity<Country>(entity =>
+            {
+                entity.HasMany(c => c.Users)
+                            .WithOne(u => u.Country)
+                            .HasForeignKey(u => u.CountryCode)
+                            .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasMany(c => c.Departments)
+                        .WithOne(u => u.Country)
+                        .HasForeignKey(u => u.CountryCode)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasMany(c => c.Companies)
+                        .WithOne(u => u.Country)
+                        .HasForeignKey(u => u.CountryCode)
+                        .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }

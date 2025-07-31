@@ -7,6 +7,7 @@ using Workbit.Infrastructure.Database.Entities;
 using Workbit.Infrastructure.Database.Entities.Account;
 using Workbit.Infrastructure.Enumerations;
 using static Workbit.Common.DataConstants.Constants;
+using System;
 
 namespace Workbit.Core.Services
 {
@@ -79,7 +80,6 @@ namespace Workbit.Core.Services
             }).ToList();
         }
 
-
         public async Task<IEnumerable<AttendanceEntryReadDto>> GetByDateAsync(DateTime date)
         {
             var dayStart = date.Date;
@@ -92,7 +92,7 @@ namespace Workbit.Core.Services
                     Id = a.Id,
                     UserId = a.UserId.ToString(),
                     UserName = a.User.FullName,
-                    Timestamp = a.Timestamp.ToString(DateFormat),
+                    Timestamp = a.Timestamp.ToString(DateFormatLong),
                     Type = a.Type.ToString()
                 })
                 .ToListAsync();
@@ -107,7 +107,7 @@ namespace Workbit.Core.Services
                 Id = entry.Id,
                 UserId = entry.UserId.ToString(),
                 UserName = entry.User.FullName,
-                Timestamp = entry.Timestamp.ToString(DateFormat),
+                Timestamp = entry.Timestamp.ToString(DateFormatLong),
                 Type = entry.Type.ToString()
             };
         }
@@ -122,7 +122,7 @@ namespace Workbit.Core.Services
                     Id = a.Id,
                     UserId = a.UserId.ToString(),
                     UserName = a.User.FullName,
-                    Timestamp = a.Timestamp.ToString(DateFormat),
+                    Timestamp = a.Timestamp.ToString(DateFormatLong),
                     Type = a.Type.ToString()
                 }).ToList();
         }
@@ -264,79 +264,52 @@ namespace Workbit.Core.Services
             return grouped;
         }
 
-        public async Task<bool> CheckInAsync(string userId)
+        public async Task CheckInAsync(string userId)
         {
-            if (!Guid.TryParse(userId, out Guid userGuid))
-                return false;
-
-            var today = DateTime.UtcNow.Date;
-
-            // Prevent double check-in
-            var alreadyCheckedIn = await repository.All<AttendanceEntry>()
-                .AnyAsync(a => a.UserId == userGuid && a.Timestamp.Date == today && a.Type == EntryType.CheckIn);
-
-            if (alreadyCheckedIn)
-                return false;
-
             var entry = new AttendanceEntry
             {
-                UserId = userGuid,
+                UserId = Guid.Parse(userId),
                 Timestamp = DateTime.UtcNow,
                 Type = EntryType.CheckIn
             };
 
             await repository.AddAsync(entry);
             await repository.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<bool> CheckOutAsync(string userId)
+        public async Task CheckOutAsync(string userId)
         {
-            if (!Guid.TryParse(userId, out Guid userGuid))
-                return false;
-
-            var today = DateTime.UtcNow.Date;
-
-            // Ensure check-in exists before checkout
-            var checkedIn = await repository.All<AttendanceEntry>()
-                .AnyAsync(a => a.UserId == userGuid && a.Timestamp.Date == today && a.Type == EntryType.CheckIn);
-
-            if (!checkedIn)
-                return false;
-
-            // Prevent double checkout
-            var alreadyCheckedOut = await repository.All<AttendanceEntry>()
-                .AnyAsync(a => a.UserId == userGuid && a.Timestamp.Date == today && a.Type == EntryType.CheckOut);
-
-            if (alreadyCheckedOut)
-                return false;
-
             var entry = new AttendanceEntry
             {
-                UserId = userGuid,
+                UserId = Guid.Parse(userId),
                 Timestamp = DateTime.UtcNow,
                 Type = EntryType.CheckOut
             };
 
             await repository.AddAsync(entry);
             await repository.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> IsCheckedInAsync(string userId)
         {
-            if (!Guid.TryParse(userId, out Guid userGuid))
-                return false;
-
+            var guid = Guid.Parse(userId);
             var today = DateTime.UtcNow.Date;
 
             var checkIn = await repository.All<AttendanceEntry>()
-                .AnyAsync(a => a.UserId == userGuid && a.Timestamp.Date == today && a.Type == EntryType.CheckIn);
+                .AnyAsync(a => a.UserId == guid && a.Timestamp.Date == today && a.Type == EntryType.CheckIn);
 
-            var checkOut = await repository.All<AttendanceEntry>()
-                .AnyAsync(a => a.UserId == userGuid && a.Timestamp.Date == today && a.Type == EntryType.CheckOut);
-
-            return checkIn && !checkOut;
+            return checkIn;
         }
-    }
+
+		public async Task<bool> IsCheckedOutAsync(string userId)
+		{
+			var guid = Guid.Parse(userId);
+			var today = DateTime.UtcNow.Date;
+
+			var checkOut = await repository.All<AttendanceEntry>()
+				.AnyAsync(a => a.UserId == guid && a.Timestamp.Date == today && a.Type == EntryType.CheckOut);
+
+            return checkOut;
+		}
+	}
 }

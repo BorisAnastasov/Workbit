@@ -1,9 +1,8 @@
-using Workbit.Web.Extensions;
 using Workbit.App.Extensions;
-using IbanNet.DependencyInjection.ServiceProvider;
+
 namespace Workbit.App
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -14,12 +13,6 @@ namespace Workbit.App
 			builder.Services.AddApplicationIdentity(builder.Configuration);
 
 			builder.Services.AddApplicationServices();
-
-			builder.Services.AddControllersWithViews();
-
-			builder.Services.AddRazorPages();
-
-            builder.Services.AddIbanNet();
 
             var app = builder.Build();
 

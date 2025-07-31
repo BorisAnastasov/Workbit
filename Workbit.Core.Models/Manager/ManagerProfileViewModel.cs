@@ -1,6 +1,6 @@
 ﻿namespace Workbit.Core.Models.Manager
 {
-    public class ManagerDashboardViewModel
+    public class ManagerProfileViewModel
     {
         // Manager info (can be populated from ManagerReadDto)
         public string ManagerId { get; set; } = null!;

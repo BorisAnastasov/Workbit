@@ -5,6 +5,7 @@ using Workbit.Core.Interfaces;
 using Workbit.Core.Services;
 using Workbit.Infrastructure.Database;
 using Workbit.Infrastructure.Database.Entities.Account;
+using IbanNet.DependencyInjection.ServiceProvider;
 
 namespace Workbit.App.Extensions
 {
@@ -25,16 +26,26 @@ namespace Workbit.App.Extensions
 			services.AddScoped<ICountryService, CountryService>();
 			services.AddScoped<IUserService, UserService>();
 
-			services.ConfigureApplicationCookie(options =>
+            services.AddHttpClient<IApiNinjasService, ApiNinjasService>();
+
+            services.AddScoped<IApiNinjasService, ApiNinjasService>();
+
+            services.AddControllersWithViews();
+
+            services.AddRazorPages();
+
+            services.AddIbanNet();
+
+            services.ConfigureApplicationCookie(options =>
 			{
 				options.Cookie.HttpOnly = true;
-				options.Cookie.SameSite = SameSiteMode.Lax;  // Avoid Strict for redirects
-				options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Allow HTTP during development
+				options.Cookie.SameSite = SameSiteMode.Lax;
+				options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Allow HTTP during development
 				options.ExpireTimeSpan = TimeSpan.FromHours(1);
 				options.LoginPath = "/User/Login";
 				options.LogoutPath = "/User/Logout";
-				options.AccessDeniedPath = "/Account/AccessDenied";
-			});
+                options.AccessDeniedPath = "/Error/Error403";
+            });
 
 			return services;
 		}

@@ -1,0 +1,192 @@
+﻿@model ManagerProfileViewModel
+
+@{
+    ViewData["Title"] = "Manager Dashboard";
+}
+
+<style>
+    .manager-dashboard-wrapper {
+        padding: 24px 0 10px 0;
+        background-color: #eaf4f7;
+        min-height: 100vh;
+    }
+
+    .dashboard-main {
+        display: grid;
+        grid-template-columns: 1.22fr 1fr;
+        gap: 2.3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .left-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+    }
+
+    .summary-grid-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem 2rem;
+    }
+
+    .summary-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.09);
+        padding: 28px 20px 26px 20px;
+        min-width: 250px;
+        min-height: 120px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+        .summary-card h4 {
+            font-size: 1.17rem;
+            color: #179ca8;
+            font-weight: 700;
+            margin-bottom: 13px;
+            letter-spacing: 0.1px;
+        }
+
+        .summary-card p {
+            font-size: 2.15rem;
+            font-weight: 800;
+            color: #12777e;
+            margin: 0;
+        }
+
+    .right-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        height: 100%;
+        min-width: 320px;
+    }
+
+    .profile-card {
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.09);
+        padding: 28px 28px 18px 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .profile-card h2 {
+            font-size: 2.05rem;
+            color: #179ca8;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+    .profile-info-list {
+        font-size: 1.08rem;
+        color: #222;
+        line-height: 2.0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-align: center;
+    }
+
+        .profile-info-list strong {
+            color: #17b0c7;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+    .team-list-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        padding: 18px 18px 14px 18px;
+        margin-top: 15px;
+        text-align: center;
+    }
+
+        .team-list-card h4 {
+            font-size: 1.07rem;
+            color: #12777e;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+    .team-member-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 1rem;
+    }
+
+        .team-member-list li {
+            margin-bottom: 7px;
+        }
+</style>
+
+<div class="manager-dashboard-wrapper">
+    <div class="dashboard-main">
+        <!-- LEFT: Stats Cards -->
+        <div class="left-panel">
+            <div class="summary-grid-cards">
+                <div class="summary-card">
+                    <h4>Department</h4>
+                    <p>@Model.DepartmentName ?? "—"</p>
+                </div>
+                <div class="summary-card">
+                    <h4>Total Team Members</h4>
+                    <p>@Model.TotalTeamMembers</p>
+                </div>
+                <div class="summary-card">
+                    <h4>Present Today</h4>
+                    <p>@Model.PresentToday</p>
+                </div>
+                <div class="summary-card">
+                    <h4>Total Jobs</h4>
+                    <p>@Model.TotalJobs</p>
+                </div>
+                <div class="summary-card">
+                    <h4>Department Payroll (This Month)</h4>
+                    <p>$@Model.DepartmentPayrollThisMonth.ToString("F2")</p>
+                </div>
+                <div class="summary-card">
+                    <h4>Department Budget</h4>
+                    <p>$@Model.DepartmentBudget.ToString("F2")</p>
+                </div>
+            </div>
+        </div>
+        <!-- RIGHT: Profile Card & Team -->
+        <div class="right-panel">
+            <div class="profile-card">
+                <h2>@Model.FullName</h2>
+                <ul class="profile-info-list">
+                    <li><strong>Email:</strong> @Model.Email</li>
+                    <li><strong>Department:</strong> @Model.DepartmentName ?? "—"</li>
+                </ul>
+            </div>
+            <div class="team-list-card">
+                <h4>Your Team</h4>
+                @if (Model.TeamEmployees?.Any() == true)
+                {
+                    <ul class="team-member-list">
+                        @foreach (var emp in Model.TeamEmployees)
+                        {
+                            <li>@emp</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div style="color:#aaa; font-style:italic;">No team members listed.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -96,7 +96,7 @@ namespace Workbit.Core.Services
         }
 
 
-		public async Task<ManagerDashboardViewModel> GetDashboardDataAsync(string managerId)
+		public async Task<ManagerProfileViewModel> GetDashboardDataAsync(string managerId)
 		{
 			var guid = Guid.Parse(managerId);
 
@@ -149,7 +149,7 @@ namespace Workbit.Core.Services
 				.Where(j => j.DepartmentId == department.Id)
 				.CountAsync();
 
-			return new ManagerDashboardViewModel
+			return new ManagerProfileViewModel
 			{
 				ManagerId = manager.ApplicationUserId.ToString(),
 				FullName = manager.ApplicationUser.FullName,

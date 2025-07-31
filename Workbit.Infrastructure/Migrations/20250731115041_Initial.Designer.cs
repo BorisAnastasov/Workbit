@@ -12,7 +12,7 @@ using Workbit.Infrastructure.Database;
 namespace Workbit.Infrastructure.Migrations
 {
     [DbContext(typeof(WorkbitDbContext))]
-    [Migration("20250730200851_Initial")]
+    [Migration("20250731115041_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -250,7 +250,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6af584c7-1d0a-4c4d-9e49-12ad5d309460",
+                            ConcurrencyStamp = "82ee72cb-ea9d-4882-84ef-ebcfebb25391",
                             CountryCode = "US",
                             DateOfBirth = new DateTime(1980, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "john.m.lewis@workbit.com",
@@ -260,10 +260,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JOHN.M.LEWIS@WORKBIT.COM",
                             NormalizedUserName = "JOHN.M.LEWIS",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDloZjZVL4WnWGSA1O7mqMS61jer4wv+gNjF9KxU/3Kz/zLmX8gWMhmU/9FHGdPLtg==",
-                            PhoneNumber = "+1-555-671-5847",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH17ye5cOm8XWghNFYv+UK4dOdCw3Amo7N7O+vikni7LflwNhhDvEfaD+K86gZQ6lQ==",
+                            PhoneNumber = "+1-555-301-3411",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "98acf246-5257-4fa2-b393-2b51c930b597",
+                            SecurityStamp = "902717a9-00db-47b3-bad1-7f5f4d937327",
                             TwoFactorEnabled = false,
                             UserName = "john.m.lewis"
                         },
@@ -271,7 +271,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8f10df1a-868f-49ac-8797-682cfadfca53",
+                            ConcurrencyStamp = "53669f6d-3c71-46fc-b9a0-201330a3e697",
                             CountryCode = "GB",
                             DateOfBirth = new DateTime(1982, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lisa.r.anderson@workbit.com",
@@ -281,10 +281,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "LISA.R.ANDERSON@WORKBIT.COM",
                             NormalizedUserName = "LISA.R.ANDERSON",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA+wpxSgYZaX7YIvFgrjpAS804QBK1b/YTeUve/zgCYlMglJg1x9tTzRD7l2xm0Kpw==",
-                            PhoneNumber = "+1-555-771-2029",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM2yVFxIUHXmtiQQCSylEEri5Dlkrskqj7CSz8ygfzotKeSsl/KyMBd+/i2XH9ub6A==",
+                            PhoneNumber = "+1-555-241-1185",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1684f192-ac0d-463e-a3b2-82be8b31553d",
+                            SecurityStamp = "a7472485-dcc9-4eab-94f6-646f81a20c7d",
                             TwoFactorEnabled = false,
                             UserName = "lisa.r.anderson"
                         },
@@ -292,7 +292,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cf47cf31-eacf-4d91-9034-b402fcef9c4e",
+                            ConcurrencyStamp = "ff90c2c1-b69e-4c86-b49c-0d4817e0a3eb",
                             CountryCode = "DE",
                             DateOfBirth = new DateTime(1978, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "carl.t.morgan@workbit.com",
@@ -302,10 +302,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CARL.T.MORGAN@WORKBIT.COM",
                             NormalizedUserName = "CARL.T.MORGAN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDMYQmdpT0FE0CN9vgiZQoNY7L7dh+iS6ZseSQT82hfPPr9JLKoRf5mp/csVVw1fKQ==",
-                            PhoneNumber = "+1-555-792-9044",
+                            PasswordHash = "AQAAAAIAAYagAAAAELjLrUQA2AH/1EjHt6CVIpBXhDgPg+EgS20KqhLyAPPJ12Bit1I8yxeYK1RECNVpEg==",
+                            PhoneNumber = "+1-555-443-1609",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5d312025-c602-47e7-91c6-82fddeae4515",
+                            SecurityStamp = "3ba97b5f-3a02-477d-a4fc-af84e4f8736f",
                             TwoFactorEnabled = false,
                             UserName = "carl.t.morgan"
                         },
@@ -313,7 +313,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7157815a-c984-438b-ba95-260c041383cf",
+                            ConcurrencyStamp = "58358a4b-15c4-4565-82aa-b31219ae631a",
                             CountryCode = "FR",
                             DateOfBirth = new DateTime(1985, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "nina.v.hughes@workbit.com",
@@ -323,10 +323,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NINA.V.HUGHES@WORKBIT.COM",
                             NormalizedUserName = "NINA.V.HUGHES",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFU3FAd1kHw9UCfq3ADrOCKhQ1UdNDwrkeE7OZTKD+CCRNekFyXJhOWxAqCbFzN8/Q==",
-                            PhoneNumber = "+1-555-649-1540",
+                            PasswordHash = "AQAAAAIAAYagAAAAEI5ps0ZxbBQzQv+YKQgTPXat4p9BuQCH3GjHE+eRBHSj3rbuq+r7kKcFxoc9oTpAlw==",
+                            PhoneNumber = "+1-555-297-1548",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0b6e357f-2d81-4af8-9a0a-145362f13a33",
+                            SecurityStamp = "8b0bcc34-7b02-495e-b02f-efafad92ad56",
                             TwoFactorEnabled = false,
                             UserName = "nina.v.hughes"
                         },
@@ -334,7 +334,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8c5a184b-c714-41ad-8aee-06c1d8ddad0a",
+                            ConcurrencyStamp = "8eb3bf23-a0f0-43ac-a412-d9017f898778",
                             CountryCode = "BG",
                             DateOfBirth = new DateTime(1995, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "alice.k.watson@workbit.com",
@@ -344,10 +344,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ALICE.K.WATSON@WORKBIT.COM",
                             NormalizedUserName = "ALICE.K.WATSON",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKjGpycEby+bzzznSAcgbw8rYVwU/X2lznWsx68pgOwTgqnIysaaEIU+mWwVTtRIeA==",
-                            PhoneNumber = "+1-555-871-6181",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIxUZFMjEuoqSYJRPvj6AW+Jw/ZC37E8HRYKNrlH/a3TW3hJt23Uiq857SnNfaFkVg==",
+                            PhoneNumber = "+1-555-208-1904",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2a5de8a7-3231-49ad-83e3-c864749bce01",
+                            SecurityStamp = "8aace3aa-8952-4a6f-b51c-7eedfc1df63f",
                             TwoFactorEnabled = false,
                             UserName = "alice.k.watson"
                         },
@@ -355,7 +355,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f98b1069-77b1-4b13-aede-b0773819db04",
+                            ConcurrencyStamp = "774de440-6e6b-4b75-9722-ee06533b6013",
                             CountryCode = "IT",
                             DateOfBirth = new DateTime(1994, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "bob.c.thomas@workbit.com",
@@ -365,10 +365,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "BOB.C.THOMAS@WORKBIT.COM",
                             NormalizedUserName = "BOB.C.THOMAS",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGv4hr2JrE6ns2Vsfk2O5THnk4gOWasgPrFS2y/VmOXM3qsgh0fpI1CMfkr5ta+JBg==",
-                            PhoneNumber = "+1-555-610-7434",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO3Pmx0x/OxcDlbHeHFyjbn7cr9GnxFerlwjVybI920IPP4Uu9Al97YLOUnfKq/NBw==",
+                            PhoneNumber = "+1-555-867-1502",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1245a4ce-b6d9-4500-9f7a-1e9a882d7915",
+                            SecurityStamp = "8a56abb4-2188-43fa-bd8d-7d7b849f2a44",
                             TwoFactorEnabled = false,
                             UserName = "bob.c.thomas"
                         },
@@ -376,7 +376,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8de8f663-fe80-407d-b3d3-b9239c73d77a",
+                            ConcurrencyStamp = "9d97bbed-23b1-4b1d-b30a-5a325e8224ac",
                             CountryCode = "ES",
                             DateOfBirth = new DateTime(1992, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "claire.b.james@workbit.com",
@@ -386,10 +386,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CLAIRE.B.JAMES@WORKBIT.COM",
                             NormalizedUserName = "CLAIRE.B.JAMES",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBNOqklGIkaLuM/4vYs/Pu0RD9disb3mq9NMEObxeHTHxblsj3Z5V1S2dh6PdqrXzQ==",
-                            PhoneNumber = "+1-555-594-1558",
+                            PasswordHash = "AQAAAAIAAYagAAAAENUQBBjFEvJmK9KyOjRbvMTczDF3YjOg0SWuWkezXYIk3cpKWs7rKg7Nennz8SpQrA==",
+                            PhoneNumber = "+1-555-711-6514",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eee21643-c991-4a08-8910-b54a4fcfb5a6",
+                            SecurityStamp = "e5ee08e7-7615-49f5-9547-b4f10ae20816",
                             TwoFactorEnabled = false,
                             UserName = "claire.b.james"
                         },
@@ -397,7 +397,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5a69fd08-77d2-4a41-8165-00aac169db25",
+                            ConcurrencyStamp = "cfcc4421-e971-4a6a-9e91-f41000883a92",
                             CountryCode = "RO",
                             DateOfBirth = new DateTime(1993, 4, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "dave.r.walker@workbit.com",
@@ -407,10 +407,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "DAVE.R.WALKER@WORKBIT.COM",
                             NormalizedUserName = "DAVE.R.WALKER",
-                            PasswordHash = "AQAAAAIAAYagAAAAELRCl8FRSCe7JsSqNBVr7nYlMMNNHmiPalHJ9L/a0/rArhJPuVcRoJ5aalPMNy9yeA==",
-                            PhoneNumber = "+1-555-812-9938",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKvztfXsahwge9rDsHUQ/CWCiCDPFyP+jJaEI+fEGw6f4BvPogn0dvERJEK4X/tuag==",
+                            PhoneNumber = "+1-555-455-1438",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1f4ce1be-909c-4ac6-984a-fe2aa3965ab8",
+                            SecurityStamp = "bf4dac9a-59b9-4bb8-8f4f-03f83ec8c170",
                             TwoFactorEnabled = false,
                             UserName = "dave.r.walker"
                         },
@@ -418,7 +418,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "12bb9425-ebb5-4d7a-a805-7fe81b6578d0",
+                            ConcurrencyStamp = "8eb4868f-2dd1-476d-b41e-df9ab254668a",
                             CountryCode = "NL",
                             DateOfBirth = new DateTime(1991, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "emily.d.young@workbit.com",
@@ -428,10 +428,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "EMILY.D.YOUNG@WORKBIT.COM",
                             NormalizedUserName = "EMILY.D.YOUNG",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDpOVZtqdu1nSPBNb3/uAFAaoSBFI0mMKyt/hXt/NY6w4KiE+aAb9HnmPjVRW6mPmw==",
-                            PhoneNumber = "+1-555-768-2445",
+                            PasswordHash = "AQAAAAIAAYagAAAAECEVWs8Zh3U93y6hs+ymflsrYb6QSA6YoKfBzrVN0arFEU6Pqc7OlsKL4KpGJman+Q==",
+                            PhoneNumber = "+1-555-679-1476",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6567b52a-4b83-4e68-ab38-dea87a58bac3",
+                            SecurityStamp = "ca4e6374-8aa4-4f85-9243-7efa656d8551",
                             TwoFactorEnabled = false,
                             UserName = "emily.d.young"
                         },
@@ -439,7 +439,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d0e4d57e-80cd-4ea7-b84e-7d5b4f8d12ee",
+                            ConcurrencyStamp = "56d9b109-7d98-4c60-b012-bbea9aa1f202",
                             CountryCode = "PL",
                             DateOfBirth = new DateTime(1990, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "frank.h.scott@workbit.com",
@@ -449,10 +449,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "FRANK.H.SCOTT@WORKBIT.COM",
                             NormalizedUserName = "FRANK.H.SCOTT",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMT7CU2LNUlOWNbpHNeDkNR8NpIdHFZxx/uG6H+5UyHbDlTYmKvjlzhD24n8m2l82A==",
-                            PhoneNumber = "+1-555-977-3548",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEItO7peu60lRZx/PHAgnJOOx4KQcn+LlQ8z6ha3vVuYujFCuatsdgfFnDuze24Svg==",
+                            PhoneNumber = "+1-555-917-3032",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ed27242d-c8cb-4242-9a06-3a1095d9cecf",
+                            SecurityStamp = "13d0ffde-6f98-4402-9586-a029fda17a47",
                             TwoFactorEnabled = false,
                             UserName = "frank.h.scott"
                         },
@@ -460,7 +460,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a4642353-f9f2-43c5-b80d-955389ba4df9",
+                            ConcurrencyStamp = "4ca216f7-9404-4504-810d-03abec97de7f",
                             CountryCode = "SE",
                             DateOfBirth = new DateTime(1996, 7, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "grace.l.adams@workbit.com",
@@ -470,10 +470,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "GRACE.L.ADAMS@WORKBIT.COM",
                             NormalizedUserName = "GRACE.L.ADAMS",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE3mQZqWF77eUOdVO5fGZQQwbbKcPKC3GTmqB8OT8eVR/O4Dx1t5o5JM0WvXEqtqjA==",
-                            PhoneNumber = "+1-555-350-4402",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMwo79dZzzQQhKWjlkn0NI6Fl1OSBcZ96B7/frsBjCXalPu6ErkcZSDdne/al5Y1Kw==",
+                            PhoneNumber = "+1-555-256-2599",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "181c27ae-cef2-4de0-86ef-85114cecc14a",
+                            SecurityStamp = "e6f4c842-8b04-4b30-a19e-f560b5601570",
                             TwoFactorEnabled = false,
                             UserName = "grace.l.adams"
                         },
@@ -481,7 +481,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f50a3af0-0428-40c4-90c0-0504f4a45566",
+                            ConcurrencyStamp = "417b3cbc-6548-41ad-8c0c-de0befe7318f",
                             CountryCode = "IE",
                             DateOfBirth = new DateTime(1997, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "harry.n.brooks@workbit.com",
@@ -491,10 +491,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "HARRY.N.BROOKS@WORKBIT.COM",
                             NormalizedUserName = "HARRY.N.BROOKS",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFJ9iJLZ+1qnDAm5GYIcfEWY/nZwgQrdaz2gZgqbdvX3GIiZjPuPcUGp7yLXN8Z0aA==",
-                            PhoneNumber = "+1-555-583-2070",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEwbGxpNo3t+e+kdaYbVQYkt5F0nA0iA6ztIY/ya3I1UFCytTkugArQm7tRVbrpA9Q==",
+                            PhoneNumber = "+1-555-222-3943",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "30f0450e-aaf5-47dd-a06e-3f46ac5d33c1",
+                            SecurityStamp = "61acf1cc-55af-4f86-a51e-97c905fd8a83",
                             TwoFactorEnabled = false,
                             UserName = "harry.n.brooks"
                         },
@@ -502,7 +502,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = new Guid("d5e7f9a2-0ac3-4b6d-8c64-6fd8e4c0c013"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "00cc59a8-afc1-4d84-8996-caed660ea12a",
+                            ConcurrencyStamp = "1189e22c-0c77-4dde-b290-da7ff8c4e99a",
                             CountryCode = "BG",
                             DateOfBirth = new DateTime(1994, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
@@ -512,10 +512,10 @@ namespace Workbit.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMINADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKz3v1MBum1Sb3z9Fx9f/N++7EBNZ4g2uNK1gN3HUuEiG/H/BsEn9I9jU6Pbgl+uFw==",
-                            PhoneNumber = "+1-555-358-4789",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKdkVJ9Jtjd7AfXCcsqF4LSoiCUz8v58fG6y3bgaFSMsvOP4IR3pBn2KM50QIn3H8Q==",
+                            PhoneNumber = "+1-555-772-8799",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e68fbe07-5046-40e1-b6f4-160e6d8e6f80",
+                            SecurityStamp = "c45b2d79-ee6c-41cc-a91d-d3c3cc0f7a5e",
                             TwoFactorEnabled = false,
                             UserName = "adminadmin"
                         });
@@ -969,6 +969,10 @@ namespace Workbit.Infrastructure.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<string>("CountryCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(2)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -979,6 +983,8 @@ namespace Workbit.Infrastructure.Migrations
                     b.HasIndex("CeoId")
                         .IsUnique();
 
+                    b.HasIndex("CountryCode");
+
                     b.ToTable("Companies");
 
                     b.HasData(
@@ -988,6 +994,7 @@ namespace Workbit.Infrastructure.Migrations
                             Address = "123 Business Blvd, New York, NY, USA",
                             CeoId = new Guid("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801"),
                             ContactPhone = "+1-555-0000",
+                            CountryCode = "US",
                             Name = "Workbit Solutions Inc."
                         });
                 });
@@ -2774,6 +2781,10 @@ namespace Workbit.Infrastructure.Migrations
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CountryCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(2)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -2788,6 +2799,8 @@ namespace Workbit.Infrastructure.Migrations
 
                     b.HasIndex("CompanyId");
 
+                    b.HasIndex("CountryCode");
+
                     b.ToTable("Departments");
 
                     b.HasData(
@@ -2795,6 +2808,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 1,
                             CompanyId = 1,
+                            CountryCode = "US",
                             Description = "Handles recruitment, payroll, employee relations, and organizational policies.",
                             Name = "Human Resources"
                         },
@@ -2802,6 +2816,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 2,
                             CompanyId = 1,
+                            CountryCode = "US",
                             Description = "Oversees infrastructure, software development, cybersecurity, and IT support.",
                             Name = "IT"
                         },
@@ -2809,6 +2824,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 3,
                             CompanyId = 1,
+                            CountryCode = "US",
                             Description = "Manages budgeting, forecasting, accounting, and financial reporting.",
                             Name = "Finance"
                         },
@@ -2816,6 +2832,7 @@ namespace Workbit.Infrastructure.Migrations
                         {
                             Id = 4,
                             CompanyId = 1,
+                            CountryCode = "US",
                             Description = "Develops brand strategy, campaigns, and customer outreach initiatives.",
                             Name = "Marketing"
                         });
@@ -3122,7 +3139,7 @@ namespace Workbit.Infrastructure.Migrations
                     b.HasOne("Workbit.Infrastructure.Database.Entities.Country", "Country")
                         .WithMany("Users")
                         .HasForeignKey("CountryCode")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Country");
@@ -3194,7 +3211,15 @@ namespace Workbit.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Workbit.Infrastructure.Database.Entities.Country", "Country")
+                        .WithMany("Companies")
+                        .HasForeignKey("CountryCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Ceo");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("Workbit.Infrastructure.Database.Entities.Department", b =>
@@ -3205,7 +3230,15 @@ namespace Workbit.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Workbit.Infrastructure.Database.Entities.Country", "Country")
+                        .WithMany("Departments")
+                        .HasForeignKey("CountryCode")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Company");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("Workbit.Infrastructure.Database.Entities.DepartmentBudget", b =>
@@ -3261,6 +3294,10 @@ namespace Workbit.Infrastructure.Migrations
 
             modelBuilder.Entity("Workbit.Infrastructure.Database.Entities.Country", b =>
                 {
+                    b.Navigation("Companies");
+
+                    b.Navigation("Departments");
+
                     b.Navigation("Users");
                 });
 

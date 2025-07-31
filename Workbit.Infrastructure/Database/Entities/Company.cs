@@ -32,6 +32,10 @@ namespace Workbit.Infrastructure.Database.Entities
 		public Guid CeoId { get; set; }
 		public virtual Ceo Ceo { get; set; } = null!;
 
-		public virtual List<Department> Departments { get; set; }
+        [ForeignKey(nameof(Country))]
+        public string CountryCode { get; set; } 
+        public virtual Country Country { get; set; } = null!;
+
+        public virtual List<Department> Departments { get; set; }
 	}
 }

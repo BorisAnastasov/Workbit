@@ -176,7 +176,7 @@
 								<a class="nav-link @Html.IsActive("Profile", "Employee")" asp-area="Employee" asp-controller="Employee" asp-action="Profile">Profile</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @Html.IsActive("HistoryForEmployee", "Payment")" asp-controller="Payment" asp-action="HistoryForEmployee">Payment</a>
+								<a class="nav-link @Html.IsActive("History", "Payment")" asp-area="Employee" asp-controller="Payment" asp-action="History">Payments</a>
 							</li>
 						}
 						@if (User.IsAdmin())
@@ -211,7 +211,7 @@
 
 	<footer>
 		<div class="container">
-			&copy; 2025 - Workbit - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+			&copy; @DateTime.Now.Year - Workbit - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 		</div>
 	</footer>
 

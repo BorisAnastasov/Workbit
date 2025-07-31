@@ -4,6 +4,7 @@ using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Payment;
 using Workbit.Infrastructure.Database.Entities;
 using Workbit.Infrastructure.Database.Entities.Account;
+using static Workbit.Common.DataConstants.Constants;
 
 namespace Workbit.Core.Services
 {
@@ -281,21 +282,18 @@ namespace Workbit.Core.Services
                 Notes = p.Notes
             }).ToList();
         }
-        public async Task<IEnumerable<PaymentReadDto>> GetAllByEmployeeIdAsync(
-    string employeeId,
-    DateTime? startDate = null,
-    DateTime? endDate = null)
+        public async Task<EmployeePaymentsViewModel> GetAllByEmployeeIdAsync(
+                                                                string employeeId,
+                                                                DateTime? startDate = null,
+                                                                DateTime? endDate = null)
         {
             var payments = await repository.All<Payment>()
+                .Where(p=> p.RecipientId.ToString() == employeeId)
                 .OrderByDescending(p => p.PaymentDate)
                 .ToListAsync();
 
             var filtered = payments.Where(p =>
             {
-                // Match employee payments
-                if (p.RecipientId.ToString() != employeeId) return false;
-
-                // Date filters
                 var paymentDate = p.PaymentDate.Date;
                 if (startDate.HasValue && paymentDate < startDate.Value.Date) return false;
                 if (endDate.HasValue && paymentDate > endDate.Value.Date) return false;
@@ -303,7 +301,7 @@ namespace Workbit.Core.Services
                 return true;
             });
 
-            return filtered.Select(p => new PaymentReadDto
+            var paymentsResult =  filtered.Select(p => new PaymentReadDto
             {
                 Id = p.Id,
                 RecipientId = p.RecipientId.ToString(),
@@ -314,6 +312,13 @@ namespace Workbit.Core.Services
                 Taxes = p.Taxes,
                 Notes = p.Notes
             }).ToList();
+
+            return new EmployeePaymentsViewModel
+            {
+                Payments = paymentsResult,
+                StartDate = startDate?.ToString(DateFormatShort),
+                EndDate = endDate?.ToString(DateFormatShort),
+            };
         }
 
 

@@ -1,4 +1,5 @@
-﻿using Workbit.Core.Models.Employee;
+﻿using Workbit.Core.Models.ApiNinjas;
+using Workbit.Core.Models.Employee;
 using Workbit.Core.Models.Job;
 
 namespace Workbit.Core.Interfaces
@@ -10,8 +11,9 @@ namespace Workbit.Core.Interfaces
         Task<IEnumerable<EmployeeSummaryDto>> GetByDepartmentIdAsync(int departmentId);
         Task<IEnumerable<EmployeeSummaryDto>> GetByJobIdAsync(int jobId);
         Task<EmployeeReadDto> GetByIdAsync(string id);
-        Task<EmployeeProfileViewModel> GetProfileAsync(string employeeId, int? month = null);//u
+        Task<EmployeeProfileViewModel> GetProfileAsync(string employeeId,WorkingDaysApi response, int? month = null);
         Task<IEnumerable<EmployeeSummaryDto>> GetAllByCeoIdAsync(string id);
+        Task<string> GetCountryCodeByIdAsync(string id);
 
         // Update
         Task UpdateAsync(EmployeeUpdateDto dto);
@@ -26,6 +28,6 @@ namespace Workbit.Core.Interfaces
 		Task<List<EmployeeSummaryDto>> GetUnemployedUsersAsync();
 		Task<List<JobSummaryDto>> GetJobsForManagerAsync(string managerId);
 		Task HireEmployeeAsync(string userId, int jobId, string level);
-        Task LeaveDepartmentAsync(string userId);
+        Task LeaveJobAsync(string userId);
     }
 }

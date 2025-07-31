@@ -4,7 +4,8 @@
     {
         public static class Constants
         {
-            public const string DateFormat = "dd/MM/yyyy HH:mm";
+            public const string DateFormatShort = "dd-MM-yyyy";
+            public const string DateFormatLong = "dd-MM-yyyy HH:mm";
         }
 
         public class Department 

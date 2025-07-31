@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Workbit.Infrastructure.Attributes;
-using static Workbit.Common.DataConstants.ApplicationUser;
 
 namespace Workbit.Infrastructure.Database.Entities.Account
 {
-    public class Manager
+	public class Manager
     {
         [Key]
         public Guid ApplicationUserId { get; set; }

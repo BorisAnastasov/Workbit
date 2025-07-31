@@ -19,7 +19,7 @@ namespace Workbit.Core.Interfaces
                                                         DateTime? startDate = null,
                                                         DateTime? endDate = null);
 
-        Task<IEnumerable<PaymentReadDto>> GetAllByEmployeeIdAsync(
+        Task<EmployeePaymentsViewModel> GetAllByEmployeeIdAsync(
                                                         string employeeId,
                                                         DateTime? startDate = null,
                                                         DateTime? endDate = null);

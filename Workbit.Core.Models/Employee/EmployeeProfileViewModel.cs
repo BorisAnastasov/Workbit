@@ -1,6 +1,8 @@
-﻿namespace Workbit.Core.Models.Employee
+﻿using Workbit.Core.Models.ApiNinjas;
+
+namespace Workbit.Core.Models.Employee
 {
-	public class EmployeeProfileViewModel
+    public class EmployeeProfileViewModel
     {
         // Basic info
         public string EmployeeId { get; set; } = null!;
@@ -19,8 +21,14 @@
         public decimal TotalPaidThisMonth { get; set; }
 
         // New: API Ninjas Working Days data
-        public int SelectedMonth { get; set; }  // Which month is selected (1–12)
-        public int WorkingDays { get; set; }    // API result for that month
-        public string Country { get; set; } = null!;  // Employee’s country (ISO code)
+        public WorkingDaysApi WorkingDaysResponse { get; set; }
+        public int SelectedMonth { get; set; }
+        public string Country { get; set; } = null!;
+        public int WorkingDays => WorkingDaysResponse?.WorkingDays?.Count ?? 0;
+        public int WorkingDaysElapsed { get; set; } // Set in your service: working days <= today
+        public double AttendancePercentage
+            => WorkingDaysElapsed > 0 ? (double)TotalPresentDays / WorkingDaysElapsed * 100 : 0;
+        public double AbsencePercentage
+            => WorkingDaysElapsed > 0 ? (double)TotalAbsentDays / WorkingDaysElapsed * 100 : 0;
     }
 }

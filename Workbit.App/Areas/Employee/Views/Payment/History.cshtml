@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PaymentReadDto>
+﻿@model EmployeePaymentsViewModel
 @{
     ViewData["Title"] = "My Payment History";
 }
@@ -67,17 +67,22 @@
             background-color: var(--secondary);
             color: #fff;
             font-size: 1.1rem;
+            cursor: pointer;
         }
 
         .history-table tr:hover {
             background-color: #f1f8fa;
         }
+
+    div.dataTables_length {
+        margin-bottom: 18px;
+    }
 </style>
 
 <div class="history-wrapper">
     <div class="history-header">
         <h2>My Payment History</h2>
-        <a asp-controller="Employee" asp-action="EmployeeDashboard" class="btn-back">Back to Dashboard</a>
+        <a asp-area="Employee" asp-controller="Employee" asp-action="Profile" class="btn-back">Back to Profile</a>
     </div>
 
     <!-- Filters -->
@@ -85,11 +90,11 @@
         <form method="get" asp-action="HistoryForEmployee" class="row g-3 align-items-end">
             <div class="col-md-4">
                 <label class="form-label fw-bold">Start Date</label>
-                <input type="date" name="startDate" class="form-control" value="@ViewBag.StartDate" />
+                <input type="date" name="startDate" class="form-control" value="@Model.StartDate" />
             </div>
             <div class="col-md-4">
                 <label class="form-label fw-bold">End Date</label>
-                <input type="date" name="endDate" class="form-control" value="@ViewBag.EndDate" />
+                <input type="date" name="endDate" class="form-control" value="@Model.EndDate" />
             </div>
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary w-100" style="background-color: var(--secondary); border: none; height: 50px;">
@@ -100,9 +105,9 @@
     </div>
 
     <!-- Table -->
-    @if (Model.Any())
+    @if (Model.Payments.Any())
     {
-        <table class="history-table">
+        <table class="history-table display">
             <thead>
                 <tr>
                     <th>Date</th>
@@ -114,10 +119,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var payment in Model)
+                @foreach (var payment in Model.Payments)
                 {
                     <tr>
-                        <td>@payment.PaymentDate.ToString("MMM dd, yyyy")</td>
+                        <td>@payment.PaymentDate.ToString(DateFormatShort)</td>
                         <td>$@payment.Salary.ToString("F2")</td>
                         <td>$@payment.Bonus.ToString("F2")</td>
                         <td>$@payment.Taxes.ToString("F2")</td>
@@ -133,3 +138,25 @@
         <p class="text-center text-muted mt-4">No payments found for the selected filters.</p>
     }
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+    <script>
+        $(document).ready(function () {
+            $('.history-table').DataTable({
+                pageLength: 10,
+                lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
+                order: [[0, "desc"]],
+                searching: false,
+                columnDefs: [
+                    { orderable: false, targets: 5 } // "Notes" column, 0-based index
+                ]
+            });
+        });
+    </script>
+}
+
+

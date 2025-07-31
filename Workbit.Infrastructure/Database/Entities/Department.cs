@@ -28,6 +28,10 @@ namespace Workbit.Infrastructure.Database.Entities
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; } = null!;
 
+        [ForeignKey(nameof(Country))]
+        public string CountryCode { get; set; }
+        public virtual Country Country { get; set; } = null!;
+
         public virtual List<Manager> Managers { get; set; } = null!;
 
         public virtual List<Job> Jobs { get; set; } = null!;

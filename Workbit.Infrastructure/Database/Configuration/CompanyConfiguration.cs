@@ -17,7 +17,8 @@ namespace Workbit.Infrastructure.Database.Configuration
                     Name = "Workbit Solutions Inc.",
                     Address = "123 Business Blvd, New York, NY, USA",
                     ContactPhone = "+1-555-0000",
-                    CeoId = Guid.Parse("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801")
+                    CeoId = Guid.Parse("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801"),
+                    CountryCode = "US"
                 }
             );
         }
