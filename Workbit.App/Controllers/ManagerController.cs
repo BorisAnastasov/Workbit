@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Workbit.App.Extensions;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Employee;
@@ -72,24 +71,6 @@ namespace Workbit.App.Controllers
 				return RedirectToAction("Error500", "Error");
 			}
 		}
-
-        [HttpPost]
-        public async Task<IActionResult> KickEmployee(string id)
-        {
-            try
-            {
-                await managerService.RemoveEmployeeByIdAsync(id);
-                TempData["Success"] = "Employee removed from your department.";
-
-				return RedirectToAction(nameof(TeamEmployees));
-
-			}
-			catch (Exception)
-            {
-				return RedirectToAction("Error500", "Error");
-			}
-
-        }
 
         [HttpGet]
         public async Task<IActionResult> EmployeeDetailsForManager(string id)
@@ -218,27 +199,6 @@ namespace Workbit.App.Controllers
             }
         }
 
-		[HttpGet]
-		public async Task<IActionResult> Hire()
-		{
-			var managerId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value;
-
-			var model = new HireEmployeeViewModel
-			{
-				AvailableUsers = await employeeService.GetUnemployedUsersAsync(),
-				AvailableJobs = await employeeService.GetJobsForManagerAsync(managerId)
-			};
-
-			return View(model);
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> Hire(HireEmployeeViewModel model)
-		{
-			await employeeService.HireEmployeeAsync(model.SelectedUserId, model.SelectedJobId, model.Level);
-
-			TempData["Success"] = "Employee hired successfully!";
-			return RedirectToAction("Hire");
-		}
+		
 	}
 }

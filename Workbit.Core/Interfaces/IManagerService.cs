@@ -9,24 +9,19 @@ namespace Workbit.Core.Interfaces
         Task<IEnumerable<ManagerSummaryDto>> GetByDepartmentIdAsync(int departmentId);
         Task<ManagerReadDto> GetByIdAsync(string id);
         Task<ManagerProfileViewModel> GetProfileDataAsync(string managerId);
-
-
 		Task<IEnumerable<ManagerSummaryDto>> GetAllByCeoIdAsync(string id);
-
-        // Update
-        Task UpdateAsync(ManagerUpdateDto dto);
 
 
         // Helpers
         Task<bool> ExistsByIdAsync(string id);
-        Task RemoveEmployeeByIdAsync(string id);
-
         Task<List<ManagerSummaryDto>> GetUnassignedManagersAsync();
         Task<bool> AssignToDepartmentAsync(string managerId, int departmentId);
         Task LeaveDepartmentAsync(string managerId);
         Task RemoveFromDepartmentAsync(string managerId);
-
-        Task<bool> HasDepartmentByUserIdAsync(string userId);
+        Task<bool> HasDepartmentByManagerIdAsync(string userId);
+        Task<bool> HasJobFromDepartmentAsync(int departmentId, string userId);
+        Task<int> GetDepartmentIdByManagerIdAsync(string userId);
+        Task<bool> IsManagerOfEmployeeAsync(string managerId ,string employeeId);
 
 
     }

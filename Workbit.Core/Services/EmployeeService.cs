@@ -11,7 +11,7 @@ using Workbit.Infrastructure.Enumerations;
 
 namespace Workbit.Core.Services
 {
-    public class EmployeeService:IEmployeeService
+    public class EmployeeService : IEmployeeService
     {
         private readonly IRepository repository;
 
@@ -63,7 +63,7 @@ namespace Workbit.Core.Services
         {
             var employees = await repository.AllReadOnly<Employee>()
                 .Where(e => e.Job.DepartmentId == departmentId)
-                .Select(e => new EmployeeSummaryDto 
+                .Select(e => new EmployeeSummaryDto
                 {
                     Id = e.ApplicationUserId.ToString(),
                     FullName = e.ApplicationUser.FullName
@@ -97,7 +97,7 @@ namespace Workbit.Core.Services
             };
         }
 
-        public async Task<string> GetCountryCodeByIdAsync(string id)
+        public async Task<string> GetCountryCodeByEmployeeIdAsync(string id)
         {
             var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(id));
 
@@ -185,7 +185,7 @@ namespace Workbit.Core.Services
                 WorkingDaysResponse = response,
                 Country = employee.Country.Name,
                 WorkingDaysElapsed = workingDaysSoFar.Count
-			};
+            };
         }
 
 
@@ -233,48 +233,46 @@ namespace Workbit.Core.Services
             await repository.SaveChangesAsync();
         }
 
-		public async Task HireEmployeeAsync(string userId, int jobId, string level)
-		{
-			var employee = new Employee
-			{
-				ApplicationUserId = Guid.Parse(userId),
-				JobId = jobId,
-				Level = Enum.Parse<JobLevel>(level, true)
-			};
+        public async Task HireEmployeeAsync(string userId, int jobId, string level)
+        {
+            var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(userId));
 
-			await repository.AddAsync(employee);
-			await repository.SaveChangesAsync();
-		}
+			employee.ApplicationUserId = Guid.Parse(userId);
+            employee.JobId = jobId;
+            employee.Level = Enum.Parse<JobLevel>(level, true);
 
-		public async Task<List<EmployeeSummaryDto>> GetUnemployedUsersAsync()
-		{
-			return await repository.AllReadOnly<Employee>()
-				.Where(e => e.Job == null)
-				.Select(e => new EmployeeSummaryDto
-				{
-					Id = e.ApplicationUserId.ToString(),
-					FullName = e.ApplicationUser.FullName
-				})
-				.ToListAsync();
-		}
+            await repository.SaveChangesAsync();
+        }
 
-		public async Task<List<JobSummaryDto>> GetJobsForManagerAsync(string managerId)
-		{
-			var manager = await repository.AllReadOnly<Manager>()
-				.Include(m => m.Department)
-				.FirstAsync(m => m.ApplicationUserId.ToString() == managerId);
+        public async Task<List<EmployeeSummaryDto>> GetUnemployedUsersAsync()
+        {
+            return await repository.AllReadOnly<Employee>()
+                .Where(e => e.Job == null)
+                .Select(e => new EmployeeSummaryDto
+                {
+                    Id = e.ApplicationUserId.ToString(),
+                    FullName = e.ApplicationUser.FullName
+                })
+                .ToListAsync();
+        }
 
-			var departmentId = manager.DepartmentId ?? 0;
+        public async Task<List<JobSummaryDto>> GetJobsForManagerAsync(string managerId)
+        {
+            var manager = await repository.AllReadOnly<Manager>()
+                .Include(m => m.Department)
+                .FirstAsync(m => m.ApplicationUserId.ToString() == managerId);
 
-			return await repository.AllReadOnly<Job>()
-				.Where(j => j.DepartmentId == departmentId)
-				.Select(j => new JobSummaryDto
-				{
-					Id = j.Id,
-					Title = j.Title
-				})
-				.ToListAsync();
-		}
+            var departmentId = manager.DepartmentId ?? 0;
+
+            return await repository.AllReadOnly<Job>()
+                .Where(j => j.DepartmentId == departmentId)
+                .Select(j => new JobSummaryDto
+                {
+                    Id = j.Id,
+                    Title = j.Title
+                })
+                .ToListAsync();
+        }
 
         public async Task LeaveJobAsync(string userId)
         {
@@ -294,6 +292,16 @@ namespace Workbit.Core.Services
             var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(id));
 
             return employee.JobId != null;
+        }
+
+        public async Task FireEmployeeByIdAsync(string userId)
+        {
+            var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(userId));
+
+            employee.JobId = null;
+            employee.Level = JobLevel.Unemployed;
+
+            await repository.SaveChangesAsync();
         }
     }
 }

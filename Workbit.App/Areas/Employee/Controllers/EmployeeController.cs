@@ -38,7 +38,7 @@ namespace Workbit.App.Areas.Employee.Controllers
 
                 int selectedMonth = month ?? DateTime.UtcNow.Month;
 
-                var countryCode = await employeeService.GetCountryCodeByIdAsync(userId);
+                var countryCode = await employeeService.GetCountryCodeByEmployeeIdAsync(userId);
 
                 var workingDaysResponse = await apiNinjasService.GetWorkingDaysAsync(countryCode, selectedMonth);
 

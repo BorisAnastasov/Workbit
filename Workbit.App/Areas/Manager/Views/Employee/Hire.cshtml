@@ -1,4 +1,4 @@
-﻿@model HireEmployeeViewModel
+﻿@model EmployeeHireViewModel
 
 <style>
     .hire-wrapper {
@@ -85,7 +85,7 @@
     <div class="hire-card">
         <h2>Hire a New Employee</h2>
 
-        <form asp-action="Hire" method="post">
+        <form asp-area="Manager" asp-controller="Employee" asp-action="Hire" method="post">
             <!-- Select User -->
             <div class="mb-3">
                 <label for="SelectedUserId" class="form-label">Select User</label>
@@ -124,12 +124,6 @@
             <button type="submit" class="btn-submit">Hire Employee</button>
         </form>
 
-        <!-- Success Message -->
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success mt-4">
-                @TempData["Success"]
-            </div>
-        }
+        
     </div>
 </div>

@@ -10,24 +10,26 @@ namespace Workbit.Core.Interfaces
         Task<IEnumerable<EmployeeSummaryDto>> GetAllAsync();
         Task<IEnumerable<EmployeeSummaryDto>> GetByDepartmentIdAsync(int departmentId);
         Task<IEnumerable<EmployeeSummaryDto>> GetByJobIdAsync(int jobId);
-        Task<EmployeeReadDto> GetByIdAsync(string id);
-        Task<EmployeeProfileViewModel> GetProfileAsync(string employeeId,WorkingDaysApi response, int? month = null);
-        Task<IEnumerable<EmployeeSummaryDto>> GetAllByCeoIdAsync(string id);
-        Task<string> GetCountryCodeByIdAsync(string id);
+        Task<EmployeeReadDto> GetByIdAsync(string userId);
+        Task<EmployeeProfileViewModel> GetProfileAsync(string employeeId, WorkingDaysApi response, int? month = null);
+        Task<IEnumerable<EmployeeSummaryDto>> GetAllByCeoIdAsync(string userId);
+        Task<string> GetCountryCodeByEmployeeIdAsync(string userId);
 
         // Update
         Task UpdateAsync(EmployeeUpdateDto dto);
 
         // Delete
-        Task DeleteAsync(string id);
+        Task DeleteAsync(string userId);
 
         // Helpers
-        Task<bool> ExistsByIdAsync(string id);
-        Task<bool> HasPaymentsAsync(string id);
-        Task<bool> HasJobAsync(string id);
+        Task<bool> ExistsByIdAsync(string userId);
+        Task<bool> HasPaymentsAsync(string userId);
+        Task<bool> HasJobAsync(string userId);
 		Task<List<EmployeeSummaryDto>> GetUnemployedUsersAsync();
 		Task<List<JobSummaryDto>> GetJobsForManagerAsync(string managerId);
 		Task HireEmployeeAsync(string userId, int jobId, string level);
         Task LeaveJobAsync(string userId);
+        Task FireEmployeeByIdAsync(string userId);
+
     }
 }

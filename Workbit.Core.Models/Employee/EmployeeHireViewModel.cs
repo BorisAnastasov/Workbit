@@ -2,7 +2,7 @@
 
 namespace Workbit.Core.Models.Employee
 {
-	public class HireEmployeeViewModel
+	public class EmployeeHireViewModel
 	{
 		public string SelectedUserId { get; set; } = string.Empty;
 		public int SelectedJobId { get; set; }

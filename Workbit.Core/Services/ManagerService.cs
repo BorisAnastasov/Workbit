@@ -83,18 +83,6 @@ namespace Workbit.Core.Services
             };
         }
 
-        public async Task UpdateAsync(ManagerUpdateDto dto)
-        {
-            var guid = Guid.Parse(dto.Id);
-            var manager = await repository.GetByIdAsync<Manager>(guid);
-
-            manager.DepartmentId = dto.DepartmentId;
-            manager.ApplicationUser.PhoneNumber = dto.PhoneNumber;
-
-            await repository.SaveChangesAsync();
-        }
-
-
 		public async Task<ManagerProfileViewModel> GetProfileDataAsync(string managerId)
 		{
 			var guid = Guid.Parse(managerId);
@@ -165,16 +153,7 @@ namespace Workbit.Core.Services
             };
 		}
 
-
-		public async Task RemoveEmployeeByIdAsync(string id)
-        {
-            var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(id));
-            employee.Job = null;
-            employee.JobId = null;
-
-            repository.Update(employee);
-            await repository.SaveChangesAsync();
-        }
+		
 
         public async Task<List<ManagerSummaryDto>> GetUnassignedManagersAsync()
         {
@@ -193,14 +172,6 @@ namespace Workbit.Core.Services
             var manager = await repository.All<Manager>()
                 .FirstOrDefaultAsync(m => m.ApplicationUserId.ToString() == managerId);
 
-            if (manager == null)
-                return false;
-
-            var departmentExists = await repository.All<Department>()
-                .AnyAsync(d => d.Id == departmentId);
-
-            if (!departmentExists)
-                return false;
 
             manager.DepartmentId = departmentId;
             await repository.SaveChangesAsync();
@@ -229,11 +200,33 @@ namespace Workbit.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<bool> HasDepartmentByUserIdAsync(string userId)
+        public async Task<bool> HasDepartmentByManagerIdAsync(string userId)
         {
             var manager = await repository.GetByIdAsync<Manager>(Guid.Parse(userId));
 
             return manager.DepartmentId != null;
+        }
+
+        public async Task<bool> HasJobFromDepartmentAsync(int departmentId, string userId)
+        {
+            var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(userId));
+
+            return employee.JobId != null && employee.Job!.DepartmentId == departmentId;
+        }
+
+        public async Task<int> GetDepartmentIdByManagerIdAsync(string userId)
+        {
+            var manager = await repository.GetByIdAsync<Manager>(Guid.Parse(userId));
+
+            return manager.DepartmentId!.Value;
+        }
+
+        public async Task<bool> IsManagerOfEmployeeAsync(string managerId, string employeeId)
+        {
+            var manager = await repository.GetByIdAsync<Manager>(Guid.Parse(managerId));
+            var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(employeeId));
+
+            return manager.DepartmentId == employee.Job!.DepartmentId;
         }
     }
 }

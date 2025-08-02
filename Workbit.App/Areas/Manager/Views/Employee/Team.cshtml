@@ -96,6 +96,25 @@
             color: white;
         }
 
+    .btn-edit {
+        background-color: #ff9800; /* A vibrant orange */
+        color: #fff;
+    }
+
+        .btn-edit:hover {
+            background-color: #f57c00;
+            color: #fff;
+        }
+
+    /* Make action buttons always in a row, nicely spaced */
+    .action-btn-group {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+    }
+
     .btn-kick {
         background-color: #e63946;
         color: white;
@@ -118,13 +137,17 @@
     .dataTables_length {
         margin-bottom: 1.2rem !important; /* Adds space below the dropdown */
     }
+
+    .dataTables_filter {
+        margin-bottom: 1.2rem !important;
+    }
 </style>
 
 <div class="team-wrapper">
     <h2>My Team Members</h2>
 
     <!-- Add Employee Button -->
-    <a asp-controller="Manager" asp-action="Hire" class="btn-add-employee">
+    <a asp-area="Manager" asp-controller="Employee" asp-action="Hire" class="btn-add-employee">
         + Add Employee
     </a>
 
@@ -155,19 +178,26 @@
                 {
                     <tr>
                         <td><strong>@employee.FullName</strong></td>
-                        <td style="text-align: center;">
-                            <a asp-controller="Manager" asp-action="EmployeeDetailsForManager" asp-route-id="@employee.Id"
-                               class="btn action-btn btn-view">
-                                View
-                            </a>
-                            <form asp-action="KickEmployee" method="post" style="display:inline;">
-                                <input type="hidden" name="id" value="@employee.Id" />
-                                <button type="submit" class="btn action-btn btn-kick"
-                                        onclick="return confirm('Are you sure you want to remove @employee.FullName?');">
-                                    Kick
-                                </button>
-                            </form>
+                        <td>
+                            <div class="action-btn-group">
+                                <a asp-area="Manager" asp-controller="Employee" asp-action="Details" asp-route-employeeId="@employee.Id"
+                                   class="btn action-btn btn-view">
+                                    View
+                                </a>
+                                <a asp-area="Manager" asp-controller="Employee" asp-action="Edit" asp-route-employeeId="@employee.Id"
+                                   class="btn action-btn btn-edit">
+                                    Edit
+                                </a>
+                                <form asp-area="Manager" asp-controller="Employee" asp-action="Fire" method="post" style="display:inline;">
+                                    <input type="hidden" name="employeeId" value="@employee.Id" />
+                                    <button type="submit" class="btn action-btn btn-kick"
+                                            onclick="return confirm('Are you sure you want to fire @employee.FullName?');">
+                                        Fire
+                                    </button>
+                                </form>
+                            </div>
                         </td>
+
                     </tr>
                 }
             </tbody>
@@ -184,13 +214,14 @@
         $(document).ready(function () {
             $('#teamTable').DataTable({
                 pageLength: 10,
-                order: [[0, "asc"]], // Sort by Name by default
-                searching: false, // Hide built-in search (add your own if you want)
+                order: [[0, "asc"]],
                 columnDefs: [
-                    { orderable: false, targets: 1 } // disables sorting for Actions column
+                    { orderable: false, targets: 1 }
                 ]
+                // searching: true // Default is true, so you can omit this line!
             });
         });
     </script>
 }
+
 

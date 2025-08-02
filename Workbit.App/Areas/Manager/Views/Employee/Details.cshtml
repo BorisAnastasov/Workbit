@@ -1,0 +1,206 @@
+﻿@model Workbit.Core.Models.Employee.EmployeeReadDto
+
+@{
+    ViewData["Title"] = "Employee Profile";
+}
+
+<style>
+    .employee-profile-wrapper {
+        padding: 36px 0 16px 0;
+        min-height: 100vh;
+        background: #eaf4f7;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-main-card {
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.09);
+        padding: 34px 36px 28px 36px;
+        min-width: 320px;
+        max-width: 540px;
+        margin-bottom: 36px;
+        text-align: center;
+    }
+
+    .profile-main-card h2 {
+        color: #179ca8;
+        font-weight: 800;
+        font-size: 2rem;
+        margin-bottom: 12px;
+        letter-spacing: 0.5px;
+    }
+
+    .profile-info-list {
+        font-size: 1.12rem;
+        color: #333;
+        line-height: 2.0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-align: center;
+    }
+
+    .profile-info-list strong {
+        color: #17b0c7;
+        font-weight: 600;
+        margin-right: 6px;
+    }
+
+    .payments-section {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        padding: 22px 18px 18px 18px;
+        width: 100%;
+        max-width: 860px;
+        margin: 0 auto;
+        margin-bottom: 40px;
+    }
+
+    .payments-section h3 {
+        color: #12777e;
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin-bottom: 18px;
+        letter-spacing: 0.1px;
+    }
+
+    .payments-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        margin: auto;
+        font-size: 1.01rem;
+        box-shadow: 0 3px 10px rgba(23,176,199,0.05);
+    }
+
+    .payments-table th, .payments-table td {
+        padding: 0.7rem 1rem;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .payments-table th {
+        background-color: #179ca8;
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.05rem;
+        letter-spacing: 0.2px;
+    }
+
+    .payments-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .payments-table tr:hover {
+        background-color: #eef8fa;
+    }
+
+    .no-payments-msg {
+        color: #b87a00;
+        font-size: 1.14rem;
+        font-style: italic;
+        padding: 12px 0;
+        text-align: center;
+    }
+
+    @@media (max-width: 900px) {
+        .payments-section {
+            max-width: 99vw;
+            padding: 18px 6px 14px 6px;
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .profile-main-card {
+            max-width: 97vw;
+            padding: 18px 7vw 18px 7vw;
+        }
+        .payments-table th, .payments-table td {
+            padding: 0.5rem 0.35rem;
+            font-size: 0.98rem;
+        }
+    }
+
+    .btn-back-center {
+        background: #12777e;
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.07rem;
+        border: none;
+        border-radius: 22px;
+        padding: 10px 38px;
+        text-decoration: none;
+        display: inline-block;
+        margin: 32px auto 0 auto;
+        transition: background 0.22s, transform 0.15s;
+        box-shadow: 0 3px 10px rgba(23,176,199,0.09);
+        text-align: center;
+    }
+
+        .btn-back-center:hover {
+            background: #179ca8;
+            transform: translateY(-2px) scale(1.04);
+            color: #fff;
+        }
+</style>
+
+<div class="employee-profile-wrapper">
+    <div class="profile-main-card">
+        <h2>@Model.FullName</h2>
+        <ul class="profile-info-list">
+            <li><strong>Email:</strong> @Model.Email</li>
+            <li><strong>Department:</strong> @(string.IsNullOrEmpty(Model.DepartmentName) ? "<i>Unassigned</i>" : Model.DepartmentName)</li>
+            <li><strong>Job:</strong> @(string.IsNullOrEmpty(Model.JobTitle) ? "<i>Unassigned</i>" : Model.JobTitle) @(!string.IsNullOrEmpty(Model.Level) ? $"({Model.Level})" : "")</li>
+        </ul>
+    </div>
+
+    <div class="payments-section">
+        <h3>Payment History</h3>
+        @if (Model.Payments != null && Model.Payments.Any())
+        {
+            <table class="payments-table">
+                <thead>
+                    <tr>
+                        <th>Payment Date</th>
+                        <th>Salary</th>
+                        <th>Bonus</th>
+                        <th>Taxes</th>
+                        <th>Net Pay</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.Payments.OrderByDescending(x => x.PaymentDate))
+                    {
+                        <tr>
+                            <td>@p.PaymentDate.ToString(DateFormatShort)</td>
+                            <td>@p.Salary.ToString()$</td>
+                            <td>@p.Bonus.ToString()$</td>
+                            <td>@p.Taxes.ToString()$</td>
+                            <td style="font-weight:700; color:@(p.NetPay >= 0 ? "#179ca8" : "#e63946")">
+                                @p.NetPay.ToString()$
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="no-payments-msg">
+                No payments recorded for this employee.
+            </div>
+        }
+        
+    </div>
+    <div>
+        <a asp-area="Manager" asp-controller="Employee" asp-action="Team" class="btn-back-center">
+            Back to Team
+        </a>
+    </div>
+</div>
