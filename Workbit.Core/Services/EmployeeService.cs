@@ -101,7 +101,7 @@ namespace Workbit.Core.Services
         {
             var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(id));
 
-            return employee.Job!.Department.CountryCode;
+            return employee.CountryCode!;
         }
 
         public async Task<IEnumerable<EmployeeSummaryDto>> GetByJobIdAsync(int jobId)
@@ -183,7 +183,7 @@ namespace Workbit.Core.Services
                 TotalPaidThisMonth = totalPaidThisMonth,
                 SelectedMonth = selectedMonth,
                 WorkingDaysResponse = response,
-                Country = user.Country.Name,
+                Country = employee.Country.Name,
                 WorkingDaysElapsed = workingDaysSoFar.Count
 			};
         }

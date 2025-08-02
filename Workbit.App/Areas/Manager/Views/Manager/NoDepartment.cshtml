@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "No Department Assigned";
+}
+
+<style>
+    .nodept-wrapper {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--background, #eaf4f7);
+    }
+
+    .nodept-card {
+        background: #fff;
+        padding: 40px 36px 30px 36px;
+        border-radius: 22px;
+        box-shadow: 0 6px 28px rgba(8,131,149,0.11);
+        text-align: center;
+        max-width: 420px;
+        border: 2px solid var(--secondary, #179ca8);
+        margin: 0 auto;
+    }
+
+        .nodept-card h2 {
+            color: var(--primary, #179ca8);
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .nodept-card p {
+            color: var(--third, #12777e);
+            font-size: 1.13rem;
+            margin-bottom: 0;
+        }
+
+    .nodept-icon {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+        color: var(--secondary, #179ca8);
+    }
+</style>
+
+<div class="nodept-wrapper">
+    <div class="nodept-card">
+        <div class="nodept-icon">
+            <i class="fa-regular fa-face-frown"></i>
+        </div>
+        <h2>No Department Assigned</h2>
+        <p>
+            You currently do not have a department assigned.<br />
+            Please contact the system administrator or HR for assignment.
+        </p>
+    </div>
+</div>

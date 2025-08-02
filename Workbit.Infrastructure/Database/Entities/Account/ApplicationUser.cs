@@ -31,10 +31,6 @@ namespace Workbit.Infrastructure.Database.Entities.Account
         [StringLength(PhoneMaxLen)]
         public override string PhoneNumber { get; set; } = null!;
 
-        [ForeignKey(nameof(Country))]
-        public string CountryCode { get; set; }
-        public virtual Country Country { get; set; } = null!;
-
         public virtual Ceo? Ceo { get; set; }
         public virtual Manager? Manager { get; set; }
         public virtual Employee? Employee { get; set; }

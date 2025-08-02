@@ -1,0 +1,115 @@
+﻿@model Workbit.Core.Models.Manager.ManagerReadDto
+
+@{
+    ViewData["Title"] = "Manager Details";
+}
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        min-height: 100vh;
+        background-color: #eaf4f7;
+    }
+
+    .colleague-details-wrapper {
+        min-height: calc(100vh - 200px); /* adjust 100px for your real header/footer */
+        margin-top: 10px; /* a little space from the very top */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #eaf4f7;
+    }
+
+    .colleague-details-card {
+        background: #fff;
+        border-radius: 28px;
+        box-shadow: 0 12px 44px rgba(0,0,0,0.13);
+        padding: 56px 54px 46px 54px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 360px;
+        max-width: 520px;
+        width: 100%;
+        font-size: 1.25rem;
+    }
+
+    .colleague-details-card h2 {
+        font-size: 2.7rem;
+        color: #179ca8;
+        font-weight: 900;
+        margin-bottom: 30px;
+        text-align: center;
+        letter-spacing: 0.7px;
+        word-break: break-word;
+    }
+
+    .colleague-info-list {
+        font-size: 1.32rem;
+        color: #222;
+        line-height: 2.5;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-align: center;
+        width: 100%;
+    }
+
+        .colleague-info-list strong {
+            color: #17b0c7;
+            font-weight: 700;
+            margin-right: 12px;
+            font-size: 1.22em;
+        }
+
+    .back-btn {
+        background: #17b0c7;
+        color: #fff;
+        font-size: 1.18rem;
+        font-weight: 800;
+        border: none;
+        border-radius: 30px;
+        padding: 16px 58px;
+        margin-top: 42px;
+        cursor: pointer;
+        transition: background 0.18s, transform 0.13s;
+        box-shadow: 0 5px 22px rgba(23,176,199,0.15);
+        letter-spacing: 0.04em;
+    }
+    .back-btn:hover {
+        background: #12777e;
+        transform: translateY(-3px) scale(1.04);
+    }
+
+    @@media (max-width: 600px) {
+        .colleague-details-card {
+            padding: 22px 4vw 16px 4vw;
+            min-width: unset;
+            max-width: 94vw;
+        }
+        .back-btn {
+            padding: 14px 0;
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="colleague-details-wrapper">
+    <div class="colleague-details-card">
+        <h2>@Model.FullName</h2>
+        <ul class="colleague-info-list">
+            <li>
+                <strong>Email:</strong> @Model.Email
+            </li>
+            <li>
+                <strong>Department:</strong> @(Model.DepartmentName ?? "—")
+            </li>
+        </ul>
+        <a asp-area="Manager" asp-controller="Manager" asp-action="Profile" class="back-btn" style="text-decoration:none; color: white;">Back to Profile</a>
+    </div>
+</div>

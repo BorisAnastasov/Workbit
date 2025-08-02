@@ -16,7 +16,6 @@ namespace Workbit.Infrastructure.Database.Configuration
         Name = "Human Resources",
         Description = "Handles recruitment, payroll, employee relations, and organizational policies.",
         CompanyId = 1,
-        CountryCode = "US"
     },
     new Department
     {
@@ -24,7 +23,6 @@ namespace Workbit.Infrastructure.Database.Configuration
         Name = "IT",
         Description = "Oversees infrastructure, software development, cybersecurity, and IT support.",
         CompanyId = 1,
-        CountryCode = "US"
     },
     new Department
     {
@@ -32,7 +30,6 @@ namespace Workbit.Infrastructure.Database.Configuration
         Name = "Finance",
         Description = "Manages budgeting, forecasting, accounting, and financial reporting.",
         CompanyId = 1,
-        CountryCode = "US"
     },
     new Department
     {
@@ -40,7 +37,6 @@ namespace Workbit.Infrastructure.Database.Configuration
         Name = "Marketing",
         Description = "Develops brand strategy, campaigns, and customer outreach initiatives.",
         CompanyId = 1,
-        CountryCode = "US"
     }
 );
 

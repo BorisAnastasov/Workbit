@@ -7,9 +7,8 @@ namespace Workbit.Infrastructure.Database.Entities
 	{
 		public Country()
 		{
-			Users = new List<ApplicationUser>();
-			Departments = new List<Department>();
 			Companies = new List<Company>();
+			Employees = new List<Employee>();
 		}
 
 		[Key]
@@ -26,8 +25,7 @@ namespace Workbit.Infrastructure.Database.Entities
 		[StringLength(50)]
 		public string Continent { get; set; } = null!;
 
-		public virtual IEnumerable<ApplicationUser> Users { get; set; }
-		public virtual IEnumerable<Department> Departments { get; set; }
+		public virtual IEnumerable<Employee> Employees { get; set; }
 		public virtual IEnumerable<Company> Companies { get; set; }
 	}
 }

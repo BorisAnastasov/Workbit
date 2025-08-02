@@ -2,13 +2,30 @@
 
 @{
     ViewData["Title"] = "Manager Dashboard";
+    var presentPercentage = Model.TotalTeamMembers == 0 ? 0 : (100.0 * Model.PresentToday / Model.TotalTeamMembers);
+    var payrollPercentage = Model.DepartmentBudget == 0 ? 0 : (100.0 * Model.DepartmentPayrollThisMonth / Model.DepartmentBudget);
 }
 
 <style>
-    .manager-dashboard-wrapper {
-        padding: 24px 0 10px 0;
-        background-color: #eaf4f7;
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
         min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: #eaf4f7;
+    }
+
+    .manager-dashboard-wrapper {
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 24px 0 0 0;
     }
 
     .dashboard-main {
@@ -22,7 +39,8 @@
     .left-panel {
         display: flex;
         flex-direction: column;
-        gap: 1.1rem;
+        justify-content: flex-start;
+        gap: 0.8rem;
     }
 
     .summary-grid-cards {
@@ -37,7 +55,7 @@
         box-shadow: 0 8px 28px rgba(0,0,0,0.09);
         padding: 28px 20px 26px 20px;
         min-width: 250px;
-        min-height: 120px;
+        min-height: 165px;
         text-align: center;
         display: flex;
         flex-direction: column;
@@ -47,25 +65,61 @@
     }
 
         .summary-card h4 {
-            font-size: 1.17rem;
+            font-size: 1.21rem;
             color: #179ca8;
             font-weight: 700;
-            margin-bottom: 13px;
+            margin-bottom: 17px;
             letter-spacing: 0.1px;
         }
 
         .summary-card p {
-            font-size: 2.15rem;
+            font-size: 2.25rem;
             font-weight: 800;
             color: #12777e;
             margin: 0;
         }
 
+    .percent-badge {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 6px 16px;
+        border-radius: 22px;
+        font-size: 1.13rem;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        background: #eafaf4;
+        color: #0aad7b;
+    }
+
+    .progress-bar {
+        width: 86%;
+        height: 10px;
+        background: #eee;
+        border-radius: 5px;
+        overflow: hidden;
+        margin: 13px auto 0 auto;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        border-radius: 5px;
+    }
+
+    .progress-present {
+        background: #0aad7b;
+    }
+
+    .progress-budget {
+        background: #179ca8;
+    }
+
     .right-panel {
         display: flex;
         flex-direction: column;
-        gap: 1.2rem;
+        gap: 1.4rem;
         height: 100%;
+        justify-content: flex-start;
+        align-items: stretch;
         min-width: 320px;
     }
 
@@ -77,6 +131,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        min-width: 0;
+        position: relative;
     }
 
         .profile-card h2 {
@@ -95,6 +151,7 @@
         padding: 0;
         list-style: none;
         text-align: center;
+        margin-bottom: 0.8rem;
     }
 
         .profile-info-list strong {
@@ -103,58 +160,207 @@
             margin-right: 5px;
         }
 
-    .team-list-card {
+    .leave-btn {
+        display: block;
+        background-color: #e63946;
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.12rem;
+        padding: 13px 34px;
+        border-radius: 32px;
+        border: none;
+        transition: background-color 0.3s, transform 0.2s;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.09);
+        cursor: pointer;
+        width: 100%;
+        max-width: 250px;
+        margin: 0.5rem auto 0 auto;
+        letter-spacing: .03em;
+    }
+
+        .leave-btn:hover {
+            background-color: #c1121f;
+            transform: translateY(-3px);
+        }
+
+    .colleagues-card {
         background: #fff;
         border-radius: 16px;
         box-shadow: 0 4px 18px rgba(0,0,0,0.08);
         padding: 18px 18px 14px 18px;
-        margin-top: 15px;
+        margin-top: 0;
         text-align: center;
     }
 
-        .team-list-card h4 {
-            font-size: 1.07rem;
+        .colleagues-card h4 {
+            font-size: 1.15rem;
             color: #12777e;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
+            letter-spacing: .5px;
         }
 
-    .team-member-list {
+    .colleagues-list {
         list-style: none;
         padding: 0;
         margin: 0;
-        font-size: 1rem;
     }
 
-        .team-member-list li {
-            margin-bottom: 7px;
+    .colleague-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 16px;
+        background: #f7fcfe;
+        border-radius: 12px;
+        padding: 10px 14px;
+        box-shadow: 0 2px 8px rgba(23,176,199,0.05);
+        font-size: 1.17rem;
+        font-weight: 600;
+        transition: box-shadow 0.18s;
+    }
+
+        .colleague-item:last-child {
+            margin-bottom: 0;
         }
+
+    .colleague-avatar {
+        background: #179ca8;
+        color: #fff;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 1.17rem;
+        font-weight: bold;
+        margin-right: 13px;
+        flex-shrink: 0;
+        box-shadow: 0 1px 4px rgba(23,176,199,0.06);
+    }
+
+    .colleague-name {
+        flex: 1;
+        text-align: left;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #222;
+        padding-left: 2px;
+    }
+
+    .view-colleague-btn {
+        background: #17b0c7;
+        color: #fff;
+        font-size: 1.04rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 20px;
+        padding: 7px 22px;
+        margin-left: 18px;
+        cursor: pointer;
+        transition: background 0.18s, transform 0.15s;
+        box-shadow: 0 3px 10px rgba(23,176,199,0.09);
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .view-colleague-btn:hover {
+            background: #12777e;
+            transform: translateY(-2px) scale(1.03);
+        }
+
+    .not-working-day-card {
+        background: #fff9d7;
+        color: #b87a00;
+        border-radius: 18px;
+        box-shadow: 0 4px 14px rgba(200,160,0,0.10);
+        padding: 22px 18px 16px 18px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 1.14rem;
+        margin-bottom: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    /* Responsive */
+    @@media (max-width: 1100px) {
+        .dashboard-main {
+            grid-template-columns: 1fr;
+        }
+
+        .right-panel {
+            flex-direction: row;
+            gap: 2.2vw;
+            justify-content: center;
+        }
+
+        .profile-card, .colleagues-card, .not-working-day-card {
+            min-width: 220px;
+        }
+
+        .left-panel {
+            margin-bottom: 2rem;
+        }
+    }
+
+    @@media (max-width: 800px) {
+        .summary-grid-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .summary-card {
+            min-width: 180px;
+        }
+    }
 </style>
 
 <div class="manager-dashboard-wrapper">
     <div class="dashboard-main">
-        <!-- LEFT: Stats Cards -->
+        <!-- LEFT: Summary Cards Grid -->
         <div class="left-panel">
             <div class="summary-grid-cards">
                 <div class="summary-card">
                     <h4>Department</h4>
-                    <p>@Model.DepartmentName ?? "—"</p>
+                    <p>@(Model.DepartmentName ?? "--")</p>
                 </div>
                 <div class="summary-card">
                     <h4>Total Team Members</h4>
                     <p>@Model.TotalTeamMembers</p>
                 </div>
                 <div class="summary-card">
-                    <h4>Present Today</h4>
-                    <p>@Model.PresentToday</p>
+                    <h4>Attendance Today</h4>
+                    <p>
+                        @Model.PresentToday / @Model.TotalTeamMembers
+                        <span class="percent-badge">
+                            @presentPercentage.ToString("F0")%
+                        </span>
+                    </p>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill progress-present"
+                             style="width:@presentPercentage.ToString("F0")%;"></div>
+                    </div>
                 </div>
+
                 <div class="summary-card">
                     <h4>Total Jobs</h4>
                     <p>@Model.TotalJobs</p>
                 </div>
                 <div class="summary-card">
                     <h4>Department Payroll (This Month)</h4>
-                    <p>$@Model.DepartmentPayrollThisMonth.ToString("F2")</p>
+                    <p>
+                        $@Model.DepartmentPayrollThisMonth.ToString("F2")
+                        <span class="percent-badge">
+                            @payrollPercentage.ToString("F0")%
+                        </span>
+                    </p>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill progress-budget"
+                             style="width:@payrollPercentage.ToString("F0")%;"></div>
+                    </div>
                 </div>
                 <div class="summary-card">
                     <h4>Department Budget</h4>
@@ -162,29 +368,47 @@
                 </div>
             </div>
         </div>
-        <!-- RIGHT: Profile Card & Team -->
+        <!-- RIGHT: Profile, Colleagues -->
         <div class="right-panel">
             <div class="profile-card">
                 <h2>@Model.FullName</h2>
                 <ul class="profile-info-list">
                     <li><strong>Email:</strong> @Model.Email</li>
-                    <li><strong>Department:</strong> @Model.DepartmentName ?? "—"</li>
+                    <li><strong>Department:</strong> @(Model.DepartmentName ?? "—-")</li>
                 </ul>
+                <form asp-action="LeaveDepartment" asp-controller="Manager" method="post"
+                      onsubmit="return confirm('Are you sure you want to leave your department? This action cannot be undone.');">
+                    <button type="submit" class="leave-btn">Leave Department</button>
+                </form>
             </div>
-            <div class="team-list-card">
-                <h4>Your Team</h4>
-                @if (Model.TeamEmployees?.Any() == true)
+            <div class="colleagues-card">
+                <h4>Your Colleagues</h4>
+                @if (Model.Colleagues?.Any() == true)
                 {
-                    <ul class="team-member-list">
-                        @foreach (var emp in Model.TeamEmployees)
+                    <ul class="colleagues-list">
+                        @foreach (var colleague in Model.Colleagues)
                         {
-                            <li>@emp</li>
+                            <li class="colleague-item">
+                                <div class="colleague-avatar">
+                                    @((!string.IsNullOrWhiteSpace(colleague.FullName) && colleague.FullName.Contains(" "))
+                                        ? string.Join("", colleague.FullName.Split(" ").Select(x => x[0])).ToUpper()
+                                        : (colleague?.FullName.FirstOrDefault().ToString().ToUpper() ?? "U"))
+                                </div>
+                                <span class="colleague-name">@colleague.FullName</span>
+                                <a asp-area="Manager"
+                                   asp-controller="Manager"
+                                   asp-action="ColleagueDetails"
+                                   asp-route-userId="@colleague.Id"
+                                   class="view-colleague-btn">
+                                    View
+                                </a>
+                            </li>
                         }
                     </ul>
                 }
                 else
                 {
-                    <div style="color:#aaa; font-style:italic;">No team members listed.</div>
+                    <div style="color:#aaa; font-style:italic;">No colleagues listed.</div>
                 }
             </div>
         </div>

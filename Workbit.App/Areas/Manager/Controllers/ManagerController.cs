@@ -6,7 +6,7 @@ using Workbit.Core.Models.Manager;
 
 namespace Workbit.App.Areas.Manager.Controllers
 {
-    public class ManagerController : Controller
+    public class ManagerController : BaseController
     {
         private readonly IManagerService managerService;
         private readonly IEmployeeService employeeService;
@@ -21,27 +21,24 @@ namespace Workbit.App.Areas.Manager.Controllers
             this.departmentService = _departmentService;
         }
 
-        public async Task<IActionResult> AllManagers()
-        {
-            var managers = await managerService.GetAllByCeoIdAsync(User.Id());
-            return View(managers); // IEnumerable<ManagerSummaryDto>
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ManagerDetails(string id)
-        {
-            var manager = await managerService.GetByIdAsync(id); // You’ll need a ManagerReadDto for details
-            return View(manager);
-        }
-
 		[HttpGet]
-		public async Task<IActionResult> ManagerDashboard()
+		public async Task<IActionResult> Profile()
 		{
 			try
 			{
-				var dashboardData = await managerService.GetDashboardDataAsync(User.Id());
+                if (!await managerService.ExistsByIdAsync(User.Id())) 
+                {
+					return RedirectToAction("Error404", "Error");
+				}
 
-				return View("ManagerDashboard", dashboardData);
+                if (!await managerService.HasDepartmentByUserIdAsync(User.Id())) 
+                {
+                    return RedirectToAction(nameof(NoDepartment), "Manager", new { area = "Manager" });
+                }
+
+				var profile = await managerService.GetProfileDataAsync(User.Id());
+
+				return View(profile);
 			}
 			catch (Exception)
 			{
@@ -50,19 +47,28 @@ namespace Workbit.App.Areas.Manager.Controllers
 		}
 
         [HttpGet]
+        public IActionResult NoDepartment()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> TeamEmployees() 
         {
-			try
-			{
-				var manager = await managerService.GetByIdAsync(User.Id());
+            try
+            {
+                if (!await managerService.ExistsByIdAsync(User.Id()))
+                {
+                    return RedirectToAction("Error404", "Error");
+                }
 
-				if (manager.DepartmentId == null)
-				{
-					TempData["Error"] = "You are not assigned to a department.";
-					return RedirectToAction("Dashboard");
-				}
+                if (!await managerService.HasDepartmentByUserIdAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(NoDepartment), "Manager", new { area = "Manager" });
+                }
+                var manager = await managerService.GetByIdAsync(User.Id());
 
-				var employees = await employeeService.GetByDepartmentIdAsync(manager.DepartmentId.Value);
+                var employees = await employeeService.GetByDepartmentIdAsync(manager.DepartmentId!.Value);
 
 				return View(employees);
 			}
@@ -71,6 +77,26 @@ namespace Workbit.App.Areas.Manager.Controllers
 				return RedirectToAction("Error500", "Error");
 			}
 		}
+
+        [HttpPost]
+        public async Task<IActionResult> LeaveDepartment()
+        {
+            try
+            {
+                if (!await managerService.ExistsByIdAsync(User.Id()))
+                {
+                    return RedirectToAction("Error404", "Error");
+                }
+
+                await managerService.LeaveDepartmentAsync(User.Id());
+
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error500", "Error");
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> KickEmployee(string id)
@@ -135,29 +161,6 @@ namespace Workbit.App.Areas.Manager.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> AssignManager(int departmentId)
-        {
-            // Get department info
-
-            if (!await departmentService.ExistByIdAsync(departmentId)) 
-            {
-                return RedirectToAction("Error500", "Error");
-            }
-
-            var managers = await managerService.GetUnassignedManagersAsync();
-            var department = await departmentService.GetByIdAsync(departmentId);
-
-            var viewModel = new AssignManagerViewModel
-            {
-                DepartmentId = department.Id,
-                DepartmentName = department.Name,
-                AvailableManagers = managers
-            };
-
-            return View(viewModel);
-        }
-
         [HttpPost]
         public async Task<IActionResult> AssignManager(AssignManagerViewModel model)
         {
@@ -186,36 +189,24 @@ namespace Workbit.App.Areas.Manager.Controllers
             return RedirectToAction("DepartmentDetails", "Department", new { id = model.DepartmentId });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RemoveManager(string managerId, int departmentId)
-        {
+        
+
+		[HttpGet]
+		public async Task<IActionResult> ColleagueDetails(string userId)
+		{
             try
             {
-                await managerService.RemoveFromDepartmentAsync(managerId);
-                return RedirectToAction("DepartmentDetails", "Department", new { id = departmentId });
+                var model = await managerService.GetByIdAsync(userId);
+
+                return View(model);
             }
             catch (Exception)
             {
-                return RedirectToAction("Error500", "Error");
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> LeaveDepartment()
-        {
-            try
-            {
-                await managerService.LeaveDepartmentAsync(User.Id());
-
-                TempData["Success"] = "You have successfully left your department.";
-
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("Error500", "Error");
-            }
-        }
+				return RedirectToAction("Error500", "Error");
+			}
+            
+			
+		}
 
 		[HttpGet]
 		public async Task<IActionResult> Hire()

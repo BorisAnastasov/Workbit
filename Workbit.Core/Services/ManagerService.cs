@@ -8,14 +8,13 @@ using Workbit.Infrastructure.Enumerations;
 
 namespace Workbit.Core.Services
 {
-    public class ManagerService:IManagerService
+    public class ManagerService : IManagerService
     {
         private readonly IRepository repository;
 
         public ManagerService(IRepository _repository)
         {
             repository = _repository;
-
         }
 
         public async Task<bool> ExistsByIdAsync(string id)
@@ -96,30 +95,23 @@ namespace Workbit.Core.Services
         }
 
 
-		public async Task<ManagerProfileViewModel> GetDashboardDataAsync(string managerId)
+		public async Task<ManagerProfileViewModel> GetProfileDataAsync(string managerId)
 		{
 			var guid = Guid.Parse(managerId);
 
 			// Load manager with related data (department, jobs, user)
 			var manager = await repository.AllReadOnly<Manager>()
-				.Include(m => m.Department)
-				.ThenInclude(d => d.Jobs)
-				.Include(m => m.ApplicationUser)
-				.FirstOrDefaultAsync(m => m.ApplicationUserId == guid);
+				.FirstAsync(m => m.ApplicationUserId == guid);
 
 			var department = manager.Department;
 
-			// Employees in the manager's department
-			var employeesQuery = repository.AllReadOnly<Employee>()
-				.Include(e => e.Job)
-				.ThenInclude(j => j.Department)
-				.Where(e => e.Job.DepartmentId == department.Id);
+            // Employees in the manager's department
+            var totalTeamMembers = await repository.AllReadOnly<Employee>()
+                .Where(e => e.Job.DepartmentId == department.Id).CountAsync();
 
-			var totalTeamMembers = await employeesQuery.CountAsync();
 
 			// Employees present today (unique check-ins)
 			var presentToday = await repository.AllReadOnly<AttendanceEntry>()
-				.Include(a => a.User)
 				.Where(a => a.User.Employee != null &&
 							a.User.Employee.Job.DepartmentId == department.Id &&
 							a.Type == EntryType.CheckIn &&
@@ -130,7 +122,6 @@ namespace Workbit.Core.Services
 
 			// Total payroll for this department this month
 			var payrollThisMonth = await repository.AllReadOnly<Payment>()
-				.Include(p => p.Recipient)
 				.Where(p => p.Recipient.Employee != null &&
 							p.Recipient.Employee.Job.DepartmentId == department.Id &&
 							p.PaymentDate.Month == DateTime.UtcNow.Month &&
@@ -149,6 +140,15 @@ namespace Workbit.Core.Services
 				.Where(j => j.DepartmentId == department.Id)
 				.CountAsync();
 
+            var colleagues = await repository.AllReadOnly<Manager>()
+                                            .Where(m => m.DepartmentId == manager.DepartmentId && m.ApplicationUserId != manager.ApplicationUserId)
+                                            .Select(m => new ManagerSummaryDto 
+                                            {
+                                                Id = m.ApplicationUserId.ToString(),
+                                                FullName = m.ApplicationUser.FullName
+                                            })
+                                            .ToListAsync();
+
 			return new ManagerProfileViewModel
 			{
 				ManagerId = manager.ApplicationUserId.ToString(),
@@ -159,9 +159,10 @@ namespace Workbit.Core.Services
 				TotalTeamMembers = totalTeamMembers,
 				PresentToday = presentToday,
 				TotalJobs = totalJobs,
-				DepartmentPayrollThisMonth = payrollThisMonth,
-				DepartmentBudget = budget
-			};
+				DepartmentPayrollThisMonth = (double)payrollThisMonth,
+				DepartmentBudget = (double)budget,
+                Colleagues = colleagues
+            };
 		}
 
 
@@ -226,6 +227,13 @@ namespace Workbit.Core.Services
             manager.DepartmentId = null;
 
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<bool> HasDepartmentByUserIdAsync(string userId)
+        {
+            var manager = await repository.GetByIdAsync<Manager>(Guid.Parse(userId));
+
+            return manager.DepartmentId != null;
         }
     }
 }

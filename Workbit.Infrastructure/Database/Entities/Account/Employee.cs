@@ -19,6 +19,10 @@ namespace Workbit.Infrastructure.Database.Entities.Account
 		[Required]
 		public JobLevel Level { get; set; } = JobLevel.Unemployed;
 
+        [ForeignKey(nameof(Country))]
+        public string? CountryCode { get; set; }
+        public virtual Country Country { get; set; }
+
         [ValidIban]
         public string IBAN { get; set; } = null!;
 

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.User;
 using Workbit.Infrastructure.Database.Entities.Account;
-using static Workbit.Common.RoleConstants;
 
 namespace Workbit.App.Controllers
 {
@@ -97,7 +96,6 @@ namespace Workbit.App.Controllers
 				UserName = model.Email,
 				NormalizedUserName = model.Email.ToUpper(),
                 DateOfBirth = model.DateOfBirth,
-                CountryCode = model.CountryCode,
                 PhoneNumber = model.PhoneNumber
 			};
 
@@ -144,7 +142,6 @@ namespace Workbit.App.Controllers
 				UserName = model.Email,
 				NormalizedUserName = model.Email.ToUpper(),
                 DateOfBirth = model.DateOfBirth,
-                CountryCode = model.CountryCode,
                 PhoneNumber = model.PhoneNumber
             };
 
@@ -190,7 +187,6 @@ namespace Workbit.App.Controllers
                 UserName = model.Email,
                 NormalizedUserName = model.Email.ToUpper(),
                 DateOfBirth = model.DateOfBirth,
-                CountryCode = model.CountryCode,
                 PhoneNumber = model.PhoneNumber
             };
 

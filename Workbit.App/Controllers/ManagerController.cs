@@ -40,7 +40,7 @@ namespace Workbit.App.Controllers
 		{
 			try
 			{
-				var dashboardData = await managerService.GetDashboardDataAsync(User.Id());
+				var dashboardData = await managerService.GetProfileDataAsync(User.Id());
 
 				return View("ManagerDashboard", dashboardData);
 			}

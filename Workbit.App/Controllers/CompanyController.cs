@@ -58,7 +58,7 @@ namespace Workbit.App.Controllers
                 }
                 return RedirectToAction("Dashboard", "Ceo");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return RedirectToAction("Error500", "Error");
             }

@@ -8,7 +8,7 @@ namespace Workbit.Core.Interfaces
         Task<IEnumerable<ManagerSummaryDto>> GetAllAsync();
         Task<IEnumerable<ManagerSummaryDto>> GetByDepartmentIdAsync(int departmentId);
         Task<ManagerReadDto> GetByIdAsync(string id);
-        Task<ManagerProfileViewModel> GetDashboardDataAsync(string managerId);
+        Task<ManagerProfileViewModel> GetProfileDataAsync(string managerId);
 
 
 		Task<IEnumerable<ManagerSummaryDto>> GetAllByCeoIdAsync(string id);
@@ -25,6 +25,8 @@ namespace Workbit.Core.Interfaces
         Task<bool> AssignToDepartmentAsync(string managerId, int departmentId);
         Task LeaveDepartmentAsync(string managerId);
         Task RemoveFromDepartmentAsync(string managerId);
+
+        Task<bool> HasDepartmentByUserIdAsync(string userId);
 
 
     }

@@ -180,15 +180,10 @@ namespace Workbit.Infrastructure.Extensions
             // ------------------------
             builder.Entity<Country>(entity =>
             {
-                entity.HasMany(c => c.Users)
-                            .WithOne(u => u.Country)
-                            .HasForeignKey(u => u.CountryCode)
+                entity.HasMany(c => c.Employees)
+                            .WithOne(e => e.Country)
+                            .HasForeignKey(e => e.CountryCode)
                             .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasMany(c => c.Departments)
-                        .WithOne(u => u.Country)
-                        .HasForeignKey(u => u.CountryCode)
-                        .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasMany(c => c.Companies)
                         .WithOne(u => u.Country)

@@ -12,18 +12,18 @@
         public string? DepartmentName { get; set; }
 
         // Team stats
-        public int TotalTeamMembers { get; set; }       // Total employees in manager's department
-        public int PresentToday { get; set; }           // Employees present today in the department
+        public int TotalTeamMembers { get; set; }
+        public int PresentToday { get; set; }
 
         // Job/structure stats
-        public int TotalJobs { get; set; }              // Count of job roles in the department
+        public int TotalJobs { get; set; }
 
         // Financial stats
-        public decimal DepartmentPayrollThisMonth { get; set; }  // Total payroll paid to team this month
-        public decimal DepartmentBudget { get; set; }            // Allocated department budget
+        public double DepartmentPayrollThisMonth { get; set; }
+        public double DepartmentBudget { get; set; }
 
-        // Optional: quick team listing
-        public List<string> TeamEmployees { get; set; } = new();
+        public IEnumerable<ManagerSummaryDto> Colleagues { get; set; } = new List<ManagerSummaryDto>();
+
     }
 }
 

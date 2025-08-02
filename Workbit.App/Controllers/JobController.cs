@@ -191,7 +191,7 @@ namespace Workbit.App.Controllers
 
                 return RedirectToAction("DepartmentJobs", "Manager");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return RedirectToAction("DepartmentJobs", "Manager");
             }

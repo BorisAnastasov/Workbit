@@ -28,6 +28,34 @@ namespace Workbit.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Countries",
                 columns: table => new
                 {
@@ -60,41 +88,6 @@ namespace Workbit.Infrastructure.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    CountryCode = table.Column<string>(type: "nvarchar(2)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Countries_CountryCode",
-                        column: x => x.CountryCode,
-                        principalTable: "Countries",
-                        principalColumn: "Code",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -281,8 +274,7 @@ namespace Workbit.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
-                    CountryCode = table.Column<string>(type: "nvarchar(2)", nullable: false)
+                    CompanyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -293,12 +285,6 @@ namespace Workbit.Infrastructure.Migrations
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Departments_Countries_CountryCode",
-                        column: x => x.CountryCode,
-                        principalTable: "Countries",
-                        principalColumn: "Code",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -377,6 +363,7 @@ namespace Workbit.Infrastructure.Migrations
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     JobId = table.Column<int>(type: "int", nullable: true),
                     Level = table.Column<int>(type: "int", nullable: false),
+                    CountryCode = table.Column<string>(type: "nvarchar(2)", nullable: true),
                     IBAN = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -389,10 +376,39 @@ namespace Workbit.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Employees_Countries_CountryCode",
+                        column: x => x.CountryCode,
+                        principalTable: "Countries",
+                        principalColumn: "Code",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Employees_Jobs_JobId",
                         column: x => x.JobId,
                         principalTable: "Jobs",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"), 0, "6d634d23-4d3b-4c96-ba0b-5b18456c8824", new DateTime(1994, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "bob.c.thomas@workbit.com", false, "Bob", "Thomas", false, null, "BOB.C.THOMAS@WORKBIT.COM", "BOB.C.THOMAS", "AQAAAAIAAYagAAAAEJV129+yGZq61165m3nvp3WV8JvX56ZJnfEf4ZN34QdmJMk0FxGBrc78+le5KfLoJg==", "+1-555-502-2540", false, "c4d424c3-7e1a-43b2-ac21-486e489ff579", false, "bob.c.thomas" },
+                    { new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"), 0, "e26a37e6-d5e4-4b57-8ff0-d795a790c33e", new DateTime(1991, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "emily.d.young@workbit.com", false, "Emily", "Young", false, null, "EMILY.D.YOUNG@WORKBIT.COM", "EMILY.D.YOUNG", "AQAAAAIAAYagAAAAEDzcngHCU79+RmDtJwuBYCadimv31tpi5PlMHurOL+mVbs1GPBDD1syqDvzpiwYTWw==", "+1-555-270-7307", false, "aa6cfaee-5bf8-4dbf-8865-a69ef9aa963a", false, "emily.d.young" },
+                    { new Guid("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"), 0, "e573ed64-2145-4790-8394-ad0e9b3efb61", new DateTime(1978, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "carl.t.morgan@workbit.com", false, "Carl", "Morgan", false, null, "CARL.T.MORGAN@WORKBIT.COM", "CARL.T.MORGAN", "AQAAAAIAAYagAAAAELiqp4GeJwjOPh6HQ9Ak22uK5u7cBZiB0DQxrviItbHiz480OODzSLLb5GGRwgooGw==", "+1-555-172-7142", false, "5ca783ae-7467-4795-80fc-51e5074f52c4", false, "carl.t.morgan" },
+                    { new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"), 0, "def2076d-02e4-49df-bc87-d1c1c1167c8c", new DateTime(1993, 4, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "dave.r.walker@workbit.com", false, "Dave", "Walker", false, null, "DAVE.R.WALKER@WORKBIT.COM", "DAVE.R.WALKER", "AQAAAAIAAYagAAAAEJLC8PezHfEZCCD60eQDeqjxRE06cWUPrIt2Mp69PPc0Fo5n4jzNFDq5j9L38ZPAHw==", "+1-555-247-7376", false, "4bff4d1c-9825-4582-b894-5faed91cab75", false, "dave.r.walker" },
+                    { new Guid("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801"), 0, "76a0d65a-5be9-4429-b610-6391cd21f4ba", new DateTime(1980, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "john.m.lewis@workbit.com", false, "John", "Lewis", false, null, "JOHN.M.LEWIS@WORKBIT.COM", "JOHN.M.LEWIS", "AQAAAAIAAYagAAAAENb7pa+FOqgWhsoHBJ9k3jW4ObcJIRyWGYbFbnoqtPXj9/ZvMkBO/jooDK+p3nTnuA==", "+1-555-852-6673", false, "eaa0ab80-a88c-4b59-8ccb-cee339ef7949", false, "john.m.lewis" },
+                    { new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"), 0, "4f0d1bbc-2e3f-4176-ae39-24002a13eb8b", new DateTime(1990, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "frank.h.scott@workbit.com", false, "Frank", "Scott", false, null, "FRANK.H.SCOTT@WORKBIT.COM", "FRANK.H.SCOTT", "AQAAAAIAAYagAAAAEKGKwUNnjf5WQh1+qdleP/GmpUiZGTl2QHHOEaqaYFdSvOJLcpb6WL7qqkfNCXbjnw==", "+1-555-180-7726", false, "ed160b5d-adeb-47c1-bd16-91e0280f3de0", false, "frank.h.scott" },
+                    { new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"), 0, "848b5bcb-aa8b-4886-bf16-de1a969b8350", new DateTime(1997, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "harry.n.brooks@workbit.com", false, "Harry", "Brooks", false, null, "HARRY.N.BROOKS@WORKBIT.COM", "HARRY.N.BROOKS", "AQAAAAIAAYagAAAAEJh1xV1bVCiuGVMeIgcDmuhYZPsODo8rxyjoJ4rrLr91MrTUuDJwsCWYzdurl89b1A==", "+1-555-395-4204", false, "df2807e3-b2ff-4b64-9f84-50013ef739f9", false, "harry.n.brooks" },
+                    { new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"), 0, "9a9d3c83-242f-481c-8887-e6e19a5bca26", new DateTime(1992, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "claire.b.james@workbit.com", false, "Claire", "James", false, null, "CLAIRE.B.JAMES@WORKBIT.COM", "CLAIRE.B.JAMES", "AQAAAAIAAYagAAAAEOm0W3OdPtPgEUWK03+Nqa+agy9F9zuMZJxvAuVuytp7BPHDpGjIorztPREwRbgbYA==", "+1-555-905-8990", false, "3a316920-b763-4913-9eeb-fc8d67f7e9b8", false, "claire.b.james" },
+                    { new Guid("b06c8a25-b13c-4d31-bb49-113aa0cc46b8"), 0, "b98b6faa-3694-4878-892e-1a0d4cac94c2", new DateTime(1984, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "julia.p.schmidt@workbit.com", false, "Julia", "Schmidt", false, null, "JULIA.P.SCHMIDT@WORKBIT.COM", "JULIA.P.SCHMIDT", "AQAAAAIAAYagAAAAEDSzr5Vkb2LsiiOhqqaNL4JQEQv7jB1IC1M/4khjETZaMgpKkmvZzDz0CVvY0H9yEg==", "+1-555-710-7404", false, "dc65b802-4453-4270-a0c5-2a69750fd15d", false, "julia.p.schmidt" },
+                    { new Guid("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"), 0, "9bf36d01-fea1-47e5-9b06-65c5c50fdbac", new DateTime(1985, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "nina.v.hughes@workbit.com", false, "Nina", "Hughes", false, null, "NINA.V.HUGHES@WORKBIT.COM", "NINA.V.HUGHES", "AQAAAAIAAYagAAAAEH/Y0cWGq4lOd81owfqYto4FETen6AykXr9ZEx6sP9gHFdGaFVjv8Y+uGtEZnofQCw==", "+1-555-700-9671", false, "c17a4c29-e23c-4d66-ab59-c45278dbe55d", false, "nina.v.hughes" },
+                    { new Guid("b23ae748-2292-4712-8778-3eb591c2f001"), 0, "9ed08cce-643c-4ac7-b4ce-70aff8e120a9", new DateTime(1981, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "antoine.c.leblanc@workbit.com", false, "Antoine", "LeBlanc", false, null, "ANTOINE.C.LEBLANC@WORKBIT.COM", "ANTOINE.C.LEBLANC", "AQAAAAIAAYagAAAAEAxJPJFEBnz+muMY2EX0v/9mKy2W3b6HB47k/NePxofdwrTbuTno+M4EiSZPMRhPIQ==", "+1-555-409-7104", false, "62c3f4f8-9037-47f6-8794-b4c6daa5a663", false, "antoine.c.leblanc" },
+                    { new Guid("befa88e8-83fc-4b64-b4ce-7de0b97b6e51"), 0, "7dee7b7d-3b5a-4a29-ae72-86e8e28c253d", new DateTime(1983, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "michael.j.evans@workbit.com", false, "Michael", "Evans", false, null, "MICHAEL.J.EVANS@WORKBIT.COM", "MICHAEL.J.EVANS", "AQAAAAIAAYagAAAAEFj00PCSumXMcBy9YNUDdi7qkcWjrtFMTFyOYDRBxGV7vyWTg7c0sbwztnR+jG+uaQ==", "+1-555-863-8858", false, "9638a9fa-81f0-41a3-983c-70ebc314bd91", false, "michael.j.evans" },
+                    { new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"), 0, "74f36ec2-9c3c-4a00-97f8-6efed13bef76", new DateTime(1996, 7, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "grace.l.adams@workbit.com", false, "Grace", "Adams", false, null, "GRACE.L.ADAMS@WORKBIT.COM", "GRACE.L.ADAMS", "AQAAAAIAAYagAAAAEA/3v5OHqRbYLZEK81T41cYMprMFDalixOJgdEgQ8F3WogT+/mhUTYqOvRF6/1KjJg==", "+1-555-988-2193", false, "40471f17-7f78-497c-8ff4-ef044037cb8f", false, "grace.l.adams" },
+                    { new Guid("d5e7f9a2-0ac3-4b6d-8c64-6fd8e4c0c013"), 0, "878e2639-209d-412a-8236-8392fca468ac", new DateTime(1994, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", false, "Admin", "Adminov", false, null, "ADMIN@GMAIL.COM", "ADMINADMIN", "AQAAAAIAAYagAAAAEKl7P5xE3fXz4GP3SwcyNldLWDJEKu0SumVlvnkvy3syoao678DeYt+5RlD5vTtykg==", "+1-555-129-8676", false, "06b69925-c5c2-4cbc-88e2-035205af0c28", false, "adminadmin" },
+                    { new Guid("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"), 0, "3758f325-f772-448d-b988-a17488bcda11", new DateTime(1982, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "lisa.r.anderson@workbit.com", false, "Lisa", "Anderson", false, null, "LISA.R.ANDERSON@WORKBIT.COM", "LISA.R.ANDERSON", "AQAAAAIAAYagAAAAEI+uwBpH51P4sesQ7hXMUCrfnAFFAFJp8kJtBjoIv0F61FuF3H3Jml/H8YCjnpap1w==", "+1-555-195-6596", false, "4b4e8ddb-af11-4d58-8d28-7fb6cbaacf25", false, "lisa.r.anderson" },
+                    { new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"), 0, "e6aac8bb-5f68-478b-b6ad-dd2d1e96f1fb", new DateTime(1995, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "alice.k.watson@workbit.com", false, "Alice", "Watson", false, null, "ALICE.K.WATSON@WORKBIT.COM", "ALICE.K.WATSON", "AQAAAAIAAYagAAAAEELoFcMYwGvgbtu22IZpTbZjEop7l/eOoK0d4CN6HtQpsMIAWCw8tf6Ns3c7491rDg==", "+1-555-482-9658", false, "01f17a2a-8c44-49c2-b925-8194a45da6e2", false, "alice.k.watson" }
                 });
 
             migrationBuilder.InsertData(
@@ -652,26 +668,6 @@ namespace Workbit.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CountryCode", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[,]
-                {
-                    { new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"), 0, "774de440-6e6b-4b75-9722-ee06533b6013", "IT", new DateTime(1994, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "bob.c.thomas@workbit.com", false, "Bob", "Thomas", false, null, "BOB.C.THOMAS@WORKBIT.COM", "BOB.C.THOMAS", "AQAAAAIAAYagAAAAEO3Pmx0x/OxcDlbHeHFyjbn7cr9GnxFerlwjVybI920IPP4Uu9Al97YLOUnfKq/NBw==", "+1-555-867-1502", false, "8a56abb4-2188-43fa-bd8d-7d7b849f2a44", false, "bob.c.thomas" },
-                    { new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"), 0, "8eb4868f-2dd1-476d-b41e-df9ab254668a", "NL", new DateTime(1991, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "emily.d.young@workbit.com", false, "Emily", "Young", false, null, "EMILY.D.YOUNG@WORKBIT.COM", "EMILY.D.YOUNG", "AQAAAAIAAYagAAAAECEVWs8Zh3U93y6hs+ymflsrYb6QSA6YoKfBzrVN0arFEU6Pqc7OlsKL4KpGJman+Q==", "+1-555-679-1476", false, "ca4e6374-8aa4-4f85-9243-7efa656d8551", false, "emily.d.young" },
-                    { new Guid("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"), 0, "ff90c2c1-b69e-4c86-b49c-0d4817e0a3eb", "DE", new DateTime(1978, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "carl.t.morgan@workbit.com", false, "Carl", "Morgan", false, null, "CARL.T.MORGAN@WORKBIT.COM", "CARL.T.MORGAN", "AQAAAAIAAYagAAAAELjLrUQA2AH/1EjHt6CVIpBXhDgPg+EgS20KqhLyAPPJ12Bit1I8yxeYK1RECNVpEg==", "+1-555-443-1609", false, "3ba97b5f-3a02-477d-a4fc-af84e4f8736f", false, "carl.t.morgan" },
-                    { new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"), 0, "cfcc4421-e971-4a6a-9e91-f41000883a92", "RO", new DateTime(1993, 4, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "dave.r.walker@workbit.com", false, "Dave", "Walker", false, null, "DAVE.R.WALKER@WORKBIT.COM", "DAVE.R.WALKER", "AQAAAAIAAYagAAAAEKvztfXsahwge9rDsHUQ/CWCiCDPFyP+jJaEI+fEGw6f4BvPogn0dvERJEK4X/tuag==", "+1-555-455-1438", false, "bf4dac9a-59b9-4bb8-8f4f-03f83ec8c170", false, "dave.r.walker" },
-                    { new Guid("9a2f4b30-c2fa-4c77-bf3a-9b6a4cf11801"), 0, "82ee72cb-ea9d-4882-84ef-ebcfebb25391", "US", new DateTime(1980, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "john.m.lewis@workbit.com", false, "John", "Lewis", false, null, "JOHN.M.LEWIS@WORKBIT.COM", "JOHN.M.LEWIS", "AQAAAAIAAYagAAAAEH17ye5cOm8XWghNFYv+UK4dOdCw3Amo7N7O+vikni7LflwNhhDvEfaD+K86gZQ6lQ==", "+1-555-301-3411", false, "902717a9-00db-47b3-bad1-7f5f4d937327", false, "john.m.lewis" },
-                    { new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"), 0, "56d9b109-7d98-4c60-b012-bbea9aa1f202", "PL", new DateTime(1990, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), "frank.h.scott@workbit.com", false, "Frank", "Scott", false, null, "FRANK.H.SCOTT@WORKBIT.COM", "FRANK.H.SCOTT", "AQAAAAIAAYagAAAAEEItO7peu60lRZx/PHAgnJOOx4KQcn+LlQ8z6ha3vVuYujFCuatsdgfFnDuze24Svg==", "+1-555-917-3032", false, "13d0ffde-6f98-4402-9586-a029fda17a47", false, "frank.h.scott" },
-                    { new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"), 0, "417b3cbc-6548-41ad-8c0c-de0befe7318f", "IE", new DateTime(1997, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "harry.n.brooks@workbit.com", false, "Harry", "Brooks", false, null, "HARRY.N.BROOKS@WORKBIT.COM", "HARRY.N.BROOKS", "AQAAAAIAAYagAAAAEEwbGxpNo3t+e+kdaYbVQYkt5F0nA0iA6ztIY/ya3I1UFCytTkugArQm7tRVbrpA9Q==", "+1-555-222-3943", false, "61acf1cc-55af-4f86-a51e-97c905fd8a83", false, "harry.n.brooks" },
-                    { new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"), 0, "9d97bbed-23b1-4b1d-b30a-5a325e8224ac", "ES", new DateTime(1992, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "claire.b.james@workbit.com", false, "Claire", "James", false, null, "CLAIRE.B.JAMES@WORKBIT.COM", "CLAIRE.B.JAMES", "AQAAAAIAAYagAAAAENUQBBjFEvJmK9KyOjRbvMTczDF3YjOg0SWuWkezXYIk3cpKWs7rKg7Nennz8SpQrA==", "+1-555-711-6514", false, "e5ee08e7-7615-49f5-9547-b4f10ae20816", false, "claire.b.james" },
-                    { new Guid("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"), 0, "58358a4b-15c4-4565-82aa-b31219ae631a", "FR", new DateTime(1985, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "nina.v.hughes@workbit.com", false, "Nina", "Hughes", false, null, "NINA.V.HUGHES@WORKBIT.COM", "NINA.V.HUGHES", "AQAAAAIAAYagAAAAEI5ps0ZxbBQzQv+YKQgTPXat4p9BuQCH3GjHE+eRBHSj3rbuq+r7kKcFxoc9oTpAlw==", "+1-555-297-1548", false, "8b0bcc34-7b02-495e-b02f-efafad92ad56", false, "nina.v.hughes" },
-                    { new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"), 0, "4ca216f7-9404-4504-810d-03abec97de7f", "SE", new DateTime(1996, 7, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "grace.l.adams@workbit.com", false, "Grace", "Adams", false, null, "GRACE.L.ADAMS@WORKBIT.COM", "GRACE.L.ADAMS", "AQAAAAIAAYagAAAAEMwo79dZzzQQhKWjlkn0NI6Fl1OSBcZ96B7/frsBjCXalPu6ErkcZSDdne/al5Y1Kw==", "+1-555-256-2599", false, "e6f4c842-8b04-4b30-a19e-f560b5601570", false, "grace.l.adams" },
-                    { new Guid("d5e7f9a2-0ac3-4b6d-8c64-6fd8e4c0c013"), 0, "1189e22c-0c77-4dde-b290-da7ff8c4e99a", "BG", new DateTime(1994, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", false, "Admin", "Adminov", false, null, "ADMIN@GMAIL.COM", "ADMINADMIN", "AQAAAAIAAYagAAAAEKdkVJ9Jtjd7AfXCcsqF4LSoiCUz8v58fG6y3bgaFSMsvOP4IR3pBn2KM50QIn3H8Q==", "+1-555-772-8799", false, "c45b2d79-ee6c-41cc-a91d-d3c3cc0f7a5e", false, "adminadmin" },
-                    { new Guid("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"), 0, "53669f6d-3c71-46fc-b9a0-201330a3e697", "GB", new DateTime(1982, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "lisa.r.anderson@workbit.com", false, "Lisa", "Anderson", false, null, "LISA.R.ANDERSON@WORKBIT.COM", "LISA.R.ANDERSON", "AQAAAAIAAYagAAAAEM2yVFxIUHXmtiQQCSylEEri5Dlkrskqj7CSz8ygfzotKeSsl/KyMBd+/i2XH9ub6A==", "+1-555-241-1185", false, "a7472485-dcc9-4eab-94f6-646f81a20c7d", false, "lisa.r.anderson" },
-                    { new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"), 0, "8eb3bf23-a0f0-43ac-a412-d9017f898778", "BG", new DateTime(1995, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "alice.k.watson@workbit.com", false, "Alice", "Watson", false, null, "ALICE.K.WATSON@WORKBIT.COM", "ALICE.K.WATSON", "AQAAAAIAAYagAAAAEIxUZFMjEuoqSYJRPvj6AW+Jw/ZC37E8HRYKNrlH/a3TW3hJt23Uiq857SnNfaFkVg==", "+1-555-208-1904", false, "8aace3aa-8952-4a6f-b51c-7eedfc1df63f", false, "alice.k.watson" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "AttendanceEntries",
                 columns: new[] { "Id", "Timestamp", "Type", "UserId" },
                 values: new object[,]
@@ -743,13 +739,13 @@ namespace Workbit.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Departments",
-                columns: new[] { "Id", "CompanyId", "CountryCode", "Description", "Name" },
+                columns: new[] { "Id", "CompanyId", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 1, 1, "US", "Handles recruitment, payroll, employee relations, and organizational policies.", "Human Resources" },
-                    { 2, 1, "US", "Oversees infrastructure, software development, cybersecurity, and IT support.", "IT" },
-                    { 3, 1, "US", "Manages budgeting, forecasting, accounting, and financial reporting.", "Finance" },
-                    { 4, 1, "US", "Develops brand strategy, campaigns, and customer outreach initiatives.", "Marketing" }
+                    { 1, 1, "Handles recruitment, payroll, employee relations, and organizational policies.", "Human Resources" },
+                    { 2, 1, "Oversees infrastructure, software development, cybersecurity, and IT support.", "IT" },
+                    { 3, 1, "Manages budgeting, forecasting, accounting, and financial reporting.", "Finance" },
+                    { 4, 1, "Develops brand strategy, campaigns, and customer outreach initiatives.", "Marketing" }
                 });
 
             migrationBuilder.InsertData(
@@ -779,23 +775,26 @@ namespace Workbit.Infrastructure.Migrations
                 values: new object[,]
                 {
                     { new Guid("64d07af7-8ed1-4620-b34d-bd0a4cb81d03"), 2, "DE89370400440532013000" },
+                    { new Guid("b06c8a25-b13c-4d31-bb49-113aa0cc46b8"), 2, "DE21100100101234567893" },
                     { new Guid("b0cf2834-19c5-43f5-b29e-9bb85a5a5d04"), 3, "FR1420041010050500013M02606" },
+                    { new Guid("b23ae748-2292-4712-8778-3eb591c2f001"), 3, "FR7630006000011234567890189" },
+                    { new Guid("befa88e8-83fc-4b64-b4ce-7de0b97b6e51"), 1, "GB82WEST12345698765432" },
                     { new Guid("f83d8c21-0b43-4b15-8fd1-20f4e5c72f02"), 1, "GB29NWBK60161331926819" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "ApplicationUserId", "IBAN", "JobId", "Level" },
+                columns: new[] { "ApplicationUserId", "CountryCode", "IBAN", "JobId", "Level" },
                 values: new object[,]
                 {
-                    { new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"), "IT60X0542811101000000123456", 1, 1 },
-                    { new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"), "NL91ABNA0417164300", 3, 2 },
-                    { new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"), "RO49AAAA1B31007593840000", 2, 3 },
-                    { new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"), "PL61109010140000071219812874", 3, 1 },
-                    { new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"), "IE29AIBK93115212345678", 4, 4 },
-                    { new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"), "ES9121000418450200051332", 2, 4 },
-                    { new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"), "SE3550000000054910000003", 4, 3 },
-                    { new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"), "BG80BNBG96611020345678", 1, 2 }
+                    { new Guid("2b06417a-1460-4b10-8454-51069dfb2d06"), "IT", "IT60X0542811101000000123456", 1, 1 },
+                    { new Guid("30c2adf9-9ab8-4c59-b356-2f8bb6c82d09"), "NL", "NL91ABNA0417164300", 3, 2 },
+                    { new Guid("90e3b7f8-7088-4b4e-b0fa-847fe4c6bc08"), "RO", "RO49AAAA1B31007593840000", 2, 3 },
+                    { new Guid("a73cb7de-df18-4b6e-a573-0dcf1f703e10"), "PL", "PL61109010140000071219812874", 3, 1 },
+                    { new Guid("a802de4b-6a4a-4e15-a8c3-41f5a6c8d012"), "IE", "IE29AIBK93115212345678", 4, 4 },
+                    { new Guid("ac2a1d43-b460-4f4e-8617-c2cfb61a8c07"), "ES", "ES9121000418450200051332", 2, 4 },
+                    { new Guid("cf9f7b3e-6cdb-4b9a-a0b4-4e2f7d527e11"), "SE", "SE3550000000054910000003", 4, 3 },
+                    { new Guid("f92e7b0f-5123-40c8-9d28-8834a3c93005"), "BG", "BG80BNBG96611020345678", 1, 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -831,9 +830,11 @@ namespace Workbit.Infrastructure.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_CountryCode",
+                name: "IX_AspNetUsers_Email",
                 table: "AspNetUsers",
-                column: "CountryCode");
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -869,8 +870,8 @@ namespace Workbit.Infrastructure.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Departments_CountryCode",
-                table: "Departments",
+                name: "IX_Employees_CountryCode",
+                table: "Employees",
                 column: "CountryCode");
 
             migrationBuilder.CreateIndex(
@@ -943,10 +944,10 @@ namespace Workbit.Infrastructure.Migrations
                 name: "Ceos");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Countries");
 
             migrationBuilder.DropTable(
-                name: "Countries");
+                name: "AspNetUsers");
         }
     }
 }
