@@ -98,7 +98,7 @@
 <div class="payments-wrapper">
     <div class="header-row">
         <h2>Manager Payments</h2>
-        <a asp-controller="Payment" asp-action="HistoryForManager" class="btn-history">
+        <a asp-area="Manager" asp-controller="Payment" asp-action="History" class="btn-history">
             View History
         </a>
     </div>
@@ -119,22 +119,30 @@
     <!-- Pay Employee Section -->
     <div class="section-card">
         <h3>Pay an Employee</h3>
-        <form asp-action="PayEmployee" method="post" class="row g-4">
+        <form asp-area="Manager" asp-controller="Payment" asp-action="PayEmployee" method="post" class="row g-4">
             <input type="hidden" name="ManagerId" value="@Model.ManagerId" />
 
             <div class="col-md-6">
                 <label for="EmployeeId">Select Employee</label>
-                <select name="EmployeeId" class="form-select" required>
+                <select id="EmployeeId" name="EmployeeId" class="form-select" required>
                     <option value="">-- Choose Employee --</option>
                     @foreach (var emp in Model.Employees)
                     {
-                        <option value="@emp.Id">@emp.FullName</option>
+                        <option value="@emp.Id" data-salary="@emp.Salary">
+                            @emp.FullName
+                        </option>
                     }
                 </select>
             </div>
+
             <div class="col-md-3">
                 <label for="Salary">Salary</label>
-                <input type="number" name="Salary" class="form-control" step="0.01" required />
+                <input type="number"
+                       id="Salary"
+                       name="Salary"
+                       class="form-control"
+                       step="0.01"
+                       readonly />
             </div>
             <div class="col-md-3">
                 <label for="Bonus">Bonus</label>
@@ -150,3 +158,18 @@
         </form>
     </div>
 </div>
+<script>
+    (() => {
+        const employeeSelect = document.getElementById('EmployeeId');
+        const salaryInput = document.getElementById('Salary');
+
+        employeeSelect.addEventListener('change', () => {
+            const selected = employeeSelect.options[employeeSelect.selectedIndex];
+            const salary = selected.dataset.salary;   // read the data-salary attribute
+            salaryInput.value = salary ?? '';
+        });
+
+        // Optional: pre-populate if an employee is pre-selected when the page loads
+        employeeSelect.dispatchEvent(new Event('change'));
+    })();
+</script>

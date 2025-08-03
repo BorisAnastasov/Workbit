@@ -5,6 +5,7 @@ using Workbit.Core.Models.Payment;
 using Workbit.Infrastructure.Database.Entities;
 using Workbit.Infrastructure.Database.Entities.Account;
 using static Workbit.Common.DataConstants.Constants;
+using Workbit.Core.Models.Employee;
 
 namespace Workbit.Core.Services
 {
@@ -17,39 +18,14 @@ namespace Workbit.Core.Services
 			repository = _repository;
 		}
 
-		public Task AllocateDepartmentBudgetAsync(int departmentId, decimal totalBudget, decimal bonusPool, DateTime period)
+		public Task AllocateDepartmentBudgetAsync(int departmentId,
+                                                decimal totalBudget, 
+                                                decimal bonusPool,
+                                                DateTime period)
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task CreateAsync(PaymentCreateDto dto)
-		{
-			var payment = new Payment
-			{
-				RecipientId = Guid.Parse(dto.EmployeeId),
-				PaymentDate = dto.PaymentDate,
-				Salary = (decimal)dto.Salary,
-				Bonus = (decimal)dto.Bonus,
-				Taxes = (decimal)dto.Taxes,
-				Notes = dto.Notes
-			};
-
-			await repository.AddAsync(payment);
-			await repository.SaveChangesAsync();
-		}
-
-		public async Task DeleteAsync(int id)
-		{
-			await repository.DeleteAsync<Payment>(id);
-			await repository.SaveChangesAsync();
-		}
-
-		public async Task<bool> ExistsByIdAsync(int id)
-		{
-			var payment = await repository.GetByIdAsync<Payment>(id);
-
-			return payment != null;
-		}
 
 		public async Task<IEnumerable<PaymentReadDto>> GetByEmployeeIdAsync(string employeeId)
 		{
@@ -71,73 +47,15 @@ namespace Workbit.Core.Services
 				.ToList();
 		}
 
-		public async Task<PaymentReadDto> GetByIdAsync(int id)
-		{
-			var payment = await repository.GetByIdAsync<Payment>(id);
-
-			return new PaymentReadDto
-			{
-				Id = payment.Id,
-				RecipientId = payment.RecipientId.ToString(),
-				RecipientName = payment.Recipient.FullName,
-				PaymentDate = payment.PaymentDate,
-				Salary = payment.Salary,
-				Bonus = payment.Bonus,
-				Taxes = payment.Taxes,
-				Notes = payment.Notes
-			};
-		}
-
-		public async Task<decimal> GetTotalPaidToEmployeeAsync(string employeeId)
-		{
-			var user = await repository.GetByIdAsync<ApplicationUser>(employeeId);
-
-			return user.Payments
-				.Sum(p => p.Salary + p.Bonus - p.Taxes);
-		}
-
-		public async Task PayManagerAsync(Guid managerUserId, decimal salary, decimal bonus, string? notes)
-		{
-			// Find the Employee (Manager is still stored in Employee table)
-			var manager = await repository.AllReadOnly<Manager>()
-				.FirstOrDefaultAsync(m => m.ApplicationUserId == managerUserId);
-
-
-			var payment = new Payment
-			{
-				RecipientId = managerUserId,
-				Salary = salary,
-				Bonus = bonus,
-				Taxes = CalculateTaxes(salary, bonus),
-				PaymentDate = DateTime.UtcNow,
-				Notes = notes
-			};
-
-			await repository.AddAsync(payment);
-			await repository.SaveChangesAsync();
-		}
-
 		private decimal CalculateTaxes(decimal salary, decimal bonus)
 		{
 			var total = salary + bonus;
 			return total * 0.10m; // 10% tax as placeholder
 		}
 
-		public async Task UpdateAsync(PaymentUpdateDto dto)
-		{
-			var payment = await repository.GetByIdAsync<Payment>(dto.Id);
-
-			payment.Salary = (decimal)dto.Salary;
-			payment.Bonus = (decimal)dto.Bonus;
-			payment.Taxes = (decimal)dto.Taxes;
-			payment.Notes = dto.Notes;
-
-			await repository.SaveChangesAsync();
-		}
-
         public async Task<IEnumerable<PaymentReadDto>> GetAllByCeoIdAsync(
-                                            string ceoId,DateTime? startDate = null,
-                                            DateTime? endDate = null,string role = "All")
+                                                                string ceoId,DateTime? startDate = null,
+                                                                DateTime? endDate = null,string role = "All")
         {
             // Fetch all tracked payments (no AsNoTracking so lazy loading works)
             var payments = await repository.All<Payment>()
@@ -201,71 +119,59 @@ namespace Workbit.Core.Services
 
         }
 
-        public async Task PayEmployeeByManagerAsync(PayEmployeeDto dto)
-        {
-            // Load manager (lazy loading will handle Department)
-            var manager = await repository.AllReadOnly<Manager>()
-                .FirstOrDefaultAsync(m => m.ApplicationUserId == dto.ManagerId);
-
-            // Load employee (lazy loading will handle Job and Department)
-            var employee = await repository.AllReadOnly<Employee>()
-                .FirstOrDefaultAsync(e => e.ApplicationUserId == dto.EmployeeId);
-
-			var db = manager.Department.DepartmentBudgets.OrderByDescending(d => d.DateAllocated).First();
-            // Ensure manager has enough budget
-            if (db.TotalBudget < (dto.Salary + dto.Bonus))
+            public async Task PayEmployeeByManagerAsync(PayEmployeeFormModel model)
             {
-                throw new InvalidOperationException("Insufficient budget to complete this payment.");
+                var manager = await repository.All<Manager>()
+                    .FirstOrDefaultAsync(m => m.ApplicationUserId == model.ManagerId);
+
+                var employee = await repository.All<Employee>()
+                    .FirstOrDefaultAsync(e => e.ApplicationUserId == model.EmployeeId);
+
+			    var budget = manager.Department.DepartmentBudgets.OrderByDescending(d => d.DateAllocated).First();
+
+                var payment = new Payment
+                {
+                    RecipientId = model.EmployeeId,
+                    Salary = model.Salary,
+                    Bonus = model.Bonus,
+                    Taxes = CalculateTaxes(model.Salary, model.Bonus),
+                    PaymentDate = DateTime.UtcNow,
+                    Notes = model.Notes ?? string.Empty
+                };
+
+                await repository.AddAsync(payment);
+
+                var sum = model.Salary + model.Bonus - payment.Taxes;
+
+                if (budget.TotalBudget < sum)
+                    throw new InvalidOperationException(
+                        $"Insufficient budget: available {budget.TotalBudget}, required {sum-budget.TotalBudget}.");
+
+                budget.TotalBudget -= sum;
+
+                await repository.SaveChangesAsync();
             }
 
-            // Create the payment record
-            var payment = new Payment
-            {
-                RecipientId = dto.EmployeeId,
-                Salary = dto.Salary,
-                Bonus = dto.Bonus,
-                Taxes = CalculateTaxes(dto.Salary, dto.Bonus),
-                PaymentDate = DateTime.UtcNow,
-                Notes = dto.Notes ?? string.Empty
-            };
-
-            await repository.AddAsync(payment);
-
-            // Deduct from department's remaining budget
-            db.TotalBudget -= (dto.Salary + dto.Bonus);
-            repository.Update(manager.Department);  // Ensure EF tracks the change
-
-            await repository.SaveChangesAsync();
-        }
-
         public async Task<IEnumerable<PaymentReadDto>> GetAllByManagerIdAsync(
-    string managerId,
-    DateTime? startDate = null,
-    DateTime? endDate = null)
+                                                                string managerId,
+                                                                DateTime? startDate = null,
+                                                                DateTime? endDate = null)
         {
-            // Load all payments with their Recipient -> Employee -> Job -> Department -> Managers
             var payments = await repository.All<Payment>()
-    .Include(p => p.Recipient)
-        .ThenInclude(r => r.Employee)               // Force load Employee
-            .ThenInclude(e => e.Job)                // Load Job
-                .ThenInclude(j => j.Department)     // Load Department
-                    .ThenInclude(d => d.Managers)   // Load Managers
-    .OrderByDescending(p => p.PaymentDate)
-    .ToListAsync();
-
+                                        .OrderByDescending(p => p.PaymentDate)
+                                        .ToListAsync();
 
             var filtered = payments.Where(p =>
             {
                 var paymentDate = p.PaymentDate.Date;
 
-                // Date filtering (ignore time)
                 if (startDate.HasValue && paymentDate < startDate.Value.Date) return false;
                 if (endDate.HasValue && paymentDate > endDate.Value.Date) return false;
 
-                // Skip payments that are NOT for employees (e.g., manager payments)
                 if (p.Recipient.Employee == null) return false;
 
-                // Ensure the employee is in a department managed by this manager
+                if (p.Recipient.Employee.Job == null) return false;
+
                 return p.Recipient.Employee.Job.Department.Managers
                     .Any(m => m.ApplicationUserId.ToString() == managerId);
             });
@@ -321,6 +227,21 @@ namespace Workbit.Core.Services
             };
         }
 
+        public async Task<IEnumerable<EmployeePaymentViewModel>> GetEmployeePaymentModelByDepartmentIdAsync(int departmentId)
+        {
+            var department = await repository.GetByIdAsync<Department>(departmentId);
 
+            var employees = department.Jobs
+                                            .SelectMany(p => p.Employees)
+                                            .Select(e=> new EmployeePaymentViewModel 
+                                            {
+                                                Id = e.ApplicationUserId.ToString(),
+                                                FullName = e.ApplicationUser.FullName,
+                                                IBAN = e.IBAN,
+                                                Salary = e.EffectiveSalary
+                                            
+                                            }).ToList();
+            return employees;
+        }
     }
 }

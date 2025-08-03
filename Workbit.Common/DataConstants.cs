@@ -53,6 +53,9 @@
 
         public static class Payment 
         {
+            public const int DecimalPrecision = 18;
+            public const int DecimalScale = 2;
+
             public const int NotesMaxLen = 150;
         }
     }

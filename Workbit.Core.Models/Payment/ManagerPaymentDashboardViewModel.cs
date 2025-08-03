@@ -6,8 +6,7 @@ namespace Workbit.Core.Models.Payment
     {
         public string ManagerId { get; set; }             
         public int DepartmentId { get; set; }            
-        public List<EmployeeSummaryDto> Employees { get; set; } = new();
-
+        public List<EmployeePaymentViewModel> Employees { get; set; } = new();
         public decimal TotalBudget { get; set; } 
     }
 }

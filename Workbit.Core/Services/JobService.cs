@@ -16,14 +16,14 @@ namespace Workbit.Core.Services
             repository = _repository;
         }
 
-        public async Task CreateAsync(JobCreateDto dto)
+        public async Task CreateJobAsync(JobCreateViewModel model)
         {
             var job = new Job
             {
-                Title = dto.Title,
-                Description = dto.Description,
-                DepartmentId = dto.DepartmentId,
-                BaseSalary = dto.BaseSalary
+                Title = model.Title,
+                Description = model.Description,
+                DepartmentId = model.DepartmentId,
+                BaseSalary = model.BaseSalary
             };
 
             await repository.AddAsync(job);
@@ -99,13 +99,27 @@ namespace Workbit.Core.Services
             return job.Employees.Any();
         }
 
-        public async Task UpdateAsync(JobUpdateDto dto)
+        public async Task<JobEditViewModel> GetJobEditModelAsync(int jobId)
         {
-            var job = await repository.GetByIdAsync<Job>(dto.Id);
+            var job = await repository.GetByIdAsync<Job>(jobId);
 
-            job.Title = dto.Title;
-            job.Description = dto.Description;
-            job.BaseSalary = dto.BaseSalary;
+            var model = new JobEditViewModel
+            {
+                Title = job.Title,
+                Description = job.Description,
+                BaseSalary = job.BaseSalary,
+            };
+
+            return model;
+        }
+
+        public async Task EditJobAsync(JobEditViewModel model)
+        {
+            var job = await repository.GetByIdAsync<Job>(model.Id);
+
+            job.Title = model.Title;
+            job.Description = model.Description;
+            job.BaseSalary = model.BaseSalary;
 
             await repository.SaveChangesAsync();
         }

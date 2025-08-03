@@ -5,5 +5,12 @@ namespace Workbit.App.Areas.Employee.Controllers
 {
     [Area(EmployeeAreaName)]
     [Authorize(Roles = EmployeeRoleName)]
-    public class BaseController : Controller {}
+    public class BaseController : Controller 
+    {
+        [HttpGet]
+        public IActionResult NoJob()
+        {
+            return View();
+        }
+    }
 }

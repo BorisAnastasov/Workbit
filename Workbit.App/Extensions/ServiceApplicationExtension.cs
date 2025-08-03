@@ -6,6 +6,7 @@ using Workbit.Core.Services;
 using Workbit.Infrastructure.Database;
 using Workbit.Infrastructure.Database.Entities.Account;
 using IbanNet.DependencyInjection.ServiceProvider;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace Workbit.App.Extensions
 {
@@ -25,6 +26,8 @@ namespace Workbit.App.Extensions
 			services.AddScoped<IAdminService, AdminService>();
 			services.AddScoped<ICountryService, CountryService>();
 			services.AddScoped<IUserService, UserService>();
+
+            services.AddDataProtection().SetApplicationName("Workbit");
 
             services.AddHttpClient<IApiNinjasService, ApiNinjasService>();
 

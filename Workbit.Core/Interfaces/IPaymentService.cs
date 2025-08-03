@@ -1,12 +1,10 @@
-﻿using Workbit.Core.Models.Payment;
+﻿using Workbit.Core.Models.Employee;
+using Workbit.Core.Models.Payment;
 
 namespace Workbit.Core.Interfaces
 {
     public interface IPaymentService
     {
-        // Create
-        Task CreateAsync(PaymentCreateDto dto);
-
         // Read
         Task<IEnumerable<PaymentReadDto>> GetByEmployeeIdAsync(string employeeId);
         Task<IEnumerable<PaymentReadDto>> GetAllByCeoIdAsync(
@@ -24,20 +22,8 @@ namespace Workbit.Core.Interfaces
                                                         DateTime? startDate = null,
                                                         DateTime? endDate = null);
 
-
-        Task<PaymentReadDto> GetByIdAsync(int id);
-
-        // Update
-        Task UpdateAsync(PaymentUpdateDto dto);
-
-        // Delete
-        Task DeleteAsync(int id);
-
-        // Helpers
-        Task<bool> ExistsByIdAsync(int id);
-        Task<decimal> GetTotalPaidToEmployeeAsync(string employeeId);
+        Task<IEnumerable<EmployeePaymentViewModel>> GetEmployeePaymentModelByDepartmentIdAsync(int departmentId);
         Task PayManagerAsync(PayManagerViewModel model);
-        Task AllocateDepartmentBudgetAsync(int departmentId, decimal totalBudget, decimal bonusPool, DateTime period);
-        Task PayEmployeeByManagerAsync(PayEmployeeDto dto);
+        Task PayEmployeeByManagerAsync(PayEmployeeFormModel model);
     }
 }

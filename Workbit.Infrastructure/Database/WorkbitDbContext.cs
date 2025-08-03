@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Workbit.Infrastructure.Database.Configuration;
@@ -10,10 +11,13 @@ namespace Workbit.Infrastructure.Database
 {
 	public class WorkbitDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
-        public WorkbitDbContext(DbContextOptions<WorkbitDbContext> options)
+        private readonly IDataProtector protector;
+        public WorkbitDbContext(DbContextOptions<WorkbitDbContext> options,
+                                        IDataProtectionProvider dataProtectionProvider)
             : base(options)
         {
             this.ChangeTracker.LazyLoadingEnabled = true;
+            protector = dataProtectionProvider.CreateProtector("Employee.IBAN");
         }
         public virtual DbSet<Department> Departments { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;

@@ -48,16 +48,6 @@ namespace Workbit.Core.Services
             return employees;
         }
 
-        public async Task<IEnumerable<EmployeeSummaryDto>> GetAllByCeoIdAsync(string id)
-        {
-            return await repository.AllReadOnly<Employee>()
-                                    .Where(e => e.Job.Department.Company.CeoId.ToString() == id)
-                                    .Select(e => new EmployeeSummaryDto
-                                    {
-                                        Id = e.ApplicationUserId.ToString(),
-                                        FullName = e.ApplicationUser.FullName,
-                                    }).ToListAsync();
-        }
 
         public async Task<IEnumerable<EmployeeSummaryDto>> GetByDepartmentIdAsync(int departmentId)
         {
@@ -66,7 +56,7 @@ namespace Workbit.Core.Services
                 .Select(e => new EmployeeSummaryDto
                 {
                     Id = e.ApplicationUserId.ToString(),
-                    FullName = e.ApplicationUser.FullName
+                    FullName = e.ApplicationUser.FullName,
                 })
                 .ToListAsync();
 
@@ -102,20 +92,6 @@ namespace Workbit.Core.Services
             var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(id));
 
             return employee.CountryCode!;
-        }
-
-        public async Task<IEnumerable<EmployeeSummaryDto>> GetByJobIdAsync(int jobId)
-        {
-            var employees = await repository.AllReadOnly<Employee>()
-                .Where(e => e.JobId == jobId)
-                .Select(e => new EmployeeSummaryDto
-                {
-                    Id = e.ApplicationUserId.ToString(),
-                    FullName = e.ApplicationUser.FullName
-                })
-                .ToListAsync();
-
-            return employees;
         }
 
         public async Task<EmployeeProfileViewModel> GetProfileAsync(
@@ -211,24 +187,12 @@ namespace Workbit.Core.Services
             return Math.Round(totalHours, 2);
         }
 
-        public async Task<bool> HasPaymentsAsync(string id)
+        public async Task EditEmployeeAsync(EmployeeEditViewModel model)
         {
-            var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(id));
+            var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(model.Id));
 
-            return employee.ApplicationUser.Payments.Any();
-        }
-
-        public async Task UpdateAsync(EmployeeUpdateDto dto)
-        {
-            var guid = Guid.Parse(dto.Id);
-            var employee = await repository.GetByIdAsync<Employee>(guid);
-            if (employee == null)
-            {
-                throw new KeyNotFoundException($"Employee with ID {dto.Id} not found.");
-            }
-
-            employee.JobId = dto.JobId;
-            employee.Level = Enum.Parse<Workbit.Infrastructure.Enumerations.JobLevel>(dto.Level, true);
+            employee.JobId = model.JobId;
+            employee.Level = Enum.Parse<JobLevel>(model.Level, true);
 
             await repository.SaveChangesAsync();
         }
@@ -302,6 +266,30 @@ namespace Workbit.Core.Services
             employee.Level = JobLevel.Unemployed;
 
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<EmployeeEditViewModel> GetEditModelByIdAsync(string userId)
+        {
+            var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(userId));
+            var jobs = await repository.AllReadOnly<Job>()
+                                        .Where(j=>j.DepartmentId == employee.Job.DepartmentId)
+                                        .Select(j=> new JobSummaryDto 
+                                        {
+                                            Id = j.Id,
+                                            Title = j.Title,
+                                        })
+                                        .ToListAsync();
+
+            var model = new EmployeeEditViewModel
+            {
+                Id = employee.ApplicationUserId.ToString(),
+                FullName = employee.ApplicationUser.FullName,
+                JobId = employee.JobId!.Value,
+                Level = employee.Level.ToString(),
+                Jobs = jobs
+            };
+
+            return model;
         }
     }
 }

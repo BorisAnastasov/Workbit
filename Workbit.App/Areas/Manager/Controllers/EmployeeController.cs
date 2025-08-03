@@ -28,7 +28,7 @@ namespace Workbit.App.Areas.Manager.Controllers
 
                 if (!await managerService.HasDepartmentByManagerIdAsync(User.Id()))
                 {
-                    return RedirectToAction("NoDepartment", "Manager", new { area = "Manager" });
+                    return RedirectToAction("NoDepartment", "Base", new { area = "Manager" });
                 }
 
                 var departmentId = await managerService.GetDepartmentIdByManagerIdAsync(User.Id());
@@ -55,7 +55,7 @@ namespace Workbit.App.Areas.Manager.Controllers
 
                 if (!await managerService.HasDepartmentByManagerIdAsync(User.Id()))
                 {
-                    return RedirectToAction("NoDepartment", "Manager", new { area = "Manager" });
+                    return RedirectToAction("NoDepartment", "Base", new { area = "Manager" });
                 }
 
                 var departmentId = await managerService.GetDepartmentIdByManagerIdAsync(User.Id());
@@ -78,6 +78,7 @@ namespace Workbit.App.Areas.Manager.Controllers
             }
 
         }
+
         [HttpGet]
         public async Task<IActionResult> Details(string employeeId)
         {
@@ -85,7 +86,7 @@ namespace Workbit.App.Areas.Manager.Controllers
             {
                 if (!await managerService.ExistsByIdAsync(User.Id()))
                 {
-                    return RedirectToAction("NoDepartment", "Manager", new { area = "Manager" });
+                    return RedirectToAction("NoDepartment", "Base", new { area = "Manager" });
                 }
 
                 if (!await employeeService.ExistsByIdAsync(employeeId))
@@ -148,6 +149,49 @@ namespace Workbit.App.Areas.Manager.Controllers
             }
             
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string employeeId) 
+        {
+            try
+            {
+                if (!await employeeService.ExistsByIdAsync(employeeId))
+                {
+                    return RedirectToAction("Error404", "Error", new { area = "" });
+                }
+
+                var model = await employeeService.GetEditModelByIdAsync(employeeId);
+
+                return View(model);
+
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error500", "Error", new { area = "" });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EmployeeEditViewModel model) 
+        {
+            try
+            {
+                if (!await employeeService.ExistsByIdAsync(model.Id))
+                {
+                    return RedirectToAction("Error404", "Error", new { area = "" });
+                }
+
+                await employeeService.EditEmployeeAsync(model);
+
+                return RedirectToAction(nameof(Team));
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error500", "Error", new { area = "" });
+            }
+        }
+
+
 
     }
 }

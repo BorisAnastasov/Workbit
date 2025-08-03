@@ -6,5 +6,12 @@ namespace Workbit.App.Areas.Manager.Controllers
 {
     [Area(ManagerAreaName)]
     [Authorize(Roles =ManagerRoleName)]
-    public class BaseController : Controller {}
+    public class BaseController : Controller 
+    {
+        [HttpGet]
+        public IActionResult NoDepartment()
+        {
+            return View();
+        }
+    }
 }

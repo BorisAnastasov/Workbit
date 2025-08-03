@@ -28,12 +28,12 @@ namespace Workbit.App.Areas.Employee.Controllers
 
                 if (!await employeeService.ExistsByIdAsync(userId))
                 {
-                    return RedirectToAction("Error404", "Error");
+                    return RedirectToAction("Error404", "Error", new { area = "" });
                 }
 
                 if (!await employeeService.HasJobAsync(userId))
                 {
-                    return RedirectToAction(nameof(NoJob), "Employee", new { area = "Employee"});
+                    return RedirectToAction(nameof(NoJob), "Base", new { area = "Employee"});
                 }
 
                 int selectedMonth = month ?? DateTime.UtcNow.Month;
@@ -55,7 +55,7 @@ namespace Workbit.App.Areas.Employee.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Error500", "Error");
+                return RedirectToAction("Error500", "Error", new { area = "" });
             }
         }
 
@@ -68,28 +68,24 @@ namespace Workbit.App.Areas.Employee.Controllers
 
                 if (!await employeeService.ExistsByIdAsync(userId)) 
                 {
-					return RedirectToAction("Error404", "Error");
-				}
+					return RedirectToAction("Error404", "Error", new { area = "" });
+                }
 
 				if (!await employeeService.HasJobAsync(userId))
 				{
-					return RedirectToAction(nameof(NoJob), "Employee", new { area = "Employee" });
+					return RedirectToAction(nameof(NoJob), "Base", new { area = "Employee" });
 				}
 
 				await employeeService.LeaveJobAsync(User.Id());
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", new { area = "" });
 
             }
             catch (Exception)
             {
-                return RedirectToAction("Error500", "Error");
+                return RedirectToAction("Error500", "Error", new {area="" });
             }
         }
-        [HttpGet]
-        public IActionResult NoJob() 
-        {
-            return View();
-        }
+        
 	}
 }

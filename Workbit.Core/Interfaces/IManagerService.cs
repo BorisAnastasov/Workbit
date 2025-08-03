@@ -22,6 +22,7 @@ namespace Workbit.Core.Interfaces
         Task<bool> HasJobFromDepartmentAsync(int departmentId, string userId);
         Task<int> GetDepartmentIdByManagerIdAsync(string userId);
         Task<bool> IsManagerOfEmployeeAsync(string managerId ,string employeeId);
+        Task<bool> IsManagerOfJobAsync(string managerId, int jobId);
 
 
     }

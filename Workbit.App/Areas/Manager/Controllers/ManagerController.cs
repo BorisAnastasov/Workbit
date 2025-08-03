@@ -33,7 +33,7 @@ namespace Workbit.App.Areas.Manager.Controllers
 
                 if (!await managerService.HasDepartmentByManagerIdAsync(User.Id())) 
                 {
-                    return RedirectToAction(nameof(NoDepartment), "Manager", new { area = "Manager" });
+                    return RedirectToAction(nameof(NoDepartment), "Base", new { area = "Manager" });
                 }
 
 				var profile = await managerService.GetProfileDataAsync(User.Id());
@@ -47,12 +47,6 @@ namespace Workbit.App.Areas.Manager.Controllers
 		}
 
         [HttpGet]
-        public IActionResult NoDepartment()
-        {
-            return View();
-        }
-
-        [HttpGet]
         public async Task<IActionResult> TeamEmployees() 
         {
             try
@@ -64,7 +58,7 @@ namespace Workbit.App.Areas.Manager.Controllers
 
                 if (!await managerService.HasDepartmentByManagerIdAsync(User.Id()))
                 {
-                    return RedirectToAction(nameof(NoDepartment), "Manager", new { area = "Manager" });
+                    return RedirectToAction(nameof(NoDepartment), "Base", new { area = "Manager" });
                 }
                 var manager = await managerService.GetByIdAsync(User.Id());
 
@@ -98,60 +92,6 @@ namespace Workbit.App.Areas.Manager.Controllers
             }
         }
 
-        
-
-        
-
-        [HttpGet]
-        public async Task<IActionResult> DepartmentJobs()
-        {
-            try
-            {
-                var manager = await managerService.GetByIdAsync(User.Id());
-                if (manager.DepartmentId == null)
-                {
-                    return RedirectToAction("Error403", "Error");
-                }
-
-                var jobs = await jobService.GetByDepartmentIdAsync(manager.DepartmentId.Value);
-                return View("DepartmentJobs", jobs);
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("Error500", "Error");
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AssignManager(AssignManagerViewModel model)
-        {
-            if (string.IsNullOrEmpty(model.SelectedManagerId))
-            {
-                ModelState.AddModelError(nameof(model.SelectedManagerId), "Please select a manager.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                // Repopulate managers for the dropdown so the view works
-                model.AvailableManagers = await managerService.GetUnassignedManagersAsync();
-                // Keep DepartmentId so the form stays on the right department
-                return View(model);  // Do NOT redirect, stay on same page
-            }
-
-            var success = await managerService.AssignToDepartmentAsync(model.SelectedManagerId!, model.DepartmentId);
-
-            if (!success)
-            {
-                TempData["Error"] = "Failed to assign manager.";
-                return RedirectToAction("DepartmentDetails", "Department", new { id = model.DepartmentId });
-            }
-
-            TempData["Success"] = "Manager successfully assigned.";
-            return RedirectToAction("DepartmentDetails", "Department", new { id = model.DepartmentId });
-        }
-
-        
-
 		[HttpGet]
 		public async Task<IActionResult> ColleagueDetails(string userId)
 		{
@@ -165,8 +105,6 @@ namespace Workbit.App.Areas.Manager.Controllers
             {
 				return RedirectToAction("Error500", "Error");
 			}
-            
-			
 		}
 
 		[HttpGet]
@@ -189,7 +127,8 @@ namespace Workbit.App.Areas.Manager.Controllers
 			await employeeService.HireEmployeeAsync(model.SelectedUserId, model.SelectedJobId, model.Level);
 
 			TempData["Success"] = "Employee hired successfully!";
-			return RedirectToAction("Hire");
+
+			return RedirectToAction(nameof(Hire));
 		}
 	}
 }

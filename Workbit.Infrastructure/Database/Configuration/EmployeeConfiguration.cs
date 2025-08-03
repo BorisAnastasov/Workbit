@@ -2,13 +2,30 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Workbit.Infrastructure.Enumerations;
 using Workbit.Infrastructure.Database.Entities.Account;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Workbit.Infrastructure.Database.Configuration
 {
     public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     {
+        private readonly IDataProtector protector;
+
+        public EmployeeConfiguration(IDataProtector _protector)
+        {
+            protector = _protector;
+        }
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
+            var converter = new ValueConverter<string, string>(
+                plain => plain == null ? null! : protector.Protect(plain),
+                cipher => cipher == null ? null! : protector.Unprotect(cipher));
+
+            builder.Property(e => e.IBAN)
+                   .HasConversion(converter)
+                   .HasMaxLength(34)    // IBAN max length
+                   .IsRequired();
+
             builder.HasData(
                 new Employee
                 {

@@ -72,12 +72,16 @@
         .history-table tr:hover {
             background-color: #f1f8fa;
         }
+
+    .dataTables_filter{
+        margin-bottom: 1rem;
+    }
 </style>
 
 <div class="history-wrapper">
     <div class="history-header">
         <h2>Employee Payment History</h2>
-        <a asp-controller="Payment" asp-action="ManagerPaymentDashboard" class="btn-back">Back to Dashboard</a>
+        <a asp-area="Manager" asp-controller="Payment" asp-action="Dashboard" class="btn-back">Back to Dashboard</a>
     </div>
 
     <!-- Filters -->

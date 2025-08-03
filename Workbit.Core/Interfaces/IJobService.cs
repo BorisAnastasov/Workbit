@@ -4,15 +4,14 @@ namespace Workbit.Core.Interfaces
 {
     public interface IJobService
     {
-        Task CreateAsync(JobCreateDto dto);
+        //Create
+        Task CreateJobAsync(JobCreateViewModel model);
 
         // Read
         Task<IEnumerable<JobSummaryDto>> GetAllByCompanyIdAsync(int companyId);
         Task<IEnumerable<JobSummaryDto>> GetByDepartmentIdAsync(int departmentId);
         Task<JobReadDto> GetByIdAsync(int id);
-
-        // Update
-        Task UpdateAsync(JobUpdateDto dto);
+        Task<JobEditViewModel> GetJobEditModelAsync(int jobId);
 
         // Delete
         Task DeleteAsync(int id);
@@ -20,5 +19,6 @@ namespace Workbit.Core.Interfaces
         // Helpers
         Task<bool> HasEmployeesAsync(int jobId);
         Task<bool> ExistsByIdAsync(int id);
+        Task EditJobAsync(JobEditViewModel model);
     }
 }

@@ -10,17 +10,24 @@ namespace Workbit.App.Areas.Employee.Controllers
 
         public PaymentController(IPaymentService _paymentService)
         {
-            paymentService = _paymentService;
+            this.paymentService = _paymentService;
         }
 
         [HttpGet]
         public async Task<IActionResult> History(DateTime? startDate, DateTime? endDate)
         {
-            var employeeId = User.Id();
+            try
+            {
+                var payments = await paymentService.GetAllByEmployeeIdAsync(User.Id(), startDate, endDate);
 
-            var payments = await paymentService.GetAllByEmployeeIdAsync(employeeId, startDate, endDate);
+                return View(payments);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error500", "Error", new { area = "" });
+            }
 
-            return View(payments);
+            
         }
     }
 }

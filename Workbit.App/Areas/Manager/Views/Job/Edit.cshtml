@@ -1,4 +1,4 @@
-﻿@model JobUpdateDto
+﻿@model JobEditViewModel
 @{
     ViewData["Title"] = "Edit Job";
 }
@@ -82,7 +82,7 @@
     <div class="edit-card">
         <h2>Edit Job</h2>
 
-        <form asp-action="EditJob" method="post" class="row g-3">
+        <form asp-area="Manager" asp-controller="Job" asp-action="Edit" method="post" class="row g-3">
             <input type="hidden" asp-for="Id" />
 
             <div class="col-12">

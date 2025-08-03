@@ -1,6 +1,6 @@
 ﻿namespace Workbit.Core.Models.Payment
 {
-    public class PayEmployeeDto
+    public class PayEmployeeFormModel
     {
         public Guid ManagerId { get; set; }      // Manager processing the payment
         public Guid EmployeeId { get; set; }     // Employee receiving the payment

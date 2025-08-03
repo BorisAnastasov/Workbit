@@ -228,5 +228,14 @@ namespace Workbit.Core.Services
 
             return manager.DepartmentId == employee.Job!.DepartmentId;
         }
+
+        public async Task<bool> IsManagerOfJobAsync(string managerId, int jobId)
+        {
+            var manager = await repository.GetByIdAsync<Manager>(Guid.Parse(managerId));
+            var job = await repository.GetByIdAsync<Job>(jobId);
+
+            return manager.DepartmentId == job.DepartmentId;
+
+        }
     }
 }

@@ -23,7 +23,7 @@
         position: absolute;
         top: 2.5rem;
         right: 2rem;
-        background-color: var(--primary);
+        background-color: var(--secondary);
         color: #fff;
         font-weight: 700;
         padding: 0.6rem 1.4rem;
@@ -35,7 +35,7 @@
     }
 
         .btn-add-employee:hover {
-            background-color: var(--secondary);
+            background-color: var(--primary);
             transform: translateY(-2px);
             color: #fff;
         }
@@ -191,6 +191,7 @@
                                 <form asp-area="Manager" asp-controller="Employee" asp-action="Fire" method="post" style="display:inline;">
                                     <input type="hidden" name="employeeId" value="@employee.Id" />
                                     <button type="submit" class="btn action-btn btn-kick"
+                                            style="color:white;"
                                             onclick="return confirm('Are you sure you want to fire @employee.FullName?');">
                                         Fire
                                     </button>
@@ -217,7 +218,11 @@
                 order: [[0, "asc"]],
                 columnDefs: [
                     { orderable: false, targets: 1 }
-                ]
+                ],
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search employee..."
+                }
                 // searching: true // Default is true, so you can omit this line!
             });
         });

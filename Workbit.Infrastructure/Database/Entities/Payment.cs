@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Workbit.Infrastructure.Database.Entities.Account;
+using static Workbit.Common.DataConstants.Payment;
 
 namespace Workbit.Infrastructure.Database.Entities
 {
@@ -11,23 +12,22 @@ namespace Workbit.Infrastructure.Database.Entities
         public int Id { get; set; }
 
         [ForeignKey(nameof(Recipient))]
-        public Guid RecipientId { get; set; } 
+        public Guid RecipientId { get; set; }
         public virtual ApplicationUser Recipient { get; set; } = null!;
 
         [DataType(DataType.DateTime)]
         public DateTime PaymentDate { get; set; }
 
-		[Precision(18, 2)]
-		public decimal Salary { get; set; }
+        [Precision(DecimalPrecision, DecimalScale)]
+        public decimal Salary { get; set; }
 
-		[Precision(18, 2)]
-		public decimal Bonus { get; set; }
+        [Precision(DecimalPrecision, DecimalScale)]
+        public decimal Bonus { get; set; }
 
-		[Precision(18, 2)]
-		public decimal Taxes { get; set; }
+        [Precision(DecimalPrecision, DecimalScale)]
+        public decimal Taxes { get; set; }
 
-        public decimal NetPay => Salary + Bonus - Taxes;
-
+        [StringLength(NotesMaxLen)]
         public string? Notes { get; set; }
     }
 

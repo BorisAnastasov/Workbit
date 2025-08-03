@@ -1,0 +1,110 @@
+﻿@model Workbit.Core.Models.Employee.EmployeeEditViewModel
+
+<style>
+    /* ——— identical styling to Hire card ——— */
+    .hire-wrapper {
+        background-color: var(--background);
+        min-height: calc(100vh - 120px);
+        padding: 3rem 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        font-family: 'Nunito', sans-serif;
+    }
+
+    .hire-card {
+        background: #fff;
+        max-width: 600px;
+        width: 100%;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        padding: 2rem;
+        animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .hire-card h2 {
+        color: var(--primary);
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .form-label { font-weight: 700; color: var(--primary); }
+
+    select.form-select {
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        padding: 0.6rem;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    select.form-select:focus {
+        border-color: var(--secondary);
+        box-shadow: 0 0 6px rgba(55,183,195,0.5);
+    }
+
+    .btn-submit {
+        background-color: var(--primary);
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        padding: 0.8rem;
+        border-radius: 12px;
+        border: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .btn-submit:hover {
+        background-color: var(--secondary);
+        transform: translateY(-2px);
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="hire-wrapper">
+    <div class="hire-card">
+        <h2>Edit @Model.FullName Details</h2>
+
+        <form asp-area="Manager"
+              asp-controller="Employee"
+              asp-action="Edit"
+              method="post">
+
+            <!-- Hidden Employee ID -->
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Select Job (populated from Model.Jobs) -->
+            <div class="mb-3">
+                <label for="JobId" class="form-label">Select Job</label>
+                <select asp-for="JobId" class="form-select" required>
+                    <option value="">-- Choose a Job --</option>
+                    @foreach (var job in Model.Jobs ?? Enumerable.Empty<Workbit.Core.Models.Job.JobSummaryDto>())
+                    {
+                        <option value="@job.Id" selected="@(job.Id == Model.JobId)">
+                            @job.Title
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <!-- Select Level -->
+            <div class="mb-3">
+                <label for="Level" class="form-label">Select Level</label>
+                <select asp-for="Level" class="form-select" required>
+                    <option value="Junior" selected="@(Model.Level == "Junior")">Junior</option>
+                    <option value="Mid" selected="@(Model.Level == "Mid")">Mid</option>
+                    <option value="Senior" selected="@(Model.Level == "Senior")">Senior</option>
+                </select>
+            </div>
+
+            <!-- Save -->
+            <button type="submit" class="btn-submit">Save Changes</button>
+        </form>
+    </div>
+</div>
