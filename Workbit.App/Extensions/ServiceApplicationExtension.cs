@@ -11,21 +11,33 @@ using Workbit.Infrastructure.Database.Repository;
 namespace Workbit.App.Extensions
 {
     public static class ServiceApplicationExtension
-	{
-		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-		{
-			services.AddScoped<IAttendanceService, AttendanceService>();
-			services.AddScoped<ICeoService, CeoService>();
-			services.AddScoped<ICompanyService, CompanyService>();
-			services.AddScoped<IDepartmentService, DepartmentService>();
-			services.AddScoped<IEmployeeService, EmployeeService>();
-			services.AddScoped<IJobService, JobService>();
-			services.AddScoped<IManagerService, ManagerService>();
-			services.AddScoped<IPaymentService, PaymentService>();
-			services.AddScoped<IDepartmentBudgetService, DepartmentBudgetService>();
-			services.AddScoped<IAdminService, AdminService>();
-			services.AddScoped<ICountryService, CountryService>();
-			services.AddScoped<IUserService, UserService>();
+    {
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddScoped<IAttendanceService, AttendanceService>();
+            services.AddScoped<ICeoService, CeoService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IJobService, JobService>();
+            services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IDepartmentBudgetService, DepartmentBudgetService>();
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<IUserService, UserService>();
+
+            var connectionString = config.GetConnectionString("DefaultConnection");
+
+            services
+                .AddScoped<DataProtectionInterceptor>()
+                .AddDbContext<WorkbitDbContext>((sp, opts) =>
+                {
+                    opts
+                      .UseSqlServer(connectionString)
+                      .AddInterceptors(sp.GetRequiredService<DataProtectionInterceptor>());
+                });
+
 
             services.AddHttpClient<IApiNinjasService, ApiNinjasService>();
 
@@ -38,46 +50,46 @@ namespace Workbit.App.Extensions
             services.AddIbanNet();
 
             services.ConfigureApplicationCookie(options =>
-			{
-				options.Cookie.HttpOnly = true;
-				options.Cookie.SameSite = SameSiteMode.Lax;
-				options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Allow HTTP during development
-				options.ExpireTimeSpan = TimeSpan.FromHours(1);
-				options.LoginPath = "/User/Login";
-				options.LogoutPath = "/User/Logout";
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.Lax;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Allow HTTP during development
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                options.LoginPath = "/User/Login";
+                options.LogoutPath = "/User/Logout";
                 options.AccessDeniedPath = "/Error/Error403";
             });
 
-			return services;
-		}
-		public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
-		{
-			var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-			services.AddDbContext<WorkbitDbContext>((serviceProvider, options) =>
-			{
+            return services;
+        }
+        public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
+        {
+            var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            services.AddDbContext<WorkbitDbContext>((serviceProvider, options) =>
+            {
 
                 var dataProtectionProvider = serviceProvider.GetRequiredService<IDataProtectionProvider>();
                 options.UseSqlServer(connectionString);
-				options.UseLazyLoadingProxies()
-							  .UseSqlServer(connectionString);
-			});
+                options.UseLazyLoadingProxies()
+                              .UseSqlServer(connectionString);
+            });
 
-			services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IRepository, Repository>();
 
-			services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
-			return services;
-		}
-		public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration config)
-		{
-			services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
-			{
-				options.SignIn.RequireConfirmedAccount = false;
-			})
-			.AddEntityFrameworkStores<WorkbitDbContext>()
-			.AddDefaultTokenProviders();
+            return services;
+        }
+        public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+            })
+            .AddEntityFrameworkStores<WorkbitDbContext>()
+            .AddDefaultTokenProviders();
 
-			return services;
-		}
-	}
+            return services;
+        }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.ApiNinjas;
 using Workbit.Core.Models.Employee;
@@ -14,10 +15,12 @@ namespace Workbit.Core.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IRepository repository;
+        private readonly IDataProtector _protector;
 
-        public EmployeeService(IRepository _repository)
+        public EmployeeService(IRepository _repository, IDataProtectionProvider dpProvider)
         {
             repository = _repository;
+            _protector = dpProvider.CreateProtector("IBANProtector");
         }
 
         public async Task DeleteAsync(string id)

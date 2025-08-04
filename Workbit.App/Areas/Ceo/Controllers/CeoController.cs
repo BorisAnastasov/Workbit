@@ -5,7 +5,7 @@ using Workbit.Core.Models.Ceo;
 
 namespace Workbit.App.Areas.Ceo.Controllers
 {
-    public class CeoController : Base
+    public class CeoController : BaseController
     {
         private readonly IEmployeeService employeeService;
         private readonly IManagerService managerService;
@@ -30,10 +30,10 @@ namespace Workbit.App.Areas.Ceo.Controllers
             this.ceoService = ceoService;
         }
 
-        public async Task<IActionResult> Dashboard()
+        public async Task<IActionResult> Profile()
         {
             // Employees & Departments
-            var employees = await employeeService.GetAllByCeoIdAsync();
+            var employees = await employeeService.GetAllByCeoIdAsync(User.Id());
             var managers = await managerService.GetAllAsync();
             var departments = await departmentService.GetAllAsync();
 

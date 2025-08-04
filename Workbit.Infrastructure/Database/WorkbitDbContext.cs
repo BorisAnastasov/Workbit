@@ -9,20 +9,28 @@ using Workbit.Infrastructure.Extensions;
 
 namespace Workbit.Infrastructure.Database
 {
-	public class WorkbitDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+    public class WorkbitDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
-        private readonly IDataProtector protector;
-        public WorkbitDbContext(DbContextOptions<WorkbitDbContext> options,
-                                        IDataProtectionProvider dataProtectionProvider)
-            : base(options)
+        private readonly IDataProtector employeeProtector;
+        private readonly IDataProtector managerProtector;
+        public WorkbitDbContext(
+        DbContextOptions<WorkbitDbContext> opts,
+        IDataProtectionProvider dpProvider)
+      : base(opts)
         {
-            this.ChangeTracker.LazyLoadingEnabled = true;
+            var provider = dpProvider ?? DataProtectionProvider.Create("Workbit");
+            employeeProtector = provider.CreateProtector("Employee.IBAN");
+            managerProtector = provider.CreateProtector("Manager.IBAN");
 
-            var provider = dataProtectionProvider
-                   ?? DataProtectionProvider.Create("Workbit");
+            ChangeTracker.LazyLoadingEnabled = true;
 
-            protector = provider.CreateProtector("Employee.IBAN");
-            protector = provider.CreateProtector("Manager.IBAN");
+            ChangeTracker.Tracked += (sender, e) =>
+            {
+                if (e.Entry.Entity is Employee emp && e.FromQuery)
+                    emp.SetProtector(employeeProtector);
+                if (e.Entry.Entity is Manager mgr && e.FromQuery)
+                    mgr.SetProtector(managerProtector);
+            };
         }
         public virtual DbSet<Department> Departments { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
@@ -39,6 +47,9 @@ namespace Workbit.Infrastructure.Database
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Employee>()
+                .Ignore(e => e.IBAN);
+
             builder.ConfigureDeleteBehaviourEntities();
 
             builder.ApplyConfiguration(new CountryConfiguration());
@@ -47,9 +58,9 @@ namespace Workbit.Infrastructure.Database
             builder.ApplyConfiguration(new CeoConfiguration());
             builder.ApplyConfiguration(new DepartmentConfiguration());
             builder.ApplyConfiguration(new DepartmentBudgetConfiguration());
-            builder.ApplyConfiguration(new ManagerConfiguration(protector));
+            builder.ApplyConfiguration(new ManagerConfiguration(managerProtector));
             builder.ApplyConfiguration(new JobConfiguration());
-            builder.ApplyConfiguration(new EmployeeConfiguration(protector));
+            builder.ApplyConfiguration(new EmployeeConfiguration(employeeProtector));
             builder.ApplyConfiguration(new PaymentConfiguration());
             builder.ApplyConfiguration(new AttendanceConfiguration());
 

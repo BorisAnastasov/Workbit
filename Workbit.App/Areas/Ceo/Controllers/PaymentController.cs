@@ -57,7 +57,7 @@ namespace Workbit.App.Areas.Ceo.Controllers
             if (payed == true || errorPaying == true || allocated == true || allocError == true)
             {
                 // Redirect to the same page without any query params
-                return RedirectToAction(nameof(PaymentDashboard));
+                return RedirectToAction(nameof(Dashboard));
             }
 
             return View(model);

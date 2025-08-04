@@ -10,6 +10,7 @@
 	<ItemGroup>
 		<PackageReference Include="IbanNet" Version="5.18.0" />
 		<PackageReference Include="IbanNet.DependencyInjection.ServiceProvider" Version="5.18.0" />
+		<PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="8.0.18" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.18" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.18" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.18" />

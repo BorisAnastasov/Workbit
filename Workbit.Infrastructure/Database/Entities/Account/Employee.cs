@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.DataProtection;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Workbit.Infrastructure.Attributes;
 using Workbit.Infrastructure.Enumerations;
@@ -8,6 +9,14 @@ namespace Workbit.Infrastructure.Database.Entities.Account
 {
     public class Employee
     {
+        [NotMapped]
+        private IDataProtector? protector;
+
+        public void SetProtector(IDataProtector protector)
+        {
+            this.protector = protector;
+        }
+
         [Key, ForeignKey(nameof(ApplicationUser))]
         public Guid ApplicationUserId { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; } = null!;
@@ -23,8 +32,24 @@ namespace Workbit.Infrastructure.Database.Entities.Account
         public string? CountryCode { get; set; }
         public virtual Country Country { get; set; }
 
+        public string EncryptedIBAN { get; set; } = null!;
+
         [ValidIban]
-        public string IBAN { get; set; } = null!;
+        [NotMapped]
+        public string IBAN
+        {
+            get => protector == null
+                ? throw new InvalidOperationException("Protector not set.")
+                : string.IsNullOrEmpty(EncryptedIBAN) ? "" : protector.Unprotect(EncryptedIBAN);
+
+            set
+            {
+                if (protector == null)
+                    throw new InvalidOperationException("Protector not set.");
+
+                EncryptedIBAN = string.IsNullOrEmpty(value) ? "" : protector.Protect(value);
+            }
+        }
 
         [NotMapped]
         public decimal EffectiveSalary =>
