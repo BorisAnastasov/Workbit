@@ -17,7 +17,12 @@ namespace Workbit.Infrastructure.Database
             : base(options)
         {
             this.ChangeTracker.LazyLoadingEnabled = true;
-            protector = dataProtectionProvider.CreateProtector("Employee.IBAN");
+
+            var provider = dataProtectionProvider
+                   ?? DataProtectionProvider.Create("Workbit");
+
+            protector = provider.CreateProtector("Employee.IBAN");
+            protector = provider.CreateProtector("Manager.IBAN");
         }
         public virtual DbSet<Department> Departments { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
@@ -42,9 +47,9 @@ namespace Workbit.Infrastructure.Database
             builder.ApplyConfiguration(new CeoConfiguration());
             builder.ApplyConfiguration(new DepartmentConfiguration());
             builder.ApplyConfiguration(new DepartmentBudgetConfiguration());
-            builder.ApplyConfiguration(new ManagerConfiguration());
+            builder.ApplyConfiguration(new ManagerConfiguration(protector));
             builder.ApplyConfiguration(new JobConfiguration());
-            builder.ApplyConfiguration(new EmployeeConfiguration());
+            builder.ApplyConfiguration(new EmployeeConfiguration(protector));
             builder.ApplyConfiguration(new PaymentConfiguration());
             builder.ApplyConfiguration(new AttendanceConfiguration());
 

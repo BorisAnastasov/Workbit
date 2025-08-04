@@ -5,7 +5,7 @@ namespace Workbit.Core.Interfaces
     public interface IDepartmentService
     {
         // Create
-        Task CreateAsync(DepartmentCreateDto dto);
+        Task CreateAsync(DepartmentCreateFormModel dto);
 
         // Read
         Task<IEnumerable<DepartmentSummaryDto>> GetAllAsync();

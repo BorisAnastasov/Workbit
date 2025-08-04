@@ -7,9 +7,9 @@ namespace Workbit.Core.Interfaces
     public interface IEmployeeService
     {
         // Read
-        Task<IEnumerable<EmployeeSummaryDto>> GetAllAsync();
-        Task<IEnumerable<EmployeeSummaryDto>> GetByDepartmentIdAsync(int departmentId);
-        Task<EmployeeReadDto> GetByIdAsync(string userId);
+        Task<IEnumerable<EmployeeSummaryModel>> GetAllByCeoIdAsync(string ceoId);
+        Task<IEnumerable<EmployeeSummaryModel>> GetByDepartmentIdAsync(int departmentId);
+        Task<EmployeeViewModel> GetByIdAsync(string userId);
         Task<EmployeeProfileViewModel> GetProfileAsync(string employeeId, WorkingDaysApi response, int? month = null);
         Task<string> GetCountryCodeByEmployeeIdAsync(string userId);
         Task<EmployeeEditViewModel> GetEditModelByIdAsync(string userId);
@@ -20,7 +20,7 @@ namespace Workbit.Core.Interfaces
         // Helpers
         Task<bool> ExistsByIdAsync(string userId);
         Task<bool> HasJobAsync(string userId);
-		Task<List<EmployeeSummaryDto>> GetUnemployedUsersAsync();
+		Task<List<EmployeeSummaryModel>> GetUnemployedUsersAsync();
 		Task<List<JobSummaryDto>> GetJobsForManagerAsync(string managerId);
 		Task HireEmployeeAsync(string userId, int jobId, string level);
         Task LeaveJobAsync(string userId);

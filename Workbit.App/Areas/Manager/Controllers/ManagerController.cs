@@ -28,8 +28,8 @@ namespace Workbit.App.Areas.Manager.Controllers
 			{
                 if (!await managerService.ExistsByIdAsync(User.Id())) 
                 {
-					return RedirectToAction("Error404", "Error");
-				}
+					return RedirectToAction("Error404", "Error", new { area = "" });
+                }
 
                 if (!await managerService.HasDepartmentByManagerIdAsync(User.Id())) 
                 {
@@ -42,7 +42,7 @@ namespace Workbit.App.Areas.Manager.Controllers
 			}
 			catch (Exception)
 			{
-				return RedirectToAction("Error500", "Error");
+				return RedirectToAction("Error500", "Error", new { area="" });
 			}
 		}
 

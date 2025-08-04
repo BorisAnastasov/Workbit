@@ -95,7 +95,8 @@
 
 <section class="dashboard">
     <!-- Delete Company Button -->
-    <form asp-controller="Company" asp-action="DeleteCompany" asp-route-id="@Model.CopmanyId" method="post">
+
+    <form asp-area="Ceo" asp-controller="Company" asp-action="Delete" asp-route-id="@Model.CopmanyId" method="post">
         <button type="submit" class="delete-company-btn"
                 onclick="return confirm('Are you sure you want to permanently delete this company? This will also delete all departments, jobs, and budgets, and unassign managers and employees. This action cannot be undone.');">
             Delete Company

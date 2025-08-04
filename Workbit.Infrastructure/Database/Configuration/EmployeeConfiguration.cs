@@ -23,7 +23,7 @@ namespace Workbit.Infrastructure.Database.Configuration
 
             builder.Property(e => e.IBAN)
                    .HasConversion(converter)
-                   .HasMaxLength(34)    // IBAN max length
+                   .HasColumnType("nvarchar(max)")
                    .IsRequired();
 
             builder.HasData(

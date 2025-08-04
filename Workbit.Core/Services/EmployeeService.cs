@@ -35,25 +35,28 @@ namespace Workbit.Core.Services
             return employee != null;
         }
 
-        public async Task<IEnumerable<EmployeeSummaryDto>> GetAllAsync()
+        public async Task<IEnumerable<EmployeeSummaryModel>> GetAllByCeoIdAsync(string ceoId)
         {
-            var employees = await repository.AllReadOnly<Employee>()
-                .Select(e => new EmployeeSummaryDto
-                {
-                    Id = e.ApplicationUserId.ToString(),
-                    FullName = e.ApplicationUser.FullName
-                })
-                .ToListAsync();
+            var company = await repository.AllReadOnly<Company>()
+                                            .FirstAsync(c => c.CeoId == Guid.Parse(ceoId));
+
+            var employees = company.Departments
+                                            .SelectMany(d => d.Jobs.SelectMany(j => j.Employees))
+                                            .Select(e => new EmployeeSummaryModel
+                                            {
+                                                Id = e.ApplicationUserId.ToString(),
+                                                FullName = e.ApplicationUser.FullName
+                                            }).ToList();
 
             return employees;
         }
 
 
-        public async Task<IEnumerable<EmployeeSummaryDto>> GetByDepartmentIdAsync(int departmentId)
+        public async Task<IEnumerable<EmployeeSummaryModel>> GetByDepartmentIdAsync(int departmentId)
         {
             var employees = await repository.AllReadOnly<Employee>()
                 .Where(e => e.Job.DepartmentId == departmentId)
-                .Select(e => new EmployeeSummaryDto
+                .Select(e => new EmployeeSummaryModel
                 {
                     Id = e.ApplicationUserId.ToString(),
                     FullName = e.ApplicationUser.FullName,
@@ -63,11 +66,11 @@ namespace Workbit.Core.Services
             return employees;
         }
 
-        public async Task<EmployeeReadDto> GetByIdAsync(string id)
+        public async Task<EmployeeViewModel> GetByIdAsync(string id)
         {
             var employee = await repository.GetByIdAsync<Employee>(Guid.Parse(id));
 
-            return new EmployeeReadDto
+            return new EmployeeViewModel
             {
                 Id = employee.ApplicationUserId.ToString(),
                 FullName = employee.ApplicationUser.FullName,
@@ -208,11 +211,11 @@ namespace Workbit.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<List<EmployeeSummaryDto>> GetUnemployedUsersAsync()
+        public async Task<List<EmployeeSummaryModel>> GetUnemployedUsersAsync()
         {
             return await repository.AllReadOnly<Employee>()
                 .Where(e => e.Job == null)
-                .Select(e => new EmployeeSummaryDto
+                .Select(e => new EmployeeSummaryModel
                 {
                     Id = e.ApplicationUserId.ToString(),
                     FullName = e.ApplicationUser.FullName

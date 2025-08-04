@@ -1,13 +1,30 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Workbit.Infrastructure.Database.Entities.Account;
 
 namespace Workbit.Infrastructure.Database.Configuration
 {
     public class ManagerConfiguration : IEntityTypeConfiguration<Manager>
     {
+        private readonly IDataProtector protector;
+
+        public ManagerConfiguration(IDataProtector _protector)
+        {
+            protector = _protector;
+        }
         public void Configure(EntityTypeBuilder<Manager> builder)
         {
+            var converter = new ValueConverter<string, string>(
+                    plain => plain == null ? null! : protector.Protect(plain),
+                    cipher => cipher == null ? null! : protector.Unprotect(cipher));
+
+            builder.Property(e => e.IBAN)
+                                .HasConversion(converter)
+                                .HasColumnType("nvarchar(max)")
+                                .IsRequired();
+
             builder.HasData(
     // UK Managers
     new Manager

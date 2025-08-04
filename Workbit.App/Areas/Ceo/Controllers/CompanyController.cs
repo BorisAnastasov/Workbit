@@ -3,9 +3,9 @@ using Workbit.App.Extensions;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Company;
 
-namespace Workbit.App.Controllers
+namespace Workbit.App.Areas.Ceo.Controllers
 {
-    public class CompanyController : Controller
+    public class CompanyController : BaseController
     {
         private readonly ICompanyService companyService;
 
@@ -15,7 +15,7 @@ namespace Workbit.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteCompany(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace Workbit.App.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateCompany()
+        public IActionResult Create()
         {
             var model = new CompanyCreateDto
             {
@@ -46,7 +46,7 @@ namespace Workbit.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCompany(CompanyCreateDto model)
+        public async Task<IActionResult> Create(CompanyCreateDto model)
         {
             try
             {

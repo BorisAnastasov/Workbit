@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.DataProtection;
 using Workbit.App.Extensions;
 
 namespace Workbit.App
@@ -8,7 +9,9 @@ namespace Workbit.App
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			builder.Services.AddApplicationDbContext(builder.Configuration);
+            builder.Services.AddDataProtection().SetApplicationName("Workbit");
+
+            builder.Services.AddApplicationDbContext(builder.Configuration);
 
 			builder.Services.AddApplicationIdentity(builder.Configuration);
 

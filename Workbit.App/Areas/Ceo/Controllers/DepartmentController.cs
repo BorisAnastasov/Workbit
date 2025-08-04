@@ -3,10 +3,10 @@ using Workbit.App.Extensions;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Department;
 
-namespace Workbit.App.Controllers
+namespace Workbit.App.Areas.Ceo.Controllers
 {
-	public class DepartmentController : Controller
-	{
+    public class DepartmentController : BaseController
+    {
         private readonly IDepartmentService departmentService;
         private readonly ICeoService ceoService;  // Assuming you need company info
 
@@ -16,28 +16,28 @@ namespace Workbit.App.Controllers
             ceoService = _ceoService;
         }
 
-        public async Task<IActionResult> AllDepartments()
-		{
-			var departments = await departmentService.GetAllByCeoIdAsync(User.Id());
-			return View(departments);
-		}
-
-		[HttpGet]
-		public async Task<IActionResult> DepartmentDetails(int id)
-		{
-			var department = await departmentService.GetByIdAsync(id); // Should return DepartmentReadDto
-
-			return View(department);
-		}
+        public async Task<IActionResult> All()
+        {
+            var departments = await departmentService.GetAllByCeoIdAsync(User.Id());
+            return View(departments);
+        }
 
         [HttpGet]
-        public async Task<IActionResult> CreateDepartment()
+        public async Task<IActionResult> Details(int id)
+        {
+            var department = await departmentService.GetByIdAsync(id); // Should return DepartmentReadDto
+
+            return View(department);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
             try
             {
                 var ceo = await ceoService.GetByUserIdAsync(User.Id());
 
-                var model = new DepartmentCreateDto
+                var model = new DepartmentCreateFormModel
                 {
                     CompanyId = ceo.CompanyId!.Value
                 };
@@ -51,7 +51,7 @@ namespace Workbit.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateDepartment(DepartmentCreateDto model)
+        public async Task<IActionResult> Create(DepartmentCreateFormModel model)
         {
             try
             {
@@ -74,13 +74,13 @@ namespace Workbit.App.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteDepartment(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 await departmentService.DeleteDepartmentAsync(id);
 
-                return RedirectToAction(nameof(AllDepartments));
+                return RedirectToAction(nameof(All));
             }
             catch (Exception)
             {

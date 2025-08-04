@@ -106,7 +106,7 @@
 <div class="departments-wrapper">
     <div class="departments-header">
         <h2 class="departments-title">Company Departments</h2>
-        <a asp-controller="Department" asp-action="CreateDepartment" class="create-btn">+ Create Department</a>
+        <a asp-area="Ceo" asp-controller="Department" asp-action="Create" class="create-btn">+ Create Department</a>
     </div>
 
     <div class="departments-grid">
@@ -115,7 +115,7 @@
             <div class="department-card">
                 <i class="fa-solid fa-building"></i>
                 <h3>@dept.Name</h3>
-                <a asp-controller="Department" asp-action="DepartmentDetails" asp-route-id="@dept.Id">
+                <a asp-area="Ceo" asp-controller="Department" asp-action="Details" asp-route-id="@dept.Id">
                     View Details
                 </a>
             </div>

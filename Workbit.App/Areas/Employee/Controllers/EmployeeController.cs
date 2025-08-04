@@ -22,7 +22,7 @@ namespace Workbit.App.Areas.Employee.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile(int? month)
         {
-            try
+            //try
             {
                 var userId = User.Id();
 
@@ -53,7 +53,7 @@ namespace Workbit.App.Areas.Employee.Controllers
 
 				return View(profile);
             }
-            catch (Exception)
+            //catch (Exception)
             {
                 return RedirectToAction("Error500", "Error", new { area = "" });
             }

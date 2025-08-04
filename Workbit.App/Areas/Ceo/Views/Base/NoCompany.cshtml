@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "No Company Assigned";
+}
+
+<style>
+    .nocompany-wrapper {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--background);
+    }
+
+    .nocompany-card {
+        background: #fff;
+        padding: 40px 36px 30px 36px;
+        border-radius: 22px;
+        box-shadow: 0 6px 28px rgba(8,131,149,0.11);
+        text-align: center;
+        max-width: 420px;
+        border: 2px solid var(--secondary);
+        margin: 0 auto;
+    }
+
+        .nocompany-card h2 {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .nocompany-card p {
+            color: var(--third);
+            font-size: 1.13rem;
+            margin-bottom: 0;
+        }
+
+    .nocompany-icon {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+        color: var(--secondary);
+    }
+</style>
+
+<div class="nocompany-wrapper">
+    <div class="nocompany-card">
+        <div class="nocompany-icon">
+            <i class="fa-regular fa-building"></i>
+        </div>
+        <h2>No Company Assigned</h2>
+        <p>
+            You currently do not have a company linked to your account.<br />
+            Please create a company or contact the system administrator for assistance.
+        </p>
+    </div>
+</div>

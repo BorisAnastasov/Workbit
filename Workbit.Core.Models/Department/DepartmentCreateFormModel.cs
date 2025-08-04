@@ -4,7 +4,7 @@ using static Workbit.Common.DataConstants.Department;
 
 namespace Workbit.Core.Models.Department
 {
-    public class DepartmentCreateDto
+    public class DepartmentCreateFormModel
     {
         [Required(ErrorMessage = RequiredMessage)]
         [StringLength(NameMaxLen, MinimumLength = NameMinLen, ErrorMessage = LengthMessage)]

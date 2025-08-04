@@ -8,7 +8,7 @@ namespace Workbit.Core.Models.Employee
 		public int SelectedJobId { get; set; }
 		public string Level { get; set; } = "Junior";
 
-		public List<EmployeeSummaryDto> AvailableUsers { get; set; } = new();
+		public List<EmployeeSummaryModel> AvailableUsers { get; set; } = new();
 		public List<JobSummaryDto> AvailableJobs { get; set; } = new();
 	}
 }

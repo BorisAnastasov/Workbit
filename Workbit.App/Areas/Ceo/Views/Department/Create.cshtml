@@ -88,7 +88,7 @@
             <div class="alert alert-danger">@TempData["Error"]</div>
         }
 
-        <form asp-action="CreateDepartment" method="post">
+        <form asp-area="Ceo" asp-controller="Department" asp-action="Create" method="post">
             <input type="hidden" asp-for="CompanyId" />
 
             <div class="mb-3">

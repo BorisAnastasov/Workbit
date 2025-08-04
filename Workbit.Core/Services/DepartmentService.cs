@@ -17,7 +17,7 @@ namespace Workbit.Core.Services
             repository = _repository;
         }
 
-        public async Task CreateAsync(DepartmentCreateDto dto)
+        public async Task CreateAsync(DepartmentCreateFormModel dto)
         {
             var department = new Department()
             {

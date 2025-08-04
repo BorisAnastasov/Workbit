@@ -142,16 +142,16 @@
 						@if (User.IsCeo())
 						{
 							<li class="nav-item">
-								<a class="nav-link @Html.IsActive("Dashboard", "Ceo")" asp-controller="Ceo" asp-action="Dashboard">Dashboard</a>
+								<a class="nav-link @Html.IsActive("Profile", "Ceo")" asp-area="Ceo" asp-controller="Ceo" asp-action="Peofile">Dashboard</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @Html.IsActive("AllDepartments", "Department")" asp-controller="Department" asp-action="AllDepartments">Departments</a>
+								<a class="nav-link @Html.IsActive("All", "Department")" asp-area="Ceo" asp-controller="Department" asp-action="All">Departments</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @Html.IsActive("AttendanceLog", "Attendance")" asp-controller="Attendance" asp-action="AttendanceLog">Attendance</a>
+								<a class="nav-link @Html.IsActive("AttendanceLog", "Attendance")" asp-area="Ceo" asp-controller="Attendance" asp-action="AttendanceLog">Attendance</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @Html.IsActive("PaymentDashboard", "Payment")" asp-controller="Payment" asp-action="PaymentDashboard">Payment</a>
+								<a class="nav-link @Html.IsActive("Dashboard", "Payment")" asp-area="Ceo" asp-controller="Payment" asp-action="Dashboard">Payment</a>
 							</li>
 						}
 						@if (User.IsManager())
@@ -169,7 +169,6 @@
 								<a class="nav-link @Html.IsActive("Dashboard", "Payment")" asp-area="Manager" asp-controller="Payment" asp-action="Dashboard">Payment</a>
 							</li>	
 						}
-
 						@if(User.IsEmployee())
 						{
 							<li class="nav-item">

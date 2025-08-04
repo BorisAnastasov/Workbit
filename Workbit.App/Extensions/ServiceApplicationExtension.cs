@@ -1,16 +1,16 @@
-﻿using Workbit.Infrastructure.Database.Repository;
+﻿using IbanNet.DependencyInjection.ServiceProvider;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Services;
 using Workbit.Infrastructure.Database;
 using Workbit.Infrastructure.Database.Entities.Account;
-using IbanNet.DependencyInjection.ServiceProvider;
-using Microsoft.AspNetCore.DataProtection;
+using Workbit.Infrastructure.Database.Repository;
 
 namespace Workbit.App.Extensions
 {
-	public static class ServiceApplicationExtension
+    public static class ServiceApplicationExtension
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
@@ -26,8 +26,6 @@ namespace Workbit.App.Extensions
 			services.AddScoped<IAdminService, AdminService>();
 			services.AddScoped<ICountryService, CountryService>();
 			services.AddScoped<IUserService, UserService>();
-
-            services.AddDataProtection().SetApplicationName("Workbit");
 
             services.AddHttpClient<IApiNinjasService, ApiNinjasService>();
 
@@ -55,9 +53,11 @@ namespace Workbit.App.Extensions
 		public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
 		{
 			var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-			services.AddDbContext<WorkbitDbContext>(options =>
+			services.AddDbContext<WorkbitDbContext>((serviceProvider, options) =>
 			{
-				options.UseSqlServer(connectionString);
+
+                var dataProtectionProvider = serviceProvider.GetRequiredService<IDataProtectionProvider>();
+                options.UseSqlServer(connectionString);
 				options.UseLazyLoadingProxies()
 							  .UseSqlServer(connectionString);
 			});

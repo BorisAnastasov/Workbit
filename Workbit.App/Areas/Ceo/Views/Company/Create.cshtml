@@ -49,7 +49,7 @@
 
 <div class="create-company-wrapper">
     <h2>Create Company</h2>
-    <form asp-action="CreateCompany" method="post">
+    <form asp-area="Ceo" asp-controller="Company" asp-action="Create" method="post">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="CeoId" />
 
