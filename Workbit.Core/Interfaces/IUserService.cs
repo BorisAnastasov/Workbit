@@ -14,7 +14,7 @@ namespace Workbit.Core.Interfaces
         Task<ApplicationUser?> FindUserByEmailAsync(string email);
         Task<bool> LoginAsync(ApplicationUser user, string password);
 
-        Task<IEnumerable<CountrySummaryDto>> GetCountries();
+        Task<IEnumerable<CountrySummaryModel>> GetCountries();
         
     }
 }

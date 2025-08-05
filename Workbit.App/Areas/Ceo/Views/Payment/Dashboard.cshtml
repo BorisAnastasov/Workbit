@@ -99,7 +99,7 @@
 <div class="payments-wrapper">
     <div class="header-row">
         <h2>Payments Dashboard</h2>
-        <a asp-route-id="@Model.CeoId" asp-controller="Payment" asp-action="History" class="btn-history">
+        <a asp-area="Ceo" asp-controller="Payment" asp-action="History" class="btn-history">
             View History
         </a>
     </div>
@@ -152,7 +152,7 @@
     <!-- Allocate Department Budget Section -->
     <div class="section-card">
         <h3>Allocate Department Budget</h3>
-        <form asp-controller="DepartmentBudget" asp-action="AllocateDepartmentBudget" method="post" class="row g-4">
+        <form asp-area="Ceo" asp-controller="DepartmentBudget" asp-action="AllocateDepartmentBudget" method="post" class="row g-4">
             <div class="col-md-6">
                 <label for="DepartmentId">Select Department</label>
                 <select name="DepartmentId" class="form-select" required>

@@ -17,13 +17,12 @@ namespace Workbit.Infrastructure.Database.Configuration
         public void Configure(EntityTypeBuilder<Manager> builder)
         {
             builder
-            .Property(m => m.EncryptedIBAN)
-            .HasColumnName("IBAN")             // if you want to keep the "IBAN" column name
-            .HasColumnType("nvarchar(max)")
-            .IsRequired();
+                .Property(e => e.EncryptedIBAN)
+                .HasColumnType("nvarchar(max)")
+                .IsRequired();
 
-            // 2) Tell EF to ignore your NotMapped wrapper
-            builder.Ignore(m => m.IBAN);
+            // 2) Ignore your NotMapped wrapper
+            builder.Ignore(e => e.IBAN);
 
             builder.HasData(
     // UK Managers

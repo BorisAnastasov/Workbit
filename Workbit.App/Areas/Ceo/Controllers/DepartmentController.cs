@@ -8,7 +8,7 @@ namespace Workbit.App.Areas.Ceo.Controllers
     public class DepartmentController : BaseController
     {
         private readonly IDepartmentService departmentService;
-        private readonly ICeoService ceoService;  // Assuming you need company info
+        private readonly ICeoService ceoService;
 
         public DepartmentController(IDepartmentService _departmentService, ICeoService _ceoService)
         {
@@ -18,16 +18,39 @@ namespace Workbit.App.Areas.Ceo.Controllers
 
         public async Task<IActionResult> All()
         {
-            var departments = await departmentService.GetAllByCeoIdAsync(User.Id());
-            return View(departments);
+            try
+            {
+                if (!await ceoService.HasCompanyByIdAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(NoCompany), "Base", new { area = "Ceo" });
+                }
+                var departments = await departmentService.GetAllByCeoIdAsync(User.Id());
+                return View(departments);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error500", "Error", new { area = "" });
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var department = await departmentService.GetByIdAsync(id); // Should return DepartmentReadDto
+            try
+            {
+                if (!await ceoService.HasCompanyByIdAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(NoCompany), "Base", new { area = "Ceo" });
+                }
+                var department = await departmentService.GetByIdAsync(id);
 
-            return View(department);
+                return View(department);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error500", "Error", new { area = "" });
+            }
+            
         }
 
         [HttpGet]
@@ -35,6 +58,11 @@ namespace Workbit.App.Areas.Ceo.Controllers
         {
             try
             {
+                if (!await ceoService.HasCompanyByIdAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(NoCompany), "Base", new { area = "Ceo" });
+                }
+
                 var ceo = await ceoService.GetByUserIdAsync(User.Id());
 
                 var model = new DepartmentCreateFormModel
@@ -46,7 +74,7 @@ namespace Workbit.App.Areas.Ceo.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Error500", "Error");
+                return RedirectToAction("Error500", "Error", new { area = "" });
             }
         }
 
@@ -55,6 +83,11 @@ namespace Workbit.App.Areas.Ceo.Controllers
         {
             try
             {
+                if (!await ceoService.HasCompanyByIdAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(NoCompany), "Base", new { area = "Ceo" });
+                }
+
                 if (!ModelState.IsValid)
                 {
                     return View(model);
@@ -62,13 +95,11 @@ namespace Workbit.App.Areas.Ceo.Controllers
 
                 await departmentService.CreateAsync(model);
 
-                TempData["Success"] = "Department created successfully!";
-                return RedirectToAction("AllDepartments");
+                return RedirectToAction(nameof(All), new {area="Ceo"});
             }
             catch (Exception)
             {
-                TempData["Error"] = $"Failed to create department!";
-                return View(model);
+                return RedirectToAction("Error500", "Error", new { area = "" });
             }
         }
 
@@ -78,13 +109,17 @@ namespace Workbit.App.Areas.Ceo.Controllers
         {
             try
             {
+                if (!await ceoService.HasCompanyByIdAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(NoCompany), "Base", new { area = "Ceo" });
+                }
                 await departmentService.DeleteDepartmentAsync(id);
 
                 return RedirectToAction(nameof(All));
             }
             catch (Exception)
             {
-                return RedirectToAction("Error500", "Error");
+                return RedirectToAction("Error500", "Error", new { area = "" });
             }
         }
     }

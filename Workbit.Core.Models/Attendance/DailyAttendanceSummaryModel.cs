@@ -1,6 +1,6 @@
 ﻿namespace Workbit.Core.Models.Attendance
 {
-    public class DailyAttendanceSummaryDto
+    public class DailyAttendanceSummaryModel
     {
         public DateTime Date { get; set; }
         public TimeSpan? FirstCheckIn { get; set; }

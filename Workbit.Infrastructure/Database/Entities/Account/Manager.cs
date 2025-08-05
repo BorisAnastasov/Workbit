@@ -8,13 +8,10 @@ namespace Workbit.Infrastructure.Database.Entities.Account
 {
     public class Manager
     {
-        // 1) EF Core needs a parameterless ctor
-        public Manager() { }
-
-        // 2) This gets set by our interceptor or ChangeTracker hook
-        private IDataProtector? _protector;
+        [NotMapped]
+        private IDataProtector? protector;
         public void SetProtector(IDataProtector protector)
-            => _protector = protector;
+            => this.protector = protector;
 
         [Key]
         public Guid ApplicationUserId { get; set; }
@@ -32,21 +29,16 @@ namespace Workbit.Infrastructure.Database.Entities.Account
         [NotMapped]
         public string IBAN
         {
-            get
-            {
-                if (_protector == null)
-                    throw new InvalidOperationException("Protector not set.");
-                return string.IsNullOrEmpty(EncryptedIBAN)
-                    ? ""
-                    : _protector.Unprotect(EncryptedIBAN);
-            }
+            get => protector == null
+                ? throw new InvalidOperationException("Protector not set.")
+                : string.IsNullOrEmpty(EncryptedIBAN) ? "" : protector.Unprotect(EncryptedIBAN);
+
             set
             {
-                if (_protector == null)
+                if (protector == null)
                     throw new InvalidOperationException("Protector not set.");
-                EncryptedIBAN = string.IsNullOrEmpty(value)
-                    ? ""
-                    : _protector.Protect(value);
+
+                EncryptedIBAN = string.IsNullOrEmpty(value) ? "" : protector.Protect(value);
             }
         }
     }

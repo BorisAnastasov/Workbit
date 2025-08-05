@@ -18,7 +18,6 @@ namespace Workbit.Infrastructure.Database.Configuration
         {
             builder
                 .Property(e => e.EncryptedIBAN)
-                .HasColumnName("IBAN")      // keeps the database column named "IBAN"
                 .HasColumnType("nvarchar(max)")
                 .IsRequired();
 

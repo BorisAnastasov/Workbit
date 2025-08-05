@@ -86,7 +86,7 @@
 
     <!-- Filters -->
     <div class="filter-card">
-        <form method="get" asp-action="HistoryForManager" class="row g-3 align-items-end">
+        <form asp-area="Manager" asp-controller="Payment" asp-action="History" method="get" class="row g-3 align-items-end">
             <div class="col-md-4">
                 <label class="form-label fw-bold">Start Date</label>
                 <input type="date" name="startDate" class="form-control" value="@ViewBag.StartDate" />

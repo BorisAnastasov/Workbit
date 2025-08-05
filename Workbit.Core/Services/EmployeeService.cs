@@ -156,6 +156,7 @@ namespace Workbit.Core.Services
                 EmployeeId = user.Id.ToString(),
                 FullName = user.FullName,
                 Email = user.Email ?? string.Empty,
+                IBAN = employee.IBAN,
                 DepartmentName = department?.Name ?? "--",
                 JobTitle = job?.Title ?? "--",
                 Level = employee.Level.ToString(),

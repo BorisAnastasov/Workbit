@@ -24,7 +24,7 @@ namespace Workbit.App.Areas.Manager.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Profile()
 		{
-			try
+			//try
 			{
                 if (!await managerService.ExistsByIdAsync(User.Id())) 
                 {
@@ -40,7 +40,7 @@ namespace Workbit.App.Areas.Manager.Controllers
 
 				return View(profile);
 			}
-			catch (Exception)
+			//catch (Exception)
 			{
 				return RedirectToAction("Error500", "Error", new { area="" });
 			}

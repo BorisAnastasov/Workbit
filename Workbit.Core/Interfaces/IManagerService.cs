@@ -5,7 +5,7 @@ namespace Workbit.Core.Interfaces
     public interface IManagerService
     {
         // Read
-        Task<IEnumerable<ManagerSummaryDto>> GetAllAsync();
+        Task<IEnumerable<ManagerSummaryDto>> GetAllbyCeoIdAsync(string ceoId);
         Task<IEnumerable<ManagerSummaryDto>> GetByDepartmentIdAsync(int departmentId);
         Task<ManagerReadDto> GetByIdAsync(string id);
         Task<ManagerProfileViewModel> GetProfileDataAsync(string managerId);

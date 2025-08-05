@@ -21,6 +21,12 @@ namespace Workbit.App.Extensions
             if (entity is Manager m) m.SetProtector(_managerProtector);
             return entity;
         }
+
+        public object CreatedInstance(MaterializationInterceptionData data, object entity)
+    => InitializedInstance(data, entity);
+
+        public ValueTask<object> CreatedInstanceAsync(MaterializationInterceptionData data, object entity, CancellationToken ct)
+            => new(InitializedInstance(data, entity));
     }
 
 }

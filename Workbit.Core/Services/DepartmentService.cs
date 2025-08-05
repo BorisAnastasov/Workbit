@@ -14,7 +14,7 @@ namespace Workbit.Core.Services
 
         public DepartmentService(IRepository _repository)
         {
-            repository = _repository;
+            repository = _repository; 
         }
 
         public async Task CreateAsync(DepartmentCreateFormModel dto)
@@ -39,20 +39,9 @@ namespace Workbit.Core.Services
             return department != null;
         }
 
-        public async Task<IEnumerable<DepartmentSummaryDto>> GetAllAsync()
-        {
-            return await repository.AllReadOnly<Department>()
-                                        .Select(d => new DepartmentSummaryDto
-                                        {
-                                            Id = d.Id,
-                                            Name = d.Name
-                                        })
-                                        .ToListAsync();
-        }
-
         public async Task<IEnumerable<DepartmentSummaryDto>> GetAllByCeoIdAsync(string ceoId)
         {
-            var company = await repository.AllReadOnly<Company>().FirstAsync(c => c.CeoId.ToString() == ceoId);
+            var company = await repository.AllReadOnly<Company>().FirstAsync(c => c.CeoId == Guid.Parse(ceoId));
             return company.Departments.Select(d => new DepartmentSummaryDto
                 {
                     Id = d.Id,

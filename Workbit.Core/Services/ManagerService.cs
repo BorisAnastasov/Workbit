@@ -24,9 +24,10 @@ namespace Workbit.Core.Services
             return manager != null;
         }
 
-        public async Task<IEnumerable<ManagerSummaryDto>> GetAllAsync()
+        public async Task<IEnumerable<ManagerSummaryDto>> GetAllbyCeoIdAsync(string ceoId)
         {
             var managers = await repository.AllReadOnly<Manager>()
+                .Where(m=>m.Department.Company.CeoId == Guid.Parse(ceoId))
                 .Select(m => new ManagerSummaryDto
                 {
                     Id = m.ApplicationUserId.ToString(),

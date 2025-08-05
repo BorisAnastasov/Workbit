@@ -1,6 +1,6 @@
 ﻿namespace Workbit.Core.Models.Attendance
 {
-    public class AttendanceEntryReadDto
+    public class AttendanceEntryViewModel
     {
         public int Id { get; set; }
         public string UserId { get; set; } = null!;

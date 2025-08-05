@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.User;
+using Workbit.Infrastructure.Attributes;
 using Workbit.Infrastructure.Database.Entities.Account;
 
 namespace Workbit.App.Controllers
@@ -10,9 +13,14 @@ namespace Workbit.App.Controllers
     {
         private readonly IUserService userService;
 
-        public UserController(IUserService _userService)
+        private readonly IDataProtector managerProtector;
+        private readonly IDataProtector employeeProtector;
+
+        public UserController(IUserService _userService, IDataProtectionProvider dpProvider)
         {
             userService = _userService;
+            managerProtector = dpProvider.CreateProtector("Manager.IBAN");
+            employeeProtector = dpProvider.CreateProtector("Employee.IBAN");
         }
 
         [HttpGet]
@@ -36,7 +44,7 @@ namespace Workbit.App.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var model = new RegisterCeoViewModel
+            var model = new RegisterManagerViewModel
             {
                 Countries = await userService.GetCountries(),
             };
@@ -70,7 +78,7 @@ namespace Workbit.App.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var model = new RegisterCeoViewModel
+            var model = new RegisterEmployeeViewModel
             {
                 Countries = await userService.GetCountries(),
             };
@@ -84,6 +92,7 @@ namespace Workbit.App.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Countries = await userService.GetCountries();
                 return View(model);
             }
 
@@ -96,7 +105,7 @@ namespace Workbit.App.Controllers
 				UserName = model.Email,
 				NormalizedUserName = model.Email.ToUpper(),
                 DateOfBirth = model.DateOfBirth,
-                PhoneNumber = model.PhoneNumber
+                PhoneNumber = model.PhoneNumber,
 			};
 
             var result = await userService.RegisterUserAsync(user, model.Password);
@@ -107,16 +116,19 @@ namespace Workbit.App.Controllers
 				var employee = new Employee
 				{
 					ApplicationUserId = user.Id,
-					ApplicationUser = user
+					ApplicationUser = user,
+                    CountryCode = model.CountryCode
 				};
+                employee.SetProtector(employeeProtector);
+                employee.IBAN = model.IBAN;
 
                 await userService.RegisterEmployeeAsync(employee);
 
 				return RedirectToAction(nameof(Login),"User");
             }
 
-
-			foreach (var item in result.Errors)
+            model.Countries = await userService.GetCountries();
+            foreach (var item in result.Errors)
             {
                 ModelState.AddModelError("", item.Description);
             }
@@ -130,9 +142,10 @@ namespace Workbit.App.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
+                model.Countries = await userService.GetCountries();
 				return View(model);
 			}
-
+            
 			var user = new ApplicationUser()
 			{
 				FirstName = model.FirstName,
@@ -155,13 +168,17 @@ namespace Workbit.App.Controllers
                     ApplicationUserId = user.Id,
                     ApplicationUser = user,
                 };
+
+                manager.SetProtector(managerProtector);
+                manager.IBAN = model.IBAN;
                 
                 await userService.RegisterManagerAsync(manager);
 
 				return RedirectToAction(nameof(Login), "User");
 			}
 
-			foreach (var item in result.Errors)
+            model.Countries = await userService.GetCountries();
+            foreach (var item in result.Errors)
 			{
 				ModelState.AddModelError("", item.Description);
 			}
@@ -175,6 +192,7 @@ namespace Workbit.App.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Countries = await userService.GetCountries();
                 return View(model);
             }
 
@@ -205,6 +223,7 @@ namespace Workbit.App.Controllers
                 return RedirectToAction("Login", "User");
             }
 
+            model.Countries = await userService.GetCountries();
             foreach (var item in result.Errors)
             {
                 ModelState.AddModelError("", item.Description);

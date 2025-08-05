@@ -2,9 +2,9 @@
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.DepartmentBudget;
 
-namespace Workbit.App.Controllers
+namespace Workbit.App.Areas.Ceo.Controllers
 {
-    public class DepartmentBudgetController : Controller
+    public class DepartmentBudgetController : BaseController
     {
         private readonly IDepartmentBudgetService departmentBudgetService;
 
@@ -20,11 +20,11 @@ namespace Workbit.App.Controllers
             {
                 await departmentBudgetService.AllocateDepartmentBudgetAsync(model);
 
-                return RedirectToAction("PaymentDashboard", "Payment", new { allocated = true });
+                return RedirectToAction("Dashboard", "Payment", new { allocated = true, area="Ceo" });
             }
             catch (Exception)
             {
-                return RedirectToAction("PaymentDashboard", "Payment", new { allocError = true });
+                return RedirectToAction("Error500", "Error", new { area="" });
             }
         }
     }

@@ -4,6 +4,6 @@ namespace Workbit.Core.Interfaces
 {
 	public interface ICountryService
 	{
-		Task<List<CountrySummaryDto>> GetCountrySummariesAsync();
+		Task<List<CountrySummaryModel>> GetCountrySummariesAsync();
 	}
 }

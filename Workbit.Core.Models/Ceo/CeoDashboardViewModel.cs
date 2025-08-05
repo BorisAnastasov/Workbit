@@ -2,7 +2,11 @@
 {
 	public class CeoDashboardViewModel
 	{
-        public int CopmanyId { get; set; }
+        public int CompanyId { get; set; }
+        public string CeoName { get; set; }
+        public string CompanyName { get; set; }
+        public string ContactPhone { get; set; }
+        public string CountryName { get; set; }
         public int TotalEmployees { get; set; }
 		public int TotalManagers { get; set; }
 		public int TotalDepartments { get; set; }

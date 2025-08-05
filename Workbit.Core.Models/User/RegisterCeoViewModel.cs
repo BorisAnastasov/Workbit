@@ -42,6 +42,6 @@ namespace Workbit.Core.Models.User
 		[StringLength(2)]
         public string CountryCode { get; set; } = null!;
 
-        public IEnumerable<CountrySummaryDto> Countries { get; set; } = new List<CountrySummaryDto>();
+        public IEnumerable<CountrySummaryModel> Countries { get; set; } = new List<CountrySummaryModel>();
     }
 }

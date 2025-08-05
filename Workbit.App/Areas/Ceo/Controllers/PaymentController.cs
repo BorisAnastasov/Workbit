@@ -2,6 +2,7 @@
 using Workbit.App.Extensions;
 using Workbit.Core.Interfaces;
 using Workbit.Core.Models.Payment;
+using Workbit.Core.Services;
 
 namespace Workbit.App.Areas.Ceo.Controllers
 {
@@ -12,91 +13,114 @@ namespace Workbit.App.Areas.Ceo.Controllers
         private readonly IEmployeeService employeeService;
         private readonly IDepartmentService departmentService;
         private readonly IDepartmentBudgetService departmentBudgetService;
+        private readonly ICeoService ceoService;
 
-        public PaymentController(IPaymentService _paymentService, IManagerService _managerService, IDepartmentService _departmentService, IEmployeeService _employeeService, IDepartmentBudgetService _departmentBudgetService)
+        public PaymentController(IPaymentService _paymentService,
+                                IManagerService _managerService,
+                                IDepartmentService _departmentService,
+                                IEmployeeService _employeeService,
+                                IDepartmentBudgetService _departmentBudgetService,
+                                ICeoService ceoService)
         {
             paymentService = _paymentService;
             managerService = _managerService;
             departmentService = _departmentService;
             employeeService = _employeeService;
             departmentBudgetService = _departmentBudgetService;
+            this.ceoService = ceoService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Dashboard(bool payed = false, bool errorPaying = false
-                                                                            , bool allocated = false, bool allocError = false)
+                                                  ,bool allocated = false, bool allocError = false)
         {
-            var managers = await managerService.GetAllByCeoIdAsync(User.Id());
-            var departments = await departmentService.GetAllByCeoIdAsync(User.Id());
 
-            var model = new PaymentDashboardViewModel
+            try
             {
-                CeoId = User.Id(),
-                Managers = managers,
-                Departments = departments,
-            };
+                if (!await ceoService.HasCompanyByIdAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(NoCompany), "Base", new { area = "Ceo" });
+                }
 
-            if (payed)
-            {
-                TempData["Success"] = $"Manager was paid successfully!";
-            }
-            if (errorPaying)
-            {
-                TempData["Error"] = $"Failed to process payment!";
-            }
+                var managers = await managerService.GetAllByCeoIdAsync(User.Id());
+                var departments = await departmentService.GetAllByCeoIdAsync(User.Id());
 
-            if (allocated)
-            {
-                TempData["Success"] = "Department budget allocated successfully!";
-            }
-            if (allocError)
-            {
-                TempData["Error"] = "Failed to allocate department budget!";
-            }
+                var model = new PaymentDashboardViewModel
+                {
+                    CeoId = User.Id(),
+                    Managers = managers,
+                    Departments = departments,
+                };
 
-            if (payed == true || errorPaying == true || allocated == true || allocError == true)
-            {
-                // Redirect to the same page without any query params
-                return RedirectToAction(nameof(Dashboard));
-            }
+                if (payed)
+                {
+                    TempData["Success"] = $"Manager was paid successfully!";
+                }
+                if (errorPaying)
+                {
+                    TempData["Error"] = $"Failed to process payment!";
+                }
 
-            return View(model);
+                if (allocated)
+                {
+                    TempData["Success"] = "Department budget allocated successfully!";
+                }
+                if (allocError)
+                {
+                    TempData["Error"] = "Failed to allocate department budget!";
+                }
+
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error500", "Error", new { area = "" });
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> History(DateTime? startDate, DateTime? endDate, string role = "All")
         {
-            var ceoId = User.Id();
+            try
+            {
+                if (!await ceoService.HasCompanyByIdAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(NoCompany), "Base", new { area = "Ceo" });
+                }
 
-            // Get filtered payments
-            var payments = await paymentService.GetAllByCeoIdAsync(ceoId, startDate, endDate, role);
+                var payments = await paymentService.GetAllByCeoIdAsync(User.Id(), startDate, endDate, role);
 
-            // Keep filter values for the view (so form keeps selected state)
-            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
-            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
-            ViewBag.Role = role;
+                ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+                ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+                ViewBag.Role = role;
 
-            return View(payments);
+                return View(payments);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error500", "Error", new { area = "" });
+            }
         }
-
 
         [HttpPost]
         public async Task<IActionResult> PayManager(PayManagerViewModel model)
         {
             try
             {
+                if (!await ceoService.HasCompanyByIdAsync(User.Id()))
+                {
+                    return RedirectToAction(nameof(NoCompany), "Base", new { area = "Ceo" });
+                }
+
                 await paymentService.PayManagerAsync(model);
 
-                return RedirectToAction(nameof(Dashboard), true);
+                return RedirectToAction(nameof(Dashboard), new { payed = true, area = "Ceo"});
             }
             catch (Exception)
             {
                 return RedirectToAction("Error500", "Error", new { area = "" });
             }
-
-            
         }
-
-
     }
 }

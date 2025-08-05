@@ -10,7 +10,7 @@ namespace Workbit.Infrastructure.Attributes
                                         object? value, ValidationContext validationContext)
         {
             if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
-                return new System.ComponentModel.DataAnnotations.ValidationResult("IBAN is required.");
+                return new System.ComponentModel.DataAnnotations.ValidationResult(FormatErrorMessage("IBAN is required."));
 
 
             var validator = (IIbanValidator)validationContext.GetService(typeof(IIbanValidator))!;
@@ -19,7 +19,7 @@ namespace Workbit.Infrastructure.Attributes
             if (result.IsValid)
                 return System.ComponentModel.DataAnnotations.ValidationResult.Success;
 
-            return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid IBAN format.");
+            return new System.ComponentModel.DataAnnotations.ValidationResult(FormatErrorMessage("Invalid IBAN format."));
         }
     }
 }

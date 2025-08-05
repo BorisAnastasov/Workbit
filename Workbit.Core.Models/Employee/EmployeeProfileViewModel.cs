@@ -9,6 +9,7 @@ namespace Workbit.Core.Models.Employee
 		public string FullName { get; set; } = null!;
 		public string Email { get; set; } = null!;
 		public string Phone { get; set; } = null!;
+		public string IBAN { get; set; } = null!;
 		public DateTime DateOfBirth { get; set; }
 		public string DepartmentName { get; set; } = null!;
 		public string JobTitle { get; set; } = null!;

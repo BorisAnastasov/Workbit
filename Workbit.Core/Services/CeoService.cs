@@ -98,6 +98,13 @@ namespace Workbit.Core.Services
             return ceoReaddto;
         }
 
+        public async Task<bool> HasCompanyByIdAsync(string userId)
+        {
+            var company = await repository.AllReadOnly<Company>().FirstOrDefaultAsync(c => c.CeoId == Guid.Parse(userId)); ;
+
+            return company != null;
+        }
+
         public async Task RemoveCeoAsync(string userId)
         {
             var guid = Guid.Parse(userId);

@@ -15,11 +15,11 @@ namespace Workbit.Core.Services
 			repository = _repository;
 		}
 
-		public async Task<List<CountrySummaryDto>> GetCountrySummariesAsync()
+		public async Task<List<CountrySummaryModel>> GetCountrySummariesAsync()
 		{
 			return await repository.AllReadOnly<Country>()
 				.OrderBy(c => c.Name)
-				.Select(c => new CountrySummaryDto
+				.Select(c => new CountrySummaryModel
 				{
 					Code = c.Code,
 					Name = c.Name

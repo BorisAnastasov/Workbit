@@ -8,7 +8,6 @@ namespace Workbit.Core.Interfaces
         Task CreateAsync(DepartmentCreateFormModel dto);
 
         // Read
-        Task<IEnumerable<DepartmentSummaryDto>> GetAllAsync();
         Task<IEnumerable<DepartmentSummaryDto>> GetAllByCeoIdAsync(string ceoId);
         Task<DepartmentReadDto> GetByIdAsync(int id);
 

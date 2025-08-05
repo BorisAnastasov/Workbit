@@ -16,18 +16,16 @@ namespace Workbit.Core.Services
             repository = _repository;
         }
 
-        public async Task CreateAsync(CompanyCreateDto dto)
+        public async Task CreateAsync(CompanyFormModel model)
         {
             var company = new Company
             {
-                Name = dto.Name,
-                Address = dto.Address,
-                ContactPhone = dto.ContactPhone,
-                CeoId = Guid.Parse(dto.CeoId)
+                Name = model.Name,
+                Address = model.Address,
+                ContactPhone = model.ContactPhone,
+                CeoId = Guid.Parse(model.CeoId),
+                CountryCode = model.CountryCode,
             };
-
-            var ceo = await repository.GetByIdAsync<Ceo>(Guid.Parse(dto.CeoId));
-
 
             await repository.AddAsync(company);
             await repository.SaveChangesAsync();
@@ -76,10 +74,10 @@ namespace Workbit.Core.Services
             return company != null;
         }
 
-        public async Task<IEnumerable<CompanySummaryDto>> GetAllAsync()
+        public async Task<IEnumerable<CompanySummaryModel>> GetAllAsync()
         {
             return await repository.AllReadOnly<Company>()
-                .Select(c => new CompanySummaryDto
+                .Select(c => new CompanySummaryModel
                 {
                     Id = c.Id,
                     Name = c.Name
@@ -87,11 +85,30 @@ namespace Workbit.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<CompanyReadDto> GetByIdAsync(int id)
+        public async Task<CompanyViewModel> GetByCeoIdAsync(string ceoId)
+        {
+            var company = await repository.AllReadOnly<Company>()
+                                        .FirstAsync(c => c.CeoId == Guid.Parse(ceoId));
+
+            var model = new CompanyViewModel
+            {
+                Id = company.Id,
+                Name = company.Name,
+                Address = company.Address,
+                CeoId = ceoId,
+                CeoName = company.Ceo.ApplicationUser.FullName,
+                ContactPhone = company.ContactPhone,
+                Country = company.Country.Name,
+            };
+
+            return model;
+        }
+
+        public async Task<CompanyViewModel> GetByIdAsync(int id)
         {
             var company = await repository.GetByIdAsync<Company>(id);
 
-            return new CompanyReadDto
+            return new CompanyViewModel
             {
                 Id = company.Id,
                 Name = company.Name,
@@ -109,17 +126,5 @@ namespace Workbit.Core.Services
             return company?.CeoId.ToString();
         }
 
-        public async Task UpdateAsync(CompanyUpdateDto dto)
-        {
-            var company = await repository.GetByIdAsync<Company>(dto.Id);
-            
-
-            company.Name = dto.Name;
-            company.Address = dto.Address;
-            company.ContactPhone = dto.ContactPhone;
-            company.CeoId = Guid.Parse(dto.CeoId);
-
-            await repository.SaveChangesAsync();
-        }
     }
 }

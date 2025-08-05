@@ -41,7 +41,7 @@ namespace Workbit.Core.Services
             return user;
         }
 
-        public async Task<IEnumerable<CountrySummaryDto>> GetCountries()
+        public async Task<IEnumerable<CountrySummaryModel>> GetCountries()
         {
             return await countryService.GetCountrySummariesAsync();
         }

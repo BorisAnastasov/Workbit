@@ -166,6 +166,16 @@
                 </div>
             </div>
 
+            <!-- IBAN -->
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <div class="form-floating">
+                    <input asp-for="IBAN" type="text" class="form-control" placeholder="IBAN" />
+                    <label asp-for="IBAN"></label>
+                    <span asp-validation-for="IBAN" class="text-danger" style="font-size: 0.9rem;"></span>
+                </div>
+            </div>
+
             <!-- Password -->
             <div class="input-group">
                 <i class="fa-solid fa-lock"></i>

@@ -366,6 +366,7 @@
 					<li><strong>Job:</strong> @Model.JobTitle (@Model.Level)</li>
 					<li><strong>Country:</strong> @Model.Country</li>
 					<li><strong>Email:</strong> @Model.Email</li>
+					<li><strong>IBAN:</strong> @Model.IBAN</li>
 				</ul>
 				<form asp-area="Employee" asp-controller="Employee" asp-action="LeaveJob" method="post"
 					  onsubmit="return confirm('Are you sure you want to leave your job? You will no longer be part of any department.');">

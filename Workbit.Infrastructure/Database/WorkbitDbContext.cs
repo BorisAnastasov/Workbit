@@ -26,10 +26,16 @@ namespace Workbit.Infrastructure.Database
 
             ChangeTracker.Tracked += (sender, e) =>
             {
-                if (e.Entry.Entity is Employee emp && e.FromQuery)
-                    emp.SetProtector(employeeProtector);
-                if (e.Entry.Entity is Manager mgr && e.FromQuery)
+                if (e.Entry.Entity is Manager mgr)
+                {
                     mgr.SetProtector(managerProtector);
+                }
+
+                if (e.Entry.Entity is Employee emp)
+                {
+                    emp.SetProtector(employeeProtector);
+                }
+                
             };
         }
         public virtual DbSet<Department> Departments { get; set; } = null!;

@@ -1,4 +1,4 @@
-﻿@model CompanyCreateDto
+﻿@model CompanyFormModel
 @{
     ViewData["Title"] = "Create Company";
 }
@@ -28,6 +28,12 @@
 
     .form-control {
         border-radius: 10px;
+        margin-bottom: 0.5rem;
+    }
+
+    .text-validation {
+        font-size: 0.9rem;
+        color: #dc3545;
         margin-bottom: 1rem;
     }
 
@@ -49,28 +55,42 @@
 
 <div class="create-company-wrapper">
     <h2>Create Company</h2>
-    <form asp-area="Ceo" asp-controller="Company" asp-action="Create" method="post">
+    <form asp-area="Ceo" asp-controller="Company" asp-action="Create" method="post" novalidate>
         @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-validation"></div>
         <input type="hidden" asp-for="CeoId" />
 
         <div class="mb-3">
             <label asp-for="Name" class="form-label"></label>
             <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <span asp-validation-for="Name" class="text-validation"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="Address" class="form-label"></label>
             <input asp-for="Address" class="form-control" />
-            <span asp-validation-for="Address" class="text-danger"></span>
+            <span asp-validation-for="Address" class="text-validation"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="ContactPhone" class="form-label"></label>
             <input asp-for="ContactPhone" class="form-control" />
-            <span asp-validation-for="ContactPhone" class="text-danger"></span>
+            <span asp-validation-for="ContactPhone" class="text-validation"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CountryCode" class="form-label"></label>
+            <select asp-for="CountryCode" class="form-control"
+                    asp-items="@(new SelectList(Model.Countries, "Code", "Name"))">
+                <option value="">-- Select Country --</option>
+            </select>
+            <span asp-validation-for="CountryCode" class="text-validation"></span>
         </div>
 
         <button type="submit" class="btn btn-create">Create Company</button>
     </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

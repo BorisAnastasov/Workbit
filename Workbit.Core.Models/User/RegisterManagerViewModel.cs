@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Workbit.Core.Models.Country;
+using Workbit.Infrastructure.Attributes;
 using static Workbit.Common.DataConstants.ApplicationUser;
 
 namespace Workbit.Core.Models.User
@@ -43,6 +44,11 @@ namespace Workbit.Core.Models.User
         [StringLength(2)]
         public string CountryCode { get; set; } = null!;
 
-        public IEnumerable<CountrySummaryDto> Countries { get; set; } = new List<CountrySummaryDto>();
+        [Required]
+        [Display(Name = "IBAN")]
+        [ValidIban]
+        public string IBAN { get; set; } = null!;
+
+        public IEnumerable<CountrySummaryModel> Countries { get; set; } = new List<CountrySummaryModel>();
     }
 }

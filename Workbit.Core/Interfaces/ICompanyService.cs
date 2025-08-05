@@ -5,14 +5,11 @@ namespace Workbit.Core.Interfaces
     public interface ICompanyService
     {
         // Create
-        Task CreateAsync(CompanyCreateDto dto);
+        Task CreateAsync(CompanyFormModel dto);
 
         // Read
-        Task<IEnumerable<CompanySummaryDto>> GetAllAsync();
-        Task<CompanyReadDto> GetByIdAsync(int id);
-
-        // Update
-        Task UpdateAsync(CompanyUpdateDto dto);
+        Task<IEnumerable<CompanySummaryModel>> GetAllAsync();
+        Task<CompanyViewModel> GetByIdAsync(int id);
 
         // Delete
         Task DeleteAsync(int id);
@@ -20,5 +17,6 @@ namespace Workbit.Core.Interfaces
         // Helpers
         Task<bool> ExistsByIdAsync(int id);
         Task<string?> GetCeoIdAsync(int companyId);
+        Task<CompanyViewModel> GetByCeoIdAsync(string ceoId);
     }
 }

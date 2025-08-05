@@ -13,17 +13,17 @@ namespace Workbit.Core.Interfaces
         Task<bool> IsCheckedOutAsync(string userId);
 
         // Read
-        Task<IEnumerable<AttendanceEntryReadDto>> GetByUserIdAsync(string userId);
-        Task<IEnumerable<AttendanceEntryReadDto>> GetByDateAsync(DateTime date);
-        Task<AttendanceEntryReadDto> GetByIdAsync(int id);
+        Task<IEnumerable<AttendanceEntryViewModel>> GetByUserIdAsync(string userId);
+        Task<IEnumerable<AttendanceEntryViewModel>> GetByDateAsync(DateTime date, string ceoId);
+        Task<AttendanceEntryViewModel> GetByIdAsync(int id);
 
         // Delete an entry
         Task DeleteAsync(int id);
 
         // Summaries
-        Task<IEnumerable<DailyAttendanceSummaryDto>> GetMonthlySummaryAsync(string userId, int year, int month);
+        Task<IEnumerable<DailyAttendanceSummaryModel>> GetMonthlySummaryAsync(string userId, int year, int month);
         Task<int> CountAbsencesAsync(string userId, int year, int month);
-        Task<List<AttendanceEntryReadDto>> GetAttendanceLogsAsync(DateTime start, DateTime end, string role);
-        Task<List<DailyAttendanceSummaryDto>> GetDailySummaryAsync(DateTime start, DateTime end, string role);
+        Task<List<AttendanceEntryViewModel>> GetAttendanceLogsAsync(DateTime start, DateTime end, string role);
+        Task<List<DailyAttendanceSummaryModel>> GetDailySummaryAsync(DateTime start, DateTime end, string role);
     }
 }

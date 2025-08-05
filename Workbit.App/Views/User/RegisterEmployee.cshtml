@@ -145,26 +145,38 @@
                 </div>
             </div>
 
-            <!-- Country -->
-            <div class="input-group">
-                <i class="fa-solid fa-globe"></i>
-                <div class="form-floating">
-                    <select asp-for="CountryCode" class="form-control"
-                            asp-items="@(new SelectList(Model.Countries, "Code", "Name"))">
-                        <option value="">-- Select Country --</option>
-                    </select>
-                    <label asp-for="CountryCode"></label>
-                    <span asp-validation-for="CountryCode" class="text-danger" style="font-size: 0.9rem;"></span>
+            <div class="form-row">
+                <!-- Country -->
+                <div class="input-group">
+                    <i class="fa-solid fa-globe"></i>
+                    <div class="form-floating">
+                        <select asp-for="CountryCode" class="form-control"
+                                asp-items="@(new SelectList(Model.Countries, "Code", "Name"))">
+                            <option value="">-- Select Country --</option>
+                        </select>
+                        <label asp-for="CountryCode"></label>
+                        <span asp-validation-for="CountryCode" class="text-danger" style="font-size: 0.9rem;"></span>
+                    </div>
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="input-group">
+                    <i class="fa-regular fa-calendar"></i>
+                    <div class="form-floating">
+                        <input asp-for="DateOfBirth" type="date" class="form-control" placeholder="Date of Birth" />
+                        <label asp-for="DateOfBirth"></label>
+                        <span asp-validation-for="DateOfBirth" class="text-danger" style="font-size: 0.9rem;"></span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Date of Birth -->
+            <!-- IBAN -->
             <div class="input-group">
-                <i class="fa-regular fa-calendar"></i>
+               <i class="fa-solid fa-university"></i>
                 <div class="form-floating">
-                    <input asp-for="DateOfBirth" type="date" class="form-control" placeholder="Date of Birth" />
-                    <label asp-for="DateOfBirth"></label>
-                    <span asp-validation-for="DateOfBirth" class="text-danger" style="font-size: 0.9rem;"></span>
+                    <input asp-for="IBAN" type="text" class="form-control" placeholder="IBAN" />
+                    <label asp-for="IBAN"></label>
+                    <span asp-validation-for="IBAN" class="text-danger" style="font-size: 0.9rem;"></span>
                 </div>
             </div>
 

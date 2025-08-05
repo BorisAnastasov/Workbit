@@ -65,6 +65,7 @@
     .form-row {
         display: flex;
         flex-wrap: wrap;
+        flex-direction: row;
         gap: 1rem;
     }
 
@@ -100,7 +101,7 @@
     <div class="register-card">
         <h2>Register New CEO</h2>
 
-        <form asp-controller="User" asp-action="RegisterCeo" method="post">
+        <form asp-area="" asp-controller="User" asp-action="RegisterCeo" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-4" style="font-size: 0.95rem;"></div>
 
             <!-- First + Last Name -->
@@ -143,26 +144,28 @@
                 </div>
             </div>
 
-            <!-- Country -->
-            <div class="input-group">
-                <i class="fa-solid fa-globe"></i>
-                <div class="form-floating">
-                    <select asp-for="CountryCode" class="form-control"
-                            asp-items="@(new SelectList(Model.Countries, "Code", "Name"))">
-                        <option value="">-- Select Country --</option>
-                    </select>
-                    <label asp-for="CountryCode"></label>
-                    <span asp-validation-for="CountryCode" class="text-danger" style="font-size: 0.9rem;"></span>
+            <div class="form-row">
+                <!-- Country -->
+                <div class="input-group">
+                    <i class="fa-solid fa-globe"></i>
+                    <div class="form-floating">
+                        <select asp-for="CountryCode" class="form-control"
+                                asp-items="@(new SelectList(Model.Countries, "Code", "Name"))">
+                            <option value="">-- Select Country --</option>
+                        </select>
+                        <label asp-for="CountryCode"></label>
+                        <span asp-validation-for="CountryCode" class="text-danger" style="font-size: 0.9rem;"></span>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Date of Birth -->
-            <div class="input-group">
-                <i class="fa-regular fa-calendar"></i>
-                <div class="form-floating">
-                    <input asp-for="DateOfBirth" type="date" class="form-control" placeholder="Date of Birth" />
-                    <label asp-for="DateOfBirth"></label>
-                    <span asp-validation-for="DateOfBirth" class="text-danger" style="font-size: 0.9rem;"></span>
+                <!-- Date of Birth -->
+                <div class="input-group">
+                    <i class="fa-regular fa-calendar"></i>
+                    <div class="form-floating">
+                        <input asp-for="DateOfBirth" type="date" class="form-control" placeholder="Date of Birth" />
+                        <label asp-for="DateOfBirth"></label>
+                        <span asp-validation-for="DateOfBirth" class="text-danger" style="font-size: 0.9rem;"></span>
+                    </div>
                 </div>
             </div>
 

@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="8.0.18" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Workbit.Common\Workbit.Common.csproj" />
+    <ProjectReference Include="..\Workbit.Infrastructure\Workbit.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

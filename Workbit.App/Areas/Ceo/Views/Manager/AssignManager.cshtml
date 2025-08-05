@@ -11,6 +11,7 @@
         border-radius: 20px;
         padding: 40px;
         box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        font-family: 'Nunito', sans-serif;
     }
 
     h2 {
@@ -34,6 +35,7 @@
         display: block;
         width: 100%;
         transition: background-color 0.3s ease, transform 0.2s ease;
+        border: none;
     }
 
         .btn-submit:hover {
@@ -61,12 +63,30 @@
     .text-danger {
         font-size: 0.9rem;
     }
+
+    .back-btn {
+        margin-top: 30px;
+        display: inline-block;
+        background-color: var(--secondary);
+        color: #fff;
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .back-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            color: #fff;
+        }
 </style>
 
 <div class="assign-wrapper">
     <h2>Assign Manager to @Model.DepartmentName</h2>
 
-    <!-- Display Success/Error Messages -->
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success">@TempData["Success"]</div>
@@ -76,14 +96,14 @@
         <div class="alert alert-danger">@TempData["Error"]</div>
     }
 
-    <!-- Validation Summary -->
     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
     <form method="post" asp-action="AssignManager">
+        @Html.AntiForgeryToken()
         <input type="hidden" asp-for="DepartmentId" />
 
         <div class="mb-3">
-            <label>Select Manager</label>
+            <label asp-for="SelectedManagerId" class="form-label">Select Manager</label>
             <select asp-for="SelectedManagerId" class="form-select" required>
                 <option value="">-- Choose Manager --</option>
                 @foreach (var manager in Model.AvailableManagers)
@@ -98,6 +118,10 @@
 
         <button type="submit" class="btn-submit">Assign Manager</button>
     </form>
+
+    <div class="text-center">
+        <a asp-area="Ceo" asp-controller="Department" asp-action="Details" asp-route-id="@Model.DepartmentId" class="back-btn">Back to Department</a>
+    </div>
 </div>
 
 @section Scripts {

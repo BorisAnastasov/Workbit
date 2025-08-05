@@ -17,5 +17,6 @@ namespace Workbit.Core.Interfaces
 
         // New helper
         Task<bool> ExistsByIdAsync(string userId);
+        Task<bool> HasCompanyByIdAsync(string userId);
     }
 }

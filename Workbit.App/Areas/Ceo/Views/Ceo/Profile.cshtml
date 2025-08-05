@@ -1,143 +1,84 @@
 ﻿@model CeoDashboardViewModel
 @{
     ViewData["Title"] = "CEO Dashboard";
+    var presentPercentage = Model.TotalEmployees == 0 ? 0 : (100.0 * Model.PresentToday / Model.TotalEmployees);
+    var payrollPercentage = Model.TotalPayrollThisMonth == 0 ? 0 : (100.0 * Model.PaidEmployeesThisMonth / Model.TotalEmployees);
 }
 
 <style>
-    .dashboard {
-        position: relative; /* So the delete button can be absolutely positioned */
-        padding: 3rem 2rem;
-        background-color: var(--background);
-    }
-
-        .dashboard h1 {
-            text-align: center;
-            color: var(--primary);
-            margin-bottom: 3rem;
-            font-weight: 700;
-        }
-
-    .delete-company-btn {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        background-color: #e63946;
-        color: #fff;
-        padding: 10px 18px;
-        border-radius: 25px;
-        font-size: 1rem;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-        .delete-company-btn:hover {
-            background-color: #c1121f;
-            transform: translateY(-3px);
-            color: #fff;
-        }
-
-    .stat-cards {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 2rem;
-    }
-
-    .stat-card {
-        flex: 1 1 280px;
-        max-width: 350px;
-        background-color: white;
-        border-radius: 16px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-        padding: 2rem;
-        text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-        .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-        }
-
-        .stat-card i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--secondary);
-        }
-
-        .stat-card h3 {
-            font-size: 2rem;
-            color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-card p {
-            font-size: 1.2rem;
-            color: #555;
-        }
-
-        /* Payroll Highlight */
-        .stat-card.payroll h3 {
-            color: var(--success);
-        }
-
-    /* Responsive */
-    @@media (max-width: 768px) {
-        .stat-cards {
-            flex-direction: column;
-            align-items: center;
-        }
-    }
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body { min-height: 100vh; display: flex; flex-direction: column; background-color: #eaf4f7; font-family: 'Nunito', sans-serif; }
+    .ceo-dashboard-wrapper { flex: 1; display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+    h1.dashboard-title { grid-column: 1 / -1; text-align: center; color: #179ca8; margin-bottom: 1rem; font-size: 2.5rem; font-weight: 800; }
+    .stats-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+    .summary-card { background: #fff; border-radius: 18px; box-shadow: 0 8px 28px rgba(0,0,0,0.09); padding: 24px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
+    .summary-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
+    .summary-card h4 { font-size: 1.15rem; color: #179ca8; font-weight: 700; margin-bottom: 0.5rem; }
+    .summary-card p { font-size: 2rem; font-weight: 800; color: #12777e; margin: 0; }
+    .percent-badge { margin-left: 6px; padding: 4px 12px; border-radius: 20px; font-size: 1rem; font-weight: 700; background: #eafaf4; color: #0aad7b; }
+    .progress-bar { width: 80%; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; margin: 0.5rem auto 0 auto; }
+    .progress-bar-fill { height: 100%; border-radius: 4px; }
+    .progress-present { background: #0aad7b; }
+    .progress-payroll { background: #179ca8; }
+    .right-panel { display: flex; flex-direction: column; gap: 1.5rem; }
+    .profile-card { background: #fff; border-radius: 22px; box-shadow: 0 8px 28px rgba(0,0,0,0.09); padding: 24px; text-align: center; position: relative; }
+    .profile-card h2 { font-size: 2rem; color: #179ca8; font-weight: 800; margin-bottom: 0.5rem; }
+    .profile-info-list { list-style: none; padding: 0; margin: 0; font-size: 1rem; color: #222; line-height: 1.8; text-align: left; }
+    .profile-info-list li { margin-bottom: 0.6rem; }
+    .profile-info-list strong { color: #17b0c7; margin-right: 0.5rem; }
+    .delete-company-btn { display: block; margin: 1rem auto 0; padding: 10px 24px; font-size: 1rem; font-weight: 700; border: none; border-radius: 28px; cursor: pointer; background: #e63946; color: #fff; transition: background 0.3s, transform 0.2s; }
+    .delete-company-btn:hover { background: #c1121f; transform: translateY(-2px); }
+    @@media (max-width: 900px) { .ceo-dashboard-wrapper { grid-template-columns: 1fr; } }
 </style>
 
-<section class="dashboard">
-    <!-- Delete Company Button -->
+<div class="ceo-dashboard-wrapper">
+    <h1 class="dashboard-title">Welcome, @Model.CeoName</h1>
 
-    <form asp-area="Ceo" asp-controller="Company" asp-action="Delete" asp-route-id="@Model.CopmanyId" method="post">
-        <button type="submit" class="delete-company-btn"
-                onclick="return confirm('Are you sure you want to permanently delete this company? This will also delete all departments, jobs, and budgets, and unassign managers and employees. This action cannot be undone.');">
-            Delete Company
-        </button>
-    </form>
-
-    <h1>Welcome, CEO</h1>
-    <div class="stat-cards">
-        <!-- Employees -->
-        <div class="stat-card">
-            <i class="fa-solid fa-users"></i>
-            <h3>@Model.TotalEmployees</h3>
-            <p>Total Employees</p>
+    <div class="stats-panel">
+        <div class="summary-card">
+            <h4>Total Employees</h4>
+            <p>@Model.TotalEmployees</p>
         </div>
-
-        <!-- Managers -->
-        <div class="stat-card">
-            <i class="fa-solid fa-user-tie"></i>
-            <h3>@Model.TotalManagers</h3>
-            <p>Total Managers</p>
+        <div class="summary-card">
+            <h4>Total Managers</h4>
+            <p>@Model.TotalManagers</p>
         </div>
-
-        <!-- Departments -->
-        <div class="stat-card">
-            <i class="fa-solid fa-building"></i>
-            <h3>@Model.TotalDepartments</h3>
-            <p>Total Departments</p>
+        <div class="summary-card">
+            <h4>Departments</h4>
+            <p>@Model.TotalDepartments</p>
         </div>
-
-        <!-- Attendance -->
-        <div class="stat-card">
-            <i class="fa-solid fa-calendar-check"></i>
-            <h3>@Model.PresentToday / @Model.TotalEmployees</h3>
-            <p>Present Today</p>
+        <div class="summary-card">
+            <h4>Attendance Today
+                <span class="percent-badge">@presentPercentage.ToString("F0")%</span>
+            </h4>
+            <p>@Model.PresentToday / @Model.TotalEmployees</p>
+            <div class="progress-bar">
+                <div class="progress-bar-fill progress-present" style="width:@presentPercentage.ToString("F0")%;"></div>
+            </div>
         </div>
-
-        <!-- Payroll -->
-        <div class="stat-card payroll">
-            <i class="fa-solid fa-sack-dollar"></i>
-            <h3>$@Model.TotalPayrollThisMonth</h3>
-            <p>Payroll Paid This Month (@Model.PaidEmployeesThisMonth employees)</p>
+        <div class="summary-card">
+            <h4>Payroll This Month
+                <span class="percent-badge">@payrollPercentage.ToString("F0")%</span>
+            </h4>
+            <p>$@Model.TotalPayrollThisMonth</p>
+            <div class="progress-bar">
+                <div class="progress-bar-fill progress-payroll" style="width:@payrollPercentage.ToString("F0")%;"></div>
+            </div>
         </div>
     </div>
-</section>
+
+    <div class="right-panel">
+        <div class="profile-card">
+            <h2>@Model.CeoName</h2>
+            <ul class="profile-info-list">
+                <li><strong>Company:</strong> @Model.CompanyName</li>
+                <li><strong>Phone:</strong> @Model.ContactPhone</li>
+                <li><strong>Country:</strong> @Model.CountryName</li>
+            </ul>
+            <form asp-area="Ceo" asp-controller="Company" asp-action="Delete" asp-route-id="@Model.CompanyId" method="post"
+                  onsubmit="return confirm('Are you sure you want to permanently delete this company?');">
+                <button type="submit" class="delete-company-btn">Delete Company</button>
+            </form>
+        </div>
+    </div>
+</div>

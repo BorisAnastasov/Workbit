@@ -48,7 +48,7 @@ namespace Workbit.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<List<AttendanceEntryReadDto>> GetAttendanceLogsAsync(DateTime start, DateTime end, string role)
+        public async Task<List<AttendanceEntryViewModel>> GetAttendanceLogsAsync(DateTime start, DateTime end, string role)
         {
             var logs = await repository.AllReadOnly<AttendanceEntry>()
                 .Include(a => a.User)
@@ -70,7 +70,7 @@ namespace Workbit.Core.Services
                 logs = filtered;
             }
 
-            return logs.Select(a => new AttendanceEntryReadDto
+            return logs.Select(a => new AttendanceEntryViewModel
             {
                 Id = a.Id,
                 UserId = a.UserId.ToString(),
@@ -80,14 +80,16 @@ namespace Workbit.Core.Services
             }).ToList();
         }
 
-        public async Task<IEnumerable<AttendanceEntryReadDto>> GetByDateAsync(DateTime date)
+        public async Task<IEnumerable<AttendanceEntryViewModel>> GetByDateAsync(DateTime date, string ceoId)
         {
             var dayStart = date.Date;
             var dayEnd = dayStart.AddDays(1);
 
             return await repository.AllReadOnly<AttendanceEntry>()
-                .Where(a => a.Timestamp >= dayStart && a.Timestamp < dayEnd)
-                .Select(a => new AttendanceEntryReadDto
+                .Where(a => a.User.Employee!.Job!.Department.Company.CeoId == Guid.Parse(ceoId) 
+                            && a.Timestamp >= dayStart 
+                            && a.Timestamp < dayEnd)
+                .Select(a => new AttendanceEntryViewModel
                 {
                     Id = a.Id,
                     UserId = a.UserId.ToString(),
@@ -98,11 +100,11 @@ namespace Workbit.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<AttendanceEntryReadDto> GetByIdAsync(int id)
+        public async Task<AttendanceEntryViewModel> GetByIdAsync(int id)
         {
             var entry = await repository.GetByIdAsync<AttendanceEntry>(id);
 
-            return new AttendanceEntryReadDto
+            return new AttendanceEntryViewModel
             {
                 Id = entry.Id,
                 UserId = entry.UserId.ToString(),
@@ -112,12 +114,12 @@ namespace Workbit.Core.Services
             };
         }
 
-        public async Task<IEnumerable<AttendanceEntryReadDto>> GetByUserIdAsync(string userId)
+        public async Task<IEnumerable<AttendanceEntryViewModel>> GetByUserIdAsync(string userId)
         {
             var user = await repository.GetByIdAsync<ApplicationUser>(Guid.Parse(userId));
             return user.AttendanceEntries
                 .OrderByDescending(a => a.Timestamp)
-                .Select(a => new AttendanceEntryReadDto
+                .Select(a => new AttendanceEntryViewModel
                 {
                     Id = a.Id,
                     UserId = a.UserId.ToString(),
@@ -127,7 +129,7 @@ namespace Workbit.Core.Services
                 }).ToList();
         }
 
-        public async Task<List<DailyAttendanceSummaryDto>> GetDailySummaryAsync(
+        public async Task<List<DailyAttendanceSummaryModel>> GetDailySummaryAsync(
     DateTime startDate, DateTime endDate, string? roleFilter = null)
         {
             // Fetch all entries within the date range
@@ -181,7 +183,7 @@ namespace Workbit.Core.Services
                     else
                         status = "Present";
 
-                    return new DailyAttendanceSummaryDto
+                    return new DailyAttendanceSummaryModel
                     {
                         Date = date,
                         FirstCheckIn = checkIn?.Timestamp.TimeOfDay,
@@ -197,7 +199,7 @@ namespace Workbit.Core.Services
         }
 
 
-        public async Task<IEnumerable<DailyAttendanceSummaryDto>> GetMonthlySummaryAsync(string userId, int year, int month)
+        public async Task<IEnumerable<DailyAttendanceSummaryModel>> GetMonthlySummaryAsync(string userId, int year, int month)
         {
             var guid = Guid.Parse(userId);
             var start = new DateTime(year, month, 1);
@@ -249,7 +251,7 @@ namespace Workbit.Core.Services
                         status = firstCheckIn.Value.TimeOfDay > new TimeSpan(9, 0, 0) ? "Late" : "Present";
                     }
 
-                    return new DailyAttendanceSummaryDto
+                    return new DailyAttendanceSummaryModel
                     {
                         Date = g.Key,
                         FirstCheckIn = firstCheckIn?.TimeOfDay,

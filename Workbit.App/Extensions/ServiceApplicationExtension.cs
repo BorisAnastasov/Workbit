@@ -27,16 +27,15 @@ namespace Workbit.App.Extensions
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<IUserService, UserService>();
 
+
             var connectionString = config.GetConnectionString("DefaultConnection");
 
-            services
-                .AddScoped<DataProtectionInterceptor>()
-                .AddDbContext<WorkbitDbContext>((sp, opts) =>
-                {
-                    opts
-                      .UseSqlServer(connectionString)
-                      .AddInterceptors(sp.GetRequiredService<DataProtectionInterceptor>());
-                });
+            services.AddSingleton<DataProtectionInterceptor>();
+            services.AddDbContext<WorkbitDbContext>((sp, opts) =>
+                opts.UseSqlServer(connectionString)
+                    .AddInterceptors(sp.GetRequiredService<DataProtectionInterceptor>())
+                    );
+
 
 
             services.AddHttpClient<IApiNinjasService, ApiNinjasService>();
