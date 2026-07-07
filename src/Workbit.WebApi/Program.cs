@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
 using Workbit.Application.Common.Models;
 using Workbit.Domain.Entities.Account;
@@ -13,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddMediatR(configuration => {
-    configuration.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    configuration.RegisterServicesFromAssembly(Assembly.Load("Workbit.Application"));
 });
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
