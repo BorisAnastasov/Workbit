@@ -1,0 +1,6 @@
+@Workbit.WebApi_HostAddress = http://localhost:5089
+
+GET {{Workbit.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

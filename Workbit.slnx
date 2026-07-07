@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Workbit.Application/Workbit.Application.csproj" />
+    <Project Path="src/Workbit.Domain/Workbit.Domain.csproj" />
+    <Project Path="src/Workbit.Infrastructure/Workbit.Infrastructure.csproj" />
+    <Project Path="src/Workbit.WebApi/Workbit.WebApi.csproj" />
+  </Folder>
+</Solution>
