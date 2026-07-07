@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Workbit.Application.Features.Auth.Register;
 using Workbit.WebApi.Contracts.Auth;
 
 namespace Workbit.WebApi.Controllers
@@ -34,6 +35,24 @@ namespace Workbit.WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterCommand command, CancellationToken cancellationToken) {
+            var result = await mediator.Send(command, cancellationToken);
+
+            SetJWTIntoCookie(result.Token, result.Expires);
+
+            var response = new AuthResponseDto
+            {
+                UserId = result.UserId,
+                Email = result.Email,
+                FirstName = result.FirstName,
+                LastName = result.LastName,
+                Roles = result.Roles
+            };
+
+            return Ok(response);
+
+        }
 
         private void SetJWTIntoCookie(string token, DateTime expires)
         {
