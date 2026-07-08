@@ -1,6 +1,6 @@
-﻿namespace Workbit.Application.Features.Auth.Register
+﻿namespace Workbit.Application.Features.Auth.Shared
 {
-    public class RegisterResult
+    public class AuthResult
     {
         public Guid UserId { get; set; }
         public string Email { get; set; } = null!;

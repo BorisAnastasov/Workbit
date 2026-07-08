@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using System.Reflection;
 using System.Text;
 using Workbit.Application.Common.Models;
 using Workbit.Domain.Entities.Account;
+using Workbit.Infrastructure.Extensions;
 using Workbit.Infrastructure.Security;
 using Workbit.WebApi.Extensions;
-using Workbit.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +70,7 @@ else
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

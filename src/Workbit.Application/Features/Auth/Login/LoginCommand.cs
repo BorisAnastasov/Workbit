@@ -1,4 +1,4 @@
 ﻿using MediatR;
-using Workbit.Application.Features.Auth.Login;
+using Workbit.Application.Features.Auth.Shared;
 
-public record LoginCommand(string Email, string Password) : IRequest<LoginResult>;
+public record LoginCommand(string Email, string Password) : IRequest<AuthResult>;

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Workbit.Application.Features.Auth.Shared;
 
 namespace Workbit.Application.Features.Auth.Register
 {
@@ -11,6 +12,6 @@ namespace Workbit.Application.Features.Auth.Register
         string Password,
         string Token,
         DateTime Expires)
-        : IRequest<RegisterResult>
+        : IRequest<AuthResult>
     { }
 }
