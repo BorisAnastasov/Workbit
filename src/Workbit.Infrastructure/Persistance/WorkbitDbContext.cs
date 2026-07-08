@@ -1,20 +1,22 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Workbit.Application.Interfaces;
 using Workbit.Domain.Entities;
 using Workbit.Domain.Entities.Account;
 using Workbit.Infrastructure.Database.Configuration;
 using Workbit.Infrastructure.Extensions;
+using Workbit.Infrastructure.Persistance.Configuration;
 
 namespace Workbit.Infrastructure.Persistance
 {
     public class WorkbitDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
-        public WorkbitDbContext(DbContextOptions<WorkbitDbContext> opts,
-                          IDataProtectionProvider dpProvider) : base(opts)
+        private readonly IEncryptionService encryptionService;
+        public WorkbitDbContext(DbContextOptions<WorkbitDbContext> options,
+                          IEncryptionService encryptionService) : base(options)
         {
-            var provider = dpProvider ?? DataProtectionProvider.Create("Workbit");
+            this.encryptionService = encryptionService;
         }
         public virtual DbSet<Department> Departments { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
@@ -32,8 +34,7 @@ namespace Workbit.Infrastructure.Persistance
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Employee>()
-                .Ignore(e => e.Iban);
+            builder.ConfigureIbanConverter(encryptionService);
 
             builder.ConfigureDeleteBehaviourEntities();
 
@@ -43,9 +44,9 @@ namespace Workbit.Infrastructure.Persistance
             builder.ApplyConfiguration(new CeoConfiguration());
             builder.ApplyConfiguration(new DepartmentConfiguration());
             builder.ApplyConfiguration(new DepartmentBudgetConfiguration());
-            builder.ApplyConfiguration(new ManagerConfiguration(managerProtector));
+            builder.ApplyConfiguration(new ManagerConfiguration(encryptionService));
             builder.ApplyConfiguration(new JobConfiguration());
-            builder.ApplyConfiguration(new EmployeeConfiguration(employeeProtector));
+            builder.ApplyConfiguration(new EmployeeConfiguration(encryptionService));
             builder.ApplyConfiguration(new PaymentConfiguration());
             builder.ApplyConfiguration(new AttendanceConfiguration());
         }
