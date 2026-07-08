@@ -6,20 +6,21 @@ using System.Text;
 using Workbit.Application.Common.Models;
 using Workbit.Domain.Entities.Account;
 using Workbit.Infrastructure.Security;
+using Workbit.WebApi.Extensions;
+using Workbit.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddApplicationServices(builder.Configuration);
 
-builder.Services.AddMediatR(configuration => {
-    configuration.RegisterServicesFromAssembly(Assembly.Load("Workbit.Application"));
-});
+builder.Services.AddApplicationDbContext(builder.Configuration);
+
+builder.Services.AddApplicationIdentity(builder.Configuration);
+
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
-// 2. Also grab a plain instance to use directly here in Program.cs
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()
     ?? throw new InvalidOperationException("JwtSettings section is missing in configuration.");
 
@@ -58,10 +59,14 @@ builder.Services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHashe
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseDeveloperExceptionPage();
+}
+else 
+{
+    app.UseExceptionHandler();
 }
 
 app.UseHttpsRedirection();
