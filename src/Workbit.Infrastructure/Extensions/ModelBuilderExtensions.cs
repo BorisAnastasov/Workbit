@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Workbit.Application.Interfaces;
 using Workbit.Domain.Entities;
 using Workbit.Domain.Entities.Account;
 
@@ -6,6 +9,21 @@ namespace Workbit.Infrastructure.Extensions
 {
     public static class ModelBuilderExtensions
     {
+        public static void ConfigureIbanConverter(this ModelBuilder builder, IEncryptionService encryptionService)
+        {
+            var ibanConverter = new ValueConverter<string, string>(
+                plainText => encryptionService.Encrypt(plainText),
+                cipherText => encryptionService.Decrypt(cipherText)
+            );
+
+            builder.Entity<Manager>()
+                .Property(m => m.Iban)
+                .HasConversion(ibanConverter);
+
+            builder.Entity<Employee>()
+                .Property(e => e.Iban)
+                .HasConversion(ibanConverter);
+        }
         public static void ConfigureDeleteBehaviourEntities(this ModelBuilder builder)
         {
             // ------------------------
