@@ -6,7 +6,7 @@ using Workbit.Infrastructure.Persistance;
 namespace Workbit.Infrastructure.Repository.Repositories
 {
     public class RefreshTokenRepository(WorkbitDbContext context)
-        :Repository<RefreshToken>(context),IRefreshTokenRepository 
+        : Repository<RefreshToken>(context), IRefreshTokenRepository
     {
     }
 }

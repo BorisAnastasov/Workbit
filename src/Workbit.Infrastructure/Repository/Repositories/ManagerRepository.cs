@@ -6,7 +6,7 @@ using Workbit.Infrastructure.Persistance;
 namespace Workbit.Infrastructure.Repository.Repositories
 {
     public class ManagerRepository(WorkbitDbContext context)
-        :Repository<Manager>(context), IManagerRepository
+        : Repository<Manager>(context), IManagerRepository
     {
     }
 }

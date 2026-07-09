@@ -1,6 +1,10 @@
 ﻿using IbanNet.DependencyInjection.ServiceProvider;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
+using Workbit.Application.Common.Models;
 using Workbit.Application.Interfaces;
 using Workbit.Infrastructure.Security;
 
@@ -16,7 +20,8 @@ namespace Workbit.WebApi.Extensions
 
             services.AddSingleton<IEncryptionService, EncryptionService>();
 
-            services.AddMediatR(configuration => {
+            services.AddMediatR(configuration =>
+            {
                 configuration.RegisterServicesFromAssembly(Assembly.Load("Workbit.Application"));
             });
 
@@ -36,6 +41,42 @@ namespace Workbit.WebApi.Extensions
                 options.Cookie.SameSite = SameSiteMode.Lax;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.ExpireTimeSpan = TimeSpan.FromHours(1);
+            });
+
+            services.Configure<JwtSettings>(config.GetSection("JwtSettings"));
+
+            var jwtSettings = config.GetSection("JwtSettings").Get<JwtSettings>()
+                ?? throw new InvalidOperationException("JwtSettings section is missing in configuration.");
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.ContainsKey("access_token"))
+                        {
+                            context.Token = context.Request.Cookies["access_token"];
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             return services;

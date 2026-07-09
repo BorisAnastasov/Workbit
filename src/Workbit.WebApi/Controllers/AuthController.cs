@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Workbit.Application.Features.Auth.Register;
 using Workbit.WebApi.Contracts.Auth;
@@ -10,10 +11,12 @@ namespace Workbit.WebApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IMediator mediator;
+        private readonly IMapper mapper;
 
-        public AuthController(IMediator mediator)
+        public AuthController(IMediator mediator, IMapper mapper)
         {
             this.mediator = mediator;
+            this.mapper = mapper;
         }
 
         [HttpPost("login")]
@@ -23,35 +26,21 @@ namespace Workbit.WebApi.Controllers
 
             SetJWTIntoCookie(result.Token, result.Expires);
 
-            var response = new AuthResponseDto
-            {
-                UserId = result.UserId,
-                Email = result.Email,
-                FirstName = result.FirstName,
-                LastName = result.LastName,
-                Roles = result.Roles
-            };
+            var response = mapper.Map<AuthResponseDto>(result);
 
             return Ok(response);
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterCommand command, CancellationToken cancellationToken) {
+        public async Task<IActionResult> Register([FromBody] RegisterCommand command, CancellationToken cancellationToken)
+        {
             var result = await mediator.Send(command, cancellationToken);
 
             SetJWTIntoCookie(result.Token, result.Expires);
 
-            var response = new AuthResponseDto
-            {
-                UserId = result.UserId,
-                Email = result.Email,
-                FirstName = result.FirstName,
-                LastName = result.LastName,
-                Roles = result.Roles
-            };
+            var response = mapper.Map<AuthResponseDto>(result);
 
             return Ok(response);
-
         }
 
         private void SetJWTIntoCookie(string token, DateTime expires)
@@ -59,7 +48,7 @@ namespace Workbit.WebApi.Controllers
             Response.Cookies.Append("access_token", token, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,           
+                Secure = true,
                 SameSite = SameSiteMode.Strict,
                 Expires = expires
             });

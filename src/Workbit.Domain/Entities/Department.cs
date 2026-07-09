@@ -5,7 +5,7 @@ using static Workbit.Domain.Constants.DataConstants.Department;
 
 namespace Workbit.Domain.Entities
 {
-	public class Department
+    public class Department
     {
         public Department()
         {

@@ -5,7 +5,7 @@ using static Workbit.Domain.Constants.DataConstants.ApplicationUser;
 
 namespace Workbit.Domain.Entities.Account
 {
-	public class ApplicationUser : IdentityUser<Guid>
+    public class ApplicationUser : IdentityUser<Guid>
     {
         public ApplicationUser()
         {
@@ -25,7 +25,7 @@ namespace Workbit.Domain.Entities.Account
         [Required]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
-        
+
         [Required]
         [Phone]
         [StringLength(PhoneMaxLen)]

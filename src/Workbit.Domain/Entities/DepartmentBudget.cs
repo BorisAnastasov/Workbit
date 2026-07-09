@@ -4,23 +4,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Workbit.Domain.Entities
 {
-	public class DepartmentBudget
-	{
-		[Key]
-		public int Id { get; set; }
+    public class DepartmentBudget
+    {
+        [Key]
+        public int Id { get; set; }
 
-		[ForeignKey(nameof(Department))]
-		public int DepartmentId { get; set; }
-		public virtual Department Department { get; set; } = null!;
+        [ForeignKey(nameof(Department))]
+        public int DepartmentId { get; set; }
+        public virtual Department Department { get; set; } = null!;
 
         [Precision(18, 2)]
-		public decimal TotalBudget { get; set; }
+        public decimal TotalBudget { get; set; }
 
-		[Precision(18, 2)]
-		public decimal BonusPool { get; set; }
+        [Precision(18, 2)]
+        public decimal BonusPool { get; set; }
 
-		[DataType(DataType.DateTime)]
-		public DateTime DateAllocated { get; set; }
-		public bool IsDistributed { get; set; } = false;
-	}
+        [DataType(DataType.DateTime)]
+        public DateTime DateAllocated { get; set; }
+        public bool IsDistributed { get; set; } = false;
+    }
 }

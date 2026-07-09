@@ -37,14 +37,15 @@ namespace Workbit.Application.Features.Auth.Register
                 UserName = request.Email
             };
 
-            await userManager.CreateAsync(user,request.Password);
+            await userManager.CreateAsync(user, request.Password);
 
-            switch (request.Role) {
+            switch (request.Role)
+            {
                 case RoleConstants.EmployeeRoleName:
                     await unitOfWork.EmployeeRepository.AddAsync(new Employee { ApplicationUser = user });
                     break;
                 case RoleConstants.ManagerRoleName:
-                    await unitOfWork.ManagerRepository.AddAsync(new Manager { ApplicationUser = user});
+                    await unitOfWork.ManagerRepository.AddAsync(new Manager { ApplicationUser = user });
                     break;
                 case RoleConstants.CeoRoleName:
                     await unitOfWork.CeoRepository.AddAsync(new Ceo { ApplicationUser = user });

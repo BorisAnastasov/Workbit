@@ -6,7 +6,7 @@ using Workbit.Infrastructure.Persistance;
 namespace Workbit.Infrastructure.Repository.Repositories
 {
     public class CompanyRepository(WorkbitDbContext context)
-        :Repository<Company>(context), ICompanyRepository
+        : Repository<Company>(context), ICompanyRepository
     {
     }
 }

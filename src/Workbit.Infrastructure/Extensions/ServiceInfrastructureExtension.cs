@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,11 @@ public static class ServiceInfrastructureExtension
         {
             options.UseSqlServer(connectionString);
         });
+
+        services.AddDataProtection()
+                .SetApplicationName("Workbit")
+                .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(AppContext.BaseDirectory, "DataProtectionKeys")))
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(3650));
 
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 

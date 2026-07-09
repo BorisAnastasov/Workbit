@@ -44,7 +44,7 @@ namespace Workbit.Infrastructure.Security
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.UtcNow.AddDays(jwtSettings.ExpiredDays);
+            var expires = DateTime.UtcNow.AddDays(jwtSettings.ExpiredMinutes);
 
             var token = new JwtSecurityToken(
                 issuer: jwtSettings.Issuer,

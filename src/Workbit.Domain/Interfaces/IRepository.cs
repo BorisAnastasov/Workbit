@@ -10,7 +10,7 @@ namespace Workbit.Domain.Interface
         IQueryable<T> AllReadOnly(Expression<Func<T, bool>> search);
         Task<int> CountAsync(Expression<Func<T, bool>>? filter);
         Task<T?> GetByIdAsync(object id);
-        Task<T?> FirstOrDefaultAsync( Expression<Func<T, bool>> filter);
+        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> filter);
         Task AddAsync(T entity);
         Task AddRangeAsync(IEnumerable<T> entities);
         void Update(T entity);

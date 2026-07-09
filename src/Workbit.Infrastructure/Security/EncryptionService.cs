@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.Options;
+using Workbit.Application.Common.Models;
 using Workbit.Application.Interfaces;
 
 namespace Workbit.Infrastructure.Security

@@ -1,4 +1,4 @@
-﻿using Workbit.Infrastructure.Enumerations;
+﻿using Workbit.Domain.Enumerations;
 
 namespace Workbit.Infrastructure.Extensions
 {

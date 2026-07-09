@@ -6,7 +6,7 @@ using static Workbit.Domain.Constants.DataConstants.Job;
 
 namespace Workbit.Domain.Entities
 {
-	public class Job
+    public class Job
     {
         public Job()
         {
@@ -28,8 +28,8 @@ namespace Workbit.Domain.Entities
         public virtual Department Department { get; set; } = null!;
 
         [Required]
-		[Precision(18, 2)]
-		public decimal BaseSalary { get; set; }
+        [Precision(18, 2)]
+        public decimal BaseSalary { get; set; }
 
         public virtual List<Employee> Employees { get; set; } = null!;
     }

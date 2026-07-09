@@ -5,7 +5,7 @@ using Workbit.Infrastructure.Repository.Repositories;
 
 namespace Workbit.Infrastructure.Repository
 {
-    public class UnitOfWork:IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly WorkbitDbContext _context;
         public IApplicationUserRepository ApplicationUserRepository { get; }

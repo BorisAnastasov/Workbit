@@ -6,7 +6,7 @@ using Workbit.Infrastructure.Persistance;
 namespace Workbit.Infrastructure.Repository.Repositories
 {
     public class AttendanceEntryRepository(WorkbitDbContext context)
-        :Repository<AttendanceEntry>(context), IAttendanceEntryRepository
+        : Repository<AttendanceEntry>(context), IAttendanceEntryRepository
     {
     }
 }

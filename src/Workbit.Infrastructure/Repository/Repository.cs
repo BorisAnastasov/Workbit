@@ -9,7 +9,7 @@ namespace Workbit.Infrastructure.Database.Repository
     public class Repository<T>(WorkbitDbContext context) : IRepository<T> where T : class
     {
         protected DbSet<T> _dbSet = context.Set<T>();
-        
+
         public IQueryable<T> All()
         {
             return _dbSet;
