@@ -8,7 +8,6 @@ namespace Workbit.Infrastructure.Persistance.Configuration
     {
         public void Configure(EntityTypeBuilder<Company> builder)
         {
-
             builder.HasData(
                 new Company
                 {

@@ -15,7 +15,7 @@ namespace Workbit.Infrastructure.Persistance.Configuration
                     Title = "Software Engineer",
                     Description = "Develops and maintains enterprise-grade software applications.",
                     DepartmentId = 2, // IT
-                    BaseSalary = 6000 // Monthly
+                    BaseSalary = 6000
                 },
                 new Job
                 {
@@ -23,7 +23,7 @@ namespace Workbit.Infrastructure.Persistance.Configuration
                     Title = "HR Specialist",
                     Description = "Manages employee onboarding, benefits, and HR compliance.",
                     DepartmentId = 1, // Human Resources
-                    BaseSalary = 4500 // Monthly
+                    BaseSalary = 4500
                 },
                 new Job
                 {
@@ -31,7 +31,7 @@ namespace Workbit.Infrastructure.Persistance.Configuration
                     Title = "Financial Analyst",
                     Description = "Analyzes financial data and prepares budget reports for strategic decisions.",
                     DepartmentId = 3, // Finance
-                    BaseSalary = 5000 // Monthly
+                    BaseSalary = 5000
                 },
                 new Job
                 {
@@ -39,7 +39,15 @@ namespace Workbit.Infrastructure.Persistance.Configuration
                     Title = "Marketing Coordinator",
                     Description = "Supports marketing campaigns, communications, and brand development.",
                     DepartmentId = 4, // Marketing
-                    BaseSalary = 4000 // Monthly
+                    BaseSalary = 4000
+                },
+                new Job
+                {
+                    Id = 5,
+                    Title = "Sales Representative",
+                    Description = "Manages client relationships and drives new business acquisition.",
+                    DepartmentId = 5, // Sales
+                    BaseSalary = 4800
                 }
             );
         }
