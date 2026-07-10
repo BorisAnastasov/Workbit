@@ -38,7 +38,6 @@ namespace Workbit.WebApi.Extensions
                 }
             }
 
-            // 2) Helper to ensure each existing user is actually in the given role
             async Task EnsureUserRoleAsync(string email, string role)
             {
                 var user = await userManager.FindByEmailAsync(email);
@@ -48,10 +47,8 @@ namespace Workbit.WebApi.Extensions
                 }
             }
 
-            // Admin
             await EnsureUserRoleAsync(AdminEmail, AdminRoleName);
 
-            // Employees
             var employeeEmails = new[]
             {
                 "alice.k.watson@workbit.com", "bob.c.thomas@workbit.com",
@@ -64,7 +61,6 @@ namespace Workbit.WebApi.Extensions
                 await EnsureUserRoleAsync(email, EmployeeRoleName);
             }
 
-            // Managers
             var managerEmails = new[]
             {
                 "lisa.r.anderson@workbit.com", "carl.t.morgan@workbit.com", "nina.v.hughes@workbit.com"
@@ -74,7 +70,6 @@ namespace Workbit.WebApi.Extensions
                 await EnsureUserRoleAsync(email, ManagerRoleName);
             }
 
-            // CEO
             var ceoEmails = new[] { "john.m.lewis@workbit.com" };
             foreach (var email in ceoEmails)
             {

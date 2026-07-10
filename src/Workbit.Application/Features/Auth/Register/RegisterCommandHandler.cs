@@ -67,6 +67,8 @@ namespace Workbit.Application.Features.Auth.Register
             result.Roles = roles.ToList();
             result.Token = tokenResult.Token;
             result.Expires = tokenResult.Expires;
+            result.RefreshToken = tokenResult.RefreshToken;
+            result.RefreshTokenExpires = tokenResult.RefreshTokenExpires;
 
             return result;
         }

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Workbit.Domain.Entities.Account;
+using Workbit.Infrastructure.Security;
 
 namespace Workbit.Infrastructure.Persistance.Configuration
 {
@@ -15,7 +15,7 @@ namespace Workbit.Infrastructure.Persistance.Configuration
 
         private static List<ApplicationUser> SeedApplicationUsers()
         {
-            var hasher = new PasswordHasher<ApplicationUser>();
+            var hasher = new CustomPasswordHasherService();
             var users = new List<ApplicationUser>();
 
             var random = new Random(42);

@@ -9,5 +9,7 @@
         public List<string> Roles { get; set; } = new();
         public string Token { get; set; } = null!;
         public DateTime Expires { get; set; }
+        public string RefreshToken { get; set; } = null!;
+        public DateTime RefreshTokenExpires { get; set; }
     }
 }

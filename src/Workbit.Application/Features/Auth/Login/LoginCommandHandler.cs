@@ -30,6 +30,7 @@ namespace Workbit.Application.Features.Auth.Login
         public async Task<AuthResult> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await userManager.FindByEmailAsync(request.Email);
+            Console.WriteLine(request.Email);
             if (user == null) throw new UnauthorizedException("Invalid email or password.");
 
             var signInResult = await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
@@ -44,6 +45,8 @@ namespace Workbit.Application.Features.Auth.Login
             result.Roles = roles.ToList();
             result.Token = tokenResult.Token;
             result.Expires = tokenResult.Expires;
+            result.RefreshToken = tokenResult.RefreshToken;
+            result.RefreshTokenExpires = tokenResult.RefreshTokenExpires;
 
             return result;
         }
