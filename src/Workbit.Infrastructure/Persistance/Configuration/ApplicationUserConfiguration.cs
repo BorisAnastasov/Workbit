@@ -67,7 +67,7 @@ namespace Workbit.Infrastructure.Persistance.Configuration
                     NormalizedUserName = username.ToUpper(),
                     Email = email,
                     NormalizedEmail = email.ToUpper(),
-                    SecurityStamp = Guid.NewGuid().ToString(),
+                    SecurityStamp = id.ToString("N"),
                     FirstName = firstName,
                     LastName = lastName,
                     DateOfBirth = dob,

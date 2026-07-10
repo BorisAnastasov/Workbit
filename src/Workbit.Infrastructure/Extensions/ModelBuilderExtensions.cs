@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Workbit.Application.Interfaces;
 using Workbit.Domain.Entities;
@@ -24,6 +23,7 @@ namespace Workbit.Infrastructure.Extensions
                 .Property(e => e.Iban)
                 .HasConversion(ibanConverter);
         }
+
         public static void ConfigureDeleteBehaviourEntities(this ModelBuilder builder)
         {
             // ------------------------
@@ -51,21 +51,8 @@ namespace Workbit.Infrastructure.Extensions
                       .HasForeignKey(a => a.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasMany(u => u.Payments)
-                      .WithOne(p => p.Recipient)
-                      .HasForeignKey(p => p.RecipientId)
-                      .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            // ------------------------
-            // Ceo Config
-            // ------------------------
-            builder.Entity<Ceo>(entity =>
-            {
-                entity.HasOne<Company>()
-                      .WithOne(c => c.Ceo)
-                      .HasForeignKey<Company>(c => c.CeoId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                // Payment relationship configured once, on the Payment side below —
+                // removed the duplicate declaration that was here
             });
 
             // ------------------------
@@ -76,7 +63,7 @@ namespace Workbit.Infrastructure.Extensions
                 entity.HasOne(c => c.Ceo)
                       .WithOne()
                       .HasForeignKey<Company>(c => c.CeoId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasMany(c => c.Departments)
                       .WithOne(d => d.Company)
@@ -124,7 +111,7 @@ namespace Workbit.Infrastructure.Extensions
                 entity.HasOne(m => m.Department)
                       .WithMany(d => d.Managers)
                       .HasForeignKey(m => m.DepartmentId)
-                      .OnDelete(DeleteBehavior.NoAction); // Avoid multiple cascade paths
+                      .OnDelete(DeleteBehavior.NoAction);
             });
 
             // ------------------------
@@ -148,11 +135,10 @@ namespace Workbit.Infrastructure.Extensions
                       .HasForeignKey(j => j.DepartmentId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                // Employees remain when Job is deleted (manual nulling needed)
                 entity.HasMany(j => j.Employees)
                       .WithOne(e => e.Job)
                       .HasForeignKey(e => e.JobId)
-                      .OnDelete(DeleteBehavior.NoAction);
+                      .OnDelete(DeleteBehavior.SetNull);
             });
 
             // ------------------------
@@ -168,7 +154,7 @@ namespace Workbit.Infrastructure.Extensions
                 entity.HasOne(e => e.Job)
                       .WithMany(j => j.Employees)
                       .HasForeignKey(e => e.JobId)
-                      .OnDelete(DeleteBehavior.NoAction); // Avoid multiple cascade paths
+                      .OnDelete(DeleteBehavior.NoAction);
             });
 
             // ------------------------
@@ -199,14 +185,14 @@ namespace Workbit.Infrastructure.Extensions
             builder.Entity<Country>(entity =>
             {
                 entity.HasMany(c => c.Employees)
-                            .WithOne(e => e.Country)
-                            .HasForeignKey(e => e.CountryCode)
-                            .OnDelete(DeleteBehavior.Restrict);
+                      .WithOne(e => e.Country)
+                      .HasForeignKey(e => e.CountryCode)
+                      .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasMany(c => c.Companies)
-                        .WithOne(u => u.Country)
-                        .HasForeignKey(u => u.CountryCode)
-                        .OnDelete(DeleteBehavior.Restrict);
+                      .WithOne(u => u.Country)
+                      .HasForeignKey(u => u.CountryCode)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

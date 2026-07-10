@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
 using Workbit.Application.Exceptions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Workbit.WebApi.Middlewares
 {

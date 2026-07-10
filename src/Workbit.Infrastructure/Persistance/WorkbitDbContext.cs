@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Workbit.Application.Interfaces;
 using Workbit.Domain.Entities;
 using Workbit.Domain.Entities.Account;
-using Workbit.Infrastructure.Database.Configuration;
 using Workbit.Infrastructure.Extensions;
 using Workbit.Infrastructure.Persistance.Configuration;
 
@@ -29,6 +29,11 @@ namespace Workbit.Infrastructure.Persistance
         public virtual DbSet<DepartmentBudget> DepartmentBudgets { get; set; } = null!;
         public virtual DbSet<Country> Countries { get; set; } = null!;
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

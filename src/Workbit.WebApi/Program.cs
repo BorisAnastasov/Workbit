@@ -1,11 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Workbit.Application.Common.Models;
-using Workbit.Domain.Entities.Account;
 using Workbit.Infrastructure.Extensions;
-using Workbit.Infrastructure.Security;
 using Workbit.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,10 +10,6 @@ builder.Services.AddApplicationDbContext(builder.Configuration);
 
 builder.Services.AddApplicationIdentity(builder.Configuration);
 
-
-
-
-builder.Services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasherService>();
 
 var app = builder.Build();
 
@@ -38,6 +27,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+await app.SeedRolesAsync();
 
 app.MapControllers();
 

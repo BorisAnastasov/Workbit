@@ -1,11 +1,16 @@
 ﻿using IbanNet.DependencyInjection.ServiceProvider;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
+using Workbit.Application.Common.Mappings;
 using Workbit.Application.Common.Models;
 using Workbit.Application.Interfaces;
+using Workbit.Domain.Entities.Account;
+using Workbit.Domain.Interfaces;
+using Workbit.Infrastructure.Repository;
 using Workbit.Infrastructure.Security;
 
 namespace Workbit.WebApi.Extensions
@@ -19,6 +24,10 @@ namespace Workbit.WebApi.Extensions
             services.AddControllers();
 
             services.AddSingleton<IEncryptionService, EncryptionService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasherService>();
+
 
             services.AddMediatR(configuration =>
             {
@@ -34,6 +43,11 @@ namespace Workbit.WebApi.Extensions
             });
 
             services.AddIbanNet();
+
+            var autoMapperKey = config.GetSection("AutoMapper:LicenseKey").Value;
+            services.AddAutoMapper(cfg => {
+                cfg.LicenseKey = autoMapperKey;
+            },typeof(Program).Assembly,typeof(AuthProfile).Assembly);
 
             services.ConfigureApplicationCookie(options =>
             {

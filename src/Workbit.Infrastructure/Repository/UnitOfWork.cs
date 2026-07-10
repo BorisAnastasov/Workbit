@@ -34,7 +34,7 @@ namespace Workbit.Infrastructure.Repository
             RefreshTokenRepository = new RefreshTokenRepository(_context);
         }
 
-        public async Task SaveChangesAsync(CancellationToken token)
+        public async Task SaveChangesAsync(CancellationToken token = default)
                     => await _context.SaveChangesAsync(token);
 
         public async Task ExecuteTransactionAsync(Action action, CancellationToken token)
