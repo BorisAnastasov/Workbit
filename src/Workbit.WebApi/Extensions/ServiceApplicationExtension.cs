@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
@@ -12,6 +13,7 @@ using Workbit.Domain.Entities.Account;
 using Workbit.Domain.Interfaces;
 using Workbit.Infrastructure.Repository;
 using Workbit.Infrastructure.Security;
+using Workbit.Infrastructure.Services;
 
 namespace Workbit.WebApi.Extensions
 {
@@ -27,7 +29,26 @@ namespace Workbit.WebApi.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasherService>();
+            services.AddScoped<IApiNinjasService, ApiNinjasService>();
 
+            var redisConnectionString = config.GetConnectionString("Redis");
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = redisConnectionString;
+                options.InstanceName = "workbit_redis";
+            });
+
+            services.AddHybridCache(options =>
+            {
+                options.DefaultEntryOptions = new HybridCacheEntryOptions
+                {
+                    //L1
+                    LocalCacheExpiration = TimeSpan.FromMinutes(2),
+                    
+                    //L2
+                    Expiration = TimeSpan.FromMinutes(10)
+                };
+            });
 
             services.AddMediatR(configuration =>
             {
