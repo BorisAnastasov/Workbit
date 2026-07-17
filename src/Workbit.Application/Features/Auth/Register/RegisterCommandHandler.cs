@@ -42,7 +42,7 @@ namespace Workbit.Application.Features.Auth.Register
             switch (request.Role)
             {
                 case RoleConstants.EmployeeRoleName:
-                    await unitOfWork.EmployeeRepository.AddAsync(new Employee { ApplicationUser = user });
+                    await unitOfWork.EmployeeRepository.AddAsync(new Workbit.Domain.Entities.Account.Employee { ApplicationUser = user });
                     break;
                 case RoleConstants.ManagerRoleName:
                     await unitOfWork.ManagerRepository.AddAsync(new Manager { ApplicationUser = user });
